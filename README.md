@@ -27,6 +27,7 @@
 * [ ] Tracking system
 * [ ] Save data on server
 * [ ] multi languages
+* [ ] Dark Theme & white theme
 
 ## Diagrams & Designs
 ### Full Figma Design: 
