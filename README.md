@@ -28,6 +28,7 @@
 * [ ] Save data on server
 * [ ] multi languages
 * [ ] Dark Theme & white theme
+* [ ] Search about Notes
 
 ## Diagrams & Designs
 ### Full Figma Design: 
