@@ -26,6 +26,7 @@
 * [ ] Get Notifications
 * [ ] Tracking system
 * [ ] Save data on server
+* [ ] multi languages
 
 ## Diagrams & Designs
 ### Full Figma Design: 
