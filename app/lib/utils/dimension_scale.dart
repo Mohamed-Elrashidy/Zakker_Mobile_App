@@ -7,7 +7,8 @@ class Dimension{
   late double screenWidth;
   Dimension({required this.context}){
      screenHeight=MediaQuery.of(context).size.height;
-     screenWidth=MediaQuery.of(context).size.width-scaleWidth(20);
+     screenWidth=MediaQuery.of(context).size.width;
+     screenWidth-=scaleWidth(10);
   }
 //642
 

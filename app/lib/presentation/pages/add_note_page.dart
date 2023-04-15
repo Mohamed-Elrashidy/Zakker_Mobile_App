@@ -1,4 +1,6 @@
 import 'package:app/presentation/widgets/big_text.dart';
+import 'package:app/presentation/widgets/main_button.dart';
+import 'package:app/utils/note_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -23,18 +25,19 @@ class AddNotePage extends StatelessWidget {
 
     return SafeArea(
       child: GestureDetector(
-        onTap: (){
+        onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
-
         },
         child: Scaffold(
             body: Padding(
           padding: EdgeInsets.all(scaleDimension.scaleWidth(10)),
-          child: Column(
-            children: [
-              _appBarBuilder(),
-              _bodyBuilder(),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _appBarBuilder(),
+                _bodyBuilder(),
+              ],
+            ),
           ),
         )),
       ),
@@ -60,23 +63,35 @@ class AddNotePage extends StatelessWidget {
   Widget _bodyBuilder() {
     return Column(
       children: [
-        SizedBox(height: scaleDimension.scaleHeight(15),),
-
-        _textFieldBuilder("Title","Add title here",_titleController, true),
-        SizedBox(height: scaleDimension.scaleHeight(15),),
-        _textFieldBuilder("Body","Add body here",_bodyController, true),
-        SizedBox(height: scaleDimension.scaleHeight(15),),
-        _textFieldBuilder("Source","Add source here",_sourceController, true),
-        SizedBox(height: scaleDimension.scaleHeight(15),),
-
+        SizedBox(
+          height: scaleDimension.scaleHeight(15),
+        ),
+        _textFieldBuilder("Title", "Add title here", _titleController, true),
+        SizedBox(
+          height: scaleDimension.scaleHeight(15),
+        ),
+        _textFieldBuilder("Body", "Add body here", _bodyController, true),
+        SizedBox(
+          height: scaleDimension.scaleHeight(15),
+        ),
+        _textFieldBuilder("Source", "Add source here", _sourceController, true),
+        SizedBox(
+          height: scaleDimension.scaleHeight(15),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-          _textFieldBuilder("Category","",_sourceController, false),
-          _textFieldBuilder("Page","",_sourceController, false),
+            _textFieldBuilder("Category", "", _categoryController, false),
+            _textFieldBuilder("Page", "", _pageNumberController, false),
+          ],
+        ),
+        SizedBox(height: scaleDimension.scaleHeight(10)),
+        imagePicker(),
 
-
-        ],)
+        colorPicker(),
+        SizedBox(height: scaleDimension.scaleHeight(20)),
+        MainButton(title: "Create Note", onTap: (){}),
+        SizedBox(height: scaleDimension.scaleHeight(30)),
 
       ],
     );
@@ -84,15 +99,16 @@ class AddNotePage extends StatelessWidget {
 
   void _createNote() {}
 
-  Widget _textFieldBuilder(String title,String hint,TextEditingController controller, bool isFullWidth) {
+  Widget _textFieldBuilder(String title, String hint,
+      TextEditingController controller, bool isFullWidth) {
     return Container(
       width: isFullWidth
           ? scaleDimension.screenWidth
-          : scaleDimension.screenWidth / 2-scaleDimension.scaleWidth(20),
+          : scaleDimension.screenWidth / 2 - scaleDimension.scaleWidth(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          BigText(text: title,size:scaleDimension.scaleWidth(18)),
+          BigText(text: title, size: scaleDimension.scaleWidth(18)),
           SizedBox(
             height: scaleDimension.scaleHeight(10),
           ),
@@ -100,7 +116,6 @@ class AddNotePage extends StatelessWidget {
             padding:
                 EdgeInsets.symmetric(horizontal: scaleDimension.scaleWidth(10)),
             decoration: BoxDecoration(
-
                 borderRadius:
                     BorderRadius.circular(scaleDimension.scaleWidth(16)),
                 border: Border.all(color: Colors.grey[400]!, width: 1.5)),
@@ -109,9 +124,8 @@ class AddNotePage extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: hint,
                 hintStyle: TextStyle(
-                  fontSize: scaleDimension.scaleWidth(14),
-                  color: Colors.grey[400]
-                ),
+                    fontSize: scaleDimension.scaleWidth(14),
+                    color: Colors.grey[400]),
                 border: InputBorder.none,
               ),
             ),
@@ -124,6 +138,7 @@ class AddNotePage extends StatelessWidget {
   dimensionInit(BuildContext context) {
     try {
       // Get the intialized instance of Dimension class to make ui scalable
+
       Dimension scaleDimension = GetIt.instance.get<Dimension>();
       this.scaleDimension = scaleDimension;
     } catch (e) {
@@ -135,4 +150,65 @@ class AddNotePage extends StatelessWidget {
       this.scaleDimension = scaleDimension;
     }
   }
+
+  Widget colorPicker() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        BigText(text: "Color", size: scaleDimension.scaleWidth(18)),
+        SizedBox(
+          height: scaleDimension.scaleHeight(10),
+        ),
+        Row(
+          children: [
+            Container(
+              height: scaleDimension.scaleHeight(scaleDimension.scaleWidth(45)),
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemCount: NoteColors.color.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Row(
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: NoteColors.color[index],
+                            radius: scaleDimension.scaleWidth(20),
+                          ),
+                          SizedBox(
+                            width: scaleDimension.scaleWidth(25),
+                          )
+                        ],
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
+        )
+      ],
+    );
+  }
+  Widget imagePicker()
+  {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        BigText(text: "Image", size: scaleDimension.scaleWidth(18)),
+        SizedBox(height: scaleDimension.scaleHeight(10),),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            GestureDetector(
+              child: CircleAvatar(radius: scaleDimension.scaleHeight(80),backgroundColor: Colors.grey,),
+            ),
+          ],
+        )
+
+      ],
+    );
+  }
+  
 }

@@ -16,7 +16,7 @@ class BigText extends StatelessWidget {
       text,
       style: TextStyle(
           fontSize: size ?? scaleDimension.scaleWidth(22),
-          fontWeight: FontWeight.bold),
+          fontWeight: size==null?FontWeight.bold:FontWeight.normal),
     );
   }
 }
