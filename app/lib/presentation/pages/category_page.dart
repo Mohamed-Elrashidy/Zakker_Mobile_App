@@ -1,23 +1,32 @@
+import 'package:app/presentation/widgets/category_widget.dart';
+import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:app/presentation/widgets/small_button.dart';
+import 'package:app/utils/dummy_data.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../domain/entities/category.dart';
 import '../../utils/dimension_scale.dart';
 import '../widgets/big_text.dart';
 
 class CategoryPage extends StatelessWidget {
  late Dimension scaleDimension;
+ List<Category> categoryList=DummyData.categories;
   @override
   Widget build(BuildContext context) {
     dimensionInit(context);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
-          child: Column(
+          child: Padding(
+            padding: EdgeInsets.all(scaleDimension.scaleWidth(10)),
+            child: Column(
             children: [
-              _appBarBuilder()
+              _appBarBuilder(),
+              SizedBox(height: scaleDimension.scaleHeight(20),),
+              _bodyBuilder()
             ],
-          ),
+          ),),
         ),
       ),
     );
@@ -48,6 +57,26 @@ class CategoryPage extends StatelessWidget {
       this.scaleDimension = scaleDimension;
     }
   }
+  
+  Widget _bodyBuilder()
+  {
+    return Column(
+      children: [
+        Container(height: scaleDimension.scaleHeight(400),
 
+          child: GridView.builder(gridDelegate:
+          SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisSpacing: scaleDimension.scaleWidth(30),
+            mainAxisSpacing: scaleDimension.scaleHeight(30),
+            crossAxisCount: 2,
+          ),itemCount: categoryList.length, itemBuilder: (context,index){
+            return CategoryWidget(category: categoryList[index]);
+          }),
+        ),
+        SizedBox(height: scaleDimension.scaleHeight(40),),
+        NormalText(text: "You have ${categoryList.length} categories")
+      ],
+    );
+  }
 
 }
