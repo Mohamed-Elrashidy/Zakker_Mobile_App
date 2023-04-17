@@ -6,7 +6,8 @@ import '../../utils/dimension_scale.dart';
 class SmallText extends StatelessWidget {
 
   final String text;
-  const SmallText({required this.text});
+  late bool isBold;
+   SmallText({required this.text,this.isBold=false});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class SmallText extends StatelessWidget {
     return Text(
       text,style: TextStyle(
       color:Colors.grey,
+      fontWeight: isBold?FontWeight.bold:FontWeight.normal,
       fontSize: scaleDimension.scaleWidth(14)
     ),
 

@@ -7,6 +7,7 @@ class Note {
   String source;
   int id;
   int color;
+  String date;
   Note({
     required this.title,
     required this.body,
@@ -16,5 +17,6 @@ class Note {
     required this.source,
     required this.id,
     required this.color,
+    required this.date,
   });
 }

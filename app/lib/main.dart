@@ -1,5 +1,6 @@
 import 'package:app/presentation/pages/add_note_page.dart';
 import 'package:app/presentation/pages/category_page.dart';
+import 'package:app/presentation/pages/edit_note_page.dart';
 import 'package:app/presentation/pages/note_page.dart';
 import 'package:app/presentation/pages/notes_page.dart';
 import 'package:app/utils/dimension_scale.dart';
@@ -23,6 +24,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home:NotesPage());
+        home:EditNotePage(note: DummyData.notes[0],));
   }
 }

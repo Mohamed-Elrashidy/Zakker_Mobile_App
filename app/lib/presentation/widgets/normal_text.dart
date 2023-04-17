@@ -6,13 +6,18 @@ import '../../utils/dimension_scale.dart';
 
 class NormalText extends StatelessWidget {
   final String text;
-   NormalText({required this.text});
+  late int maxline;
+  late Color color;
+  NormalText(
+      {required this.text, this.maxline = 10000, this.color = Colors.black});
   Dimension scaleDimension = GetIt.instance.get<Dimension>();
   @override
   Widget build(BuildContext context) {
-    return Text(text,style: TextStyle(
-      fontSize: scaleDimension.scaleWidth(18),
-      color: MyColors.black
-    ),);
+    return Text(
+      text,
+      overflow: TextOverflow.ellipsis,
+      maxLines: maxline,
+      style: TextStyle(fontSize: scaleDimension.scaleWidth(18), color: color),
+    );
   }
 }

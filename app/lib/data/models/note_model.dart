@@ -9,7 +9,7 @@ class NoteModel extends Note {
       required super.page,
       required super.source,
       required super.id,
-      required super.color});
+      required super.color, required super.date});
 
   factory NoteModel.fromJson(Map<String, dynamic> json) {
     return NoteModel(
@@ -22,7 +22,7 @@ class NoteModel extends Note {
         id: int.parse(json['id']),
         color: int.parse(
           json['color'],
-        ));
+        ), date: json['date']);
   }
 
   Map<String, dynamic> toJson() {
@@ -35,6 +35,7 @@ class NoteModel extends Note {
     json['color']=color.toString();
     json['source']=source;
     json['id']=id.toString();
+    json['date']=date;
 
 
     return json;
