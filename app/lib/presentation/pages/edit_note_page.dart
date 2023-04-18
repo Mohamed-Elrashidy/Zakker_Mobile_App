@@ -83,7 +83,7 @@ class EditNotePage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: scaleDimension.scaleWidth(10)),
-              child: BigText(text: note.title),
+              child: _textFieldBuilder( note.title, _titleController, true),
             ),
           ],
         ),
@@ -97,8 +97,7 @@ class EditNotePage extends StatelessWidget {
         SizedBox(
           height: scaleDimension.scaleHeight(10),
         ),
-        NormalText(text: note.body)
-      ],
+_textFieldBuilder( note.body, _bodyController, true)      ],
     );
   }
 
@@ -116,9 +115,24 @@ class EditNotePage extends StatelessWidget {
             ),
             SizedBox(height:
             scaleDimension.scaleHeight(20),),
-            itemBuilder("category", note.category),
-            itemBuilder("source", note.source),
-            itemBuilder("page", note.page.toString()),
+            Row(
+              children: [SmallText(text: "Category : "),
+                _textFieldBuilder(note.category, _categoryController, false),
+              ],
+            ),
+            Row(
+              children: [
+                SmallText(text: "Source : "),
+                _textFieldBuilder(note.source, _sourceController, false),
+              ],
+            ),
+            Row(
+              children: [
+                SmallText(text: "Page : "),
+                _textFieldBuilder(note.page.toString(), _pageNumberController, false),
+              ],
+            ),
+
 
 
 
@@ -132,38 +146,33 @@ class EditNotePage extends StatelessWidget {
     return SmallText(text:title+' : '+info);
 
   }
-  Widget _textFieldBuilder(String title,String data,
+  Widget _textFieldBuilder(String data,
       TextEditingController controller, bool isFullWidth) {
     controller.text=data;
     return Container(
-      width: scaleDimension.screenWidth,
+      width:  isFullWidth
+          ? scaleDimension.screenWidth-scaleDimension.scaleWidth(30)
+          : scaleDimension.screenWidth / 2 - scaleDimension.scaleWidth(20),
 
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          BigText(text: title, size: scaleDimension.scaleWidth(18)),
-          SizedBox(
-            height: scaleDimension.scaleHeight(10),
+      child: Container(
+        padding:
+        EdgeInsets.symmetric(horizontal: scaleDimension.scaleWidth(10)),
+        decoration: BoxDecoration(
+            border: Border.all(width: 0,color: Colors.transparent)),
+        child: TextField(
+          style: isFullWidth?TextStyle(
+              fontSize: scaleDimension.scaleWidth(18),
+              color: Colors.black):TextStyle(
+              fontSize: scaleDimension.scaleWidth(14),
+              color: Colors.grey[400]),
+          maxLines: null,
+          controller: controller,
+          decoration: InputDecoration(
+
+
+            border: InputBorder.none,
           ),
-          Container(
-            padding:
-            EdgeInsets.symmetric(horizontal: scaleDimension.scaleWidth(10)),
-            decoration: BoxDecoration(
-                borderRadius:
-                BorderRadius.circular(scaleDimension.scaleWidth(16)),
-                border: Border.all(color: Colors.grey[400]!, width: 1.5)),
-            child: TextField(
-              controller: controller,
-              decoration: InputDecoration(
-
-                hintStyle: TextStyle(
-                    fontSize: scaleDimension.scaleWidth(14),
-                    color: Colors.grey[400]),
-                border: InputBorder.none,
-              ),
-            ),
-          )
-        ],
+        ),
       ),
     );
   }
