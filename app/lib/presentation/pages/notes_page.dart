@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../domain/entities/note.dart';
 import '../../utils/dimension_scale.dart';
+import '../../utils/routes.dart';
 import '../widgets/small_text.dart';
 
 class NotesPage extends StatefulWidget {
@@ -61,7 +62,7 @@ class _NotesPageState extends State<NotesPage> {
               ],
             ),
             Spacer(),
-            MainButton(title: "Add note", onTap: () {})
+            MainButton(title: "Add note", onTap: () {Navigator.of(context,rootNavigator: true).pushNamed(Routes.addNotePage);})
           ],
         ),
         SizedBox(
@@ -130,42 +131,48 @@ class _NotesPageState extends State<NotesPage> {
   }
 
   Widget _noteWidgetBuilder(Note note) {
-    return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: scaleDimension.scaleWidth(20),
-          vertical: scaleDimension.scaleHeight(10)),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(scaleDimension.scaleWidth(16)),
-          color: NoteColors.color[note.color]!.withOpacity(0.3)),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          BigText(text: note.title),
-          SizedBox(
-            height: scaleDimension.scaleHeight(5),
-          ),
-          NormalText(
-            text: note.body,
-            maxline: 2,
-            color: Colors.grey,
-          ),
-          SizedBox(
-            height: scaleDimension.scaleHeight(5),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SmallText(
-                text: note.category + ' | ' + note.source,
-                isBold: true,
-              ),
-              SmallText(
-                text: note.date,
-                isBold: true,
-              ),
-            ],
-          )
-        ],
+    return GestureDetector(
+      onDoubleTap: (){
+        Navigator.of(context,rootNavigator: true).pushNamed(Routes.notePage,arguments:note);
+
+      },
+      child: Container(
+        padding: EdgeInsets.symmetric(
+            horizontal: scaleDimension.scaleWidth(20),
+            vertical: scaleDimension.scaleHeight(10)),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(scaleDimension.scaleWidth(16)),
+            color: NoteColors.color[note.color]!.withOpacity(0.3)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            BigText(text: note.title),
+            SizedBox(
+              height: scaleDimension.scaleHeight(5),
+            ),
+            NormalText(
+              text: note.body,
+              maxline: 2,
+              color: Colors.grey,
+            ),
+            SizedBox(
+              height: scaleDimension.scaleHeight(5),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SmallText(
+                  text: note.category + ' | ' + note.source,
+                  isBold: true,
+                ),
+                SmallText(
+                  text: note.date,
+                  isBold: true,
+                ),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

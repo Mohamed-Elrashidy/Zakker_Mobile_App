@@ -1,3 +1,5 @@
+import '../../utils/routes.dart';
+
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/main_button.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
@@ -23,7 +25,7 @@ class NotePage extends StatelessWidget {
               child: SingleChildScrollView(
                 child: Column(
                   children: [
-                    _appBarBuilder(),
+                    _appBarBuilder(context),
                     SizedBox(
                       height: scaleDimension.scaleHeight(10),
                     ),
@@ -42,13 +44,17 @@ class NotePage extends StatelessWidget {
     );
   }
 
-  Widget _appBarBuilder() {
+  Widget _appBarBuilder(BuildContext context) {
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            MainButton(title: "Edit", onTap: () {}),
+            MainButton(title: "Edit", onTap: () {
+
+              Navigator.of(context,rootNavigator: true).pushNamed(Routes.editNotePage,arguments:note);
+
+            }),
             MainButton(title: "Delete", onTap: () {}),
           ],
         ),
