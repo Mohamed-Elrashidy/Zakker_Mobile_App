@@ -6,14 +6,12 @@ import 'package:app/domain/entities/note.dart';
 
 import '../../domain/base_repositories/base_note_repository.dart';
 
-class NoteRepository extends BaseNoteRepository{
+class NoteRepository extends BaseNoteRepository {
   final LocalDataSource localDataSource;
   NoteRepository({required this.localDataSource});
   @override
   void addNote(Note note) {
-
     localDataSource.addNote(_convertFromNoteToNoteModel(note));
-
   }
 
   @override
@@ -28,44 +26,46 @@ class NoteRepository extends BaseNoteRepository{
 
   @override
   void deleteNote(int noteId) {
-
     localDataSource.deleteNote(noteId);
   }
 
   @override
   void editNote(Note note) {
     localDataSource.editNote(_convertFromNoteToNoteModel(note));
-
-
   }
 
   @override
   List<Note> getAllNotes() {
-   List<Note> allNotes=[];
+    List<Note> allNotes = [];
     localDataSource.getAllNotes().forEach((element) {
       allNotes.add(_convertFromNoteModelToNote(element));
     });
     return allNotes;
-
   }
-
-
 
   @override
   List<Category> showAllCategories() {
-    // TODO: implement showAllCategories
-    throw UnimplementedError();
+    List<Category> allCategories = [];
+    localDataSource.getAllCategories(true).forEach((element) {
+      allCategories.add(element);
+    });
+    return allCategories;
   }
 
   @override
   List<Category> showAllSources() {
-    // TODO: implement showAllSources
-    throw UnimplementedError();
+    // TODO: implementation wrong
+
+    List<Category> allSources = [];
+    localDataSource.getAllCategories(false).forEach((element) {
+      allSources.add(element);
+    });
+    return allSources;
   }
 
   @override
-  List<Note>showFavouriteNotes() {
-    List<Note> favouriteNotes=[];
+  List<Note> showFavouriteNotes() {
+    List<Note> favouriteNotes = [];
     localDataSource.getFavouriteNotes().forEach((element) {
       favouriteNotes.add(_convertFromNoteModelToNote(element));
     });
@@ -78,13 +78,31 @@ class NoteRepository extends BaseNoteRepository{
     throw UnimplementedError();
   }
 
-  NoteModel _convertFromNoteToNoteModel(Note note){
-    NoteModel noteModel=NoteModel(title: note.title, body: note.body, image: note.image, category: note.category, page: note.page, source: note.source, id: note.id, color: note.color, date: note.date)
+  NoteModel _convertFromNoteToNoteModel(Note note) {
+    NoteModel noteModel = NoteModel(
+        title: note.title,
+        body: note.body,
+        image: note.image,
+        category: note.category,
+        page: note.page,
+        source: note.source,
+        id: note.id,
+        color: note.color,
+        date: note.date);
     return noteModel;
-}
+  }
 
-Note _convertFromNoteModelToNote(NoteModel noteModel){
-    Note note=Note(title: noteModel.title, body: noteModel.body, image: noteModel.image, category: noteModel.category, page: noteModel.page, source: noteModel.source, id: noteModel.id, color: noteModel.color, date: noteModel.date)
+  Note _convertFromNoteModelToNote(NoteModel noteModel) {
+    Note note = Note(
+        title: noteModel.title,
+        body: noteModel.body,
+        image: noteModel.image,
+        category: noteModel.category,
+        page: noteModel.page,
+        source: noteModel.source,
+        id: noteModel.id,
+        color: noteModel.color,
+        date: noteModel.date);
     return note;
-}
+  }
 }

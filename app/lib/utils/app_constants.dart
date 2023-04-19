@@ -6,4 +6,5 @@ class AppConstants{
   static const editedList="edit_list";
   static const deletedList="deleted_list";
   static const categoryList="category_list";
+  static const sourceList="source_list";
 }

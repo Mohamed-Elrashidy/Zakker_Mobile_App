@@ -1,5 +1,6 @@
 import 'package:app/presentation/pages/category_page.dart';
 import 'package:app/presentation/pages/home_page.dart';
+import 'package:app/utils/dependency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
@@ -13,6 +14,7 @@ class BottomNavBarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Dependancy(context).init();
     return PersistentTabView(
       context,
       controller: _controller,
