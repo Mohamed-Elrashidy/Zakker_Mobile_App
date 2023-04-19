@@ -45,3 +45,6 @@
 ## Language & Framework
 * Dart
 * Flutter
+## Architecture
+* Clean Architecture
+

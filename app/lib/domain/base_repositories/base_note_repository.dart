@@ -6,7 +6,6 @@ abstract class BaseNoteRepository{
   void addNote(Note note);
   void editNote(Note note);
   void deleteNote(int noteId);
-  void getNote(int noteId);
   List<Note> getAllNotes();
   List<Note> showFavouriteNotes();
   List<Note> showTodaysNotes();
