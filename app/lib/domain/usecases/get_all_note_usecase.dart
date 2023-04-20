@@ -5,7 +5,7 @@ import '../entities/note.dart';
 class GetAllNotesUseCase{
   final BaseNoteRepository baseNoteRepository;
   GetAllNotesUseCase({required this.baseNoteRepository});
-  List<Note> excute()
+  List<Note> execute()
   {
     return baseNoteRepository.getAllNotes();
   }

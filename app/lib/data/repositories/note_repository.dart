@@ -11,7 +11,10 @@ class NoteRepository extends BaseNoteRepository {
   NoteRepository({required this.localDataSource});
   @override
   void addNote(Note note) {
+    note.id=localDataSource.generateId();
+    print("note id is "+ note.id.toString());
     localDataSource.addNote(_convertFromNoteToNoteModel(note));
+
   }
 
   @override

@@ -1,9 +1,12 @@
+import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/main_button.dart';
 import 'package:app/utils/note_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import '../../domain/entities/note.dart';
 import '../../utils/dimension_scale.dart';
 
 class AddNotePage extends StatelessWidget {
@@ -11,17 +14,16 @@ class AddNotePage extends StatelessWidget {
   TextEditingController _bodyController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _pageNumberController = TextEditingController();
-  TextEditingController _noteColor = TextEditingController();
   TextEditingController _categoryController = TextEditingController();
   TextEditingController _sourceController = TextEditingController();
   TextEditingController _imagePath = TextEditingController();
 
-  late Dimension scaleDimension;
+  Dimension scaleDimension=GetIt.instance.get<Dimension>();
+  int _noteColor=0;
 
   @override
   Widget build(BuildContext context) {
     // tempfunction
-    dimensionInit(context);
 
     return SafeArea(
       child: GestureDetector(
@@ -35,7 +37,7 @@ class AddNotePage extends StatelessWidget {
             child: Column(
               children: [
                 _appBarBuilder(),
-                _bodyBuilder(),
+                _bodyBuilder(context),
               ],
             ),
           ),
@@ -60,7 +62,7 @@ class AddNotePage extends StatelessWidget {
     );
   }
 
-  Widget _bodyBuilder() {
+  Widget _bodyBuilder(BuildContext context) {
     return Column(
       children: [
         SizedBox(
@@ -87,17 +89,42 @@ class AddNotePage extends StatelessWidget {
         ),
         SizedBox(height: scaleDimension.scaleHeight(10)),
         imagePicker(),
-
         colorPicker(),
         SizedBox(height: scaleDimension.scaleHeight(20)),
-        MainButton(title: "Create Note", onTap: (){}),
+        MainButton(
+            title: "Create Note",
+            onTap: () {
+              _createNote(context);
+            }),
         SizedBox(height: scaleDimension.scaleHeight(30)),
-
       ],
     );
   }
 
-  void _createNote() {}
+  void _createNote(BuildContext context) {
+    if (_titleController.text.trim().isEmpty) {
+      print("title is empty");
+    } else if (_sourceController.text.trim().isEmpty) {
+      print("source is empty");
+    } else if (_categoryController.text.trim().isEmpty) {
+      print("Category field is empty");
+    } else {
+      BlocProvider.of<NoteCubit>(context).addNote(Note(
+          title: _titleController.text.trim(),
+          body: _bodyController.text.trim(),
+          image: _imagePath.text,
+          category: _categoryController.text.trim(),
+          page: _pageNumberController.text.trim().isEmpty
+              ? -1
+              : int.parse(_pageNumberController.text.trim()),
+          source: _sourceController.text.trim(),
+          id: 0,// it is a default value will be modified at NoteRepository file
+          color: _noteColor,
+          date: DateTime.now().toString()));
+
+      BlocProvider.of<NoteCubit>(context).getAllNotes();
+    }
+  }
 
   Widget _textFieldBuilder(String title, String hint,
       TextEditingController controller, bool isFullWidth) {
@@ -135,21 +162,7 @@ class AddNotePage extends StatelessWidget {
     );
   }
 
-  dimensionInit(BuildContext context) {
-    try {
-      // Get the intialized instance of Dimension class to make ui scalable
 
-      Dimension scaleDimension = GetIt.instance.get<Dimension>();
-      this.scaleDimension = scaleDimension;
-    } catch (e) {
-      GetIt locator = GetIt.instance;
-      locator.registerSingleton<Dimension>(Dimension(context: context));
-
-      // Get the initialized instance of Dimension class to make ui scalable
-      Dimension scaleDimension = GetIt.instance.get<Dimension>();
-      this.scaleDimension = scaleDimension;
-    }
-  }
 
   Widget colorPicker() {
     return Column(
@@ -172,9 +185,14 @@ class AddNotePage extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
-                            backgroundColor: NoteColors.color[index],
-                            radius: scaleDimension.scaleWidth(20),
+                          InkWell(
+                            onTap:(){
+                              _noteColor=index;
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: NoteColors.color[index],
+                              radius: scaleDimension.scaleWidth(20),
+                            ),
                           ),
                           SizedBox(
                             width: scaleDimension.scaleWidth(25),
@@ -191,24 +209,27 @@ class AddNotePage extends StatelessWidget {
       ],
     );
   }
-  Widget imagePicker()
-  {
+
+  Widget imagePicker() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         BigText(text: "Image", size: scaleDimension.scaleWidth(18)),
-        SizedBox(height: scaleDimension.scaleHeight(10),),
+        SizedBox(
+          height: scaleDimension.scaleHeight(10),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
-              child: CircleAvatar(radius: scaleDimension.scaleHeight(80),backgroundColor: Colors.grey,),
+              child: CircleAvatar(
+                radius: scaleDimension.scaleHeight(80),
+                backgroundColor: Colors.grey,
+              ),
             ),
           ],
         )
-
       ],
     );
   }
-  
 }

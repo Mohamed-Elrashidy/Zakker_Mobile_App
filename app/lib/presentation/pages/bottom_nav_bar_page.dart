@@ -14,7 +14,7 @@ class BottomNavBarPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Dependancy(context).init();
+    Dependancy().initDimensionScale(context);
     return PersistentTabView(
       context,
       controller: _controller,

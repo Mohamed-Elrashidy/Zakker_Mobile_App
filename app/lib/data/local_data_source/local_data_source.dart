@@ -6,7 +6,17 @@ import '../models/note_model.dart';
 
 class LocalDataSource {
   final SharedPreferences sharedPreferences;
-  LocalDataSource({required this.sharedPreferences});
+  LocalDataSource({required this.sharedPreferences}){
+    if(sharedPreferences.containsKey(AppConstants.newId))
+  sharedPreferences.setInt(AppConstants.newId, 0);
+  }
+  int generateId()
+  {
+    int newId=sharedPreferences.getInt(AppConstants.newId)!;
+    sharedPreferences.remove(AppConstants.newId);
+    sharedPreferences.setInt(AppConstants.newId,newId+1);
+    return newId;
+  }
 
   void addNote(NoteModel note) {
     List<NoteModel> allNotes = getAllNotes();
