@@ -6,15 +6,14 @@ import '../models/note_model.dart';
 
 class LocalDataSource {
   final SharedPreferences sharedPreferences;
-  LocalDataSource({required this.sharedPreferences}){
-    if(sharedPreferences.containsKey(AppConstants.newId))
-  sharedPreferences.setInt(AppConstants.newId, 0);
+  LocalDataSource({required this.sharedPreferences}) {
+    if (sharedPreferences.containsKey(AppConstants.newId))
+      sharedPreferences.setInt(AppConstants.newId, 0);
   }
-  int generateId()
-  {
-    int newId=sharedPreferences.getInt(AppConstants.newId)!;
+  int generateId() {
+    int newId = sharedPreferences.getInt(AppConstants.newId)??0;
     sharedPreferences.remove(AppConstants.newId);
-    sharedPreferences.setInt(AppConstants.newId,newId+1);
+    sharedPreferences.setInt(AppConstants.newId, newId + 1);
     return newId;
   }
 
@@ -51,7 +50,7 @@ class LocalDataSource {
     sharedPreferences.setStringList(AppConstants.notesList, modifiedNotes);
   }
 
-  void deleteNote(int noteId) {
+  void deleteNote(NoteModel note) {
     List<String> modifiedNotes = [];
     modifiedNotes = sharedPreferences.getStringList(AppConstants.notesList)!;
     sharedPreferences.remove(AppConstants.notesList);
@@ -61,7 +60,7 @@ class LocalDataSource {
     int noteIndex = -1;
     modifiedNotes.forEach((element) {
       NoteModel noteModel = NoteModel.fromJson(jsonDecode(element));
-      if (noteModel.id == noteId) {
+      if (noteModel.id == note.id) {
         noteIndex = index;
       }
       index++;
@@ -69,7 +68,9 @@ class LocalDataSource {
 
     modifiedNotes.removeAt(noteIndex);
     sharedPreferences.setStringList(AppConstants.notesList, modifiedNotes);
-    deleteFromFavourites(noteId);
+    deleteFromCategory(note.category);
+    deleteFromSource(note.category, note.source);
+    deleteFromFavourites(note.id);
   }
 
   List<NoteModel> getAllNotes() {
@@ -144,28 +145,132 @@ class LocalDataSource {
         AppConstants.favoriteList, favouriteNotesIds);
   }
 
-  void addCategory(CategoryModel category) {
+  void addToCategory(String category, int color) {
     List<String> allCategories = [];
-    String key = category.isCategory
-        ? AppConstants.categoryList
-        : AppConstants.sourceList;
+    String key = AppConstants.categoryList;
+    bool exist = false;
+
     if (sharedPreferences.containsKey(key)) {
       allCategories = sharedPreferences.getStringList(key)!;
       sharedPreferences.remove(key);
     }
-    allCategories.add(jsonEncode(category.toJson()));
+    for (int i = 0; i < allCategories.length; i++) {
+      CategoryModel currentCategory =
+          CategoryModel.fromJson(jsonDecode(allCategories[i]));
+      if (currentCategory.title == category) {
+        exist = true;
+        currentCategory.numberOfNotes++;
+        allCategories[i] = jsonEncode(currentCategory.toJson());
+      }
+    }
+    if (!exist) {
+      allCategories.add(jsonEncode(CategoryModel(
+          title: category,
+          color: color,
+          numberOfNotes: 1,
+          isSource: false,
+          isCategory: true)));
+    }
+
     sharedPreferences.setStringList(key, allCategories);
   }
 
-  List<CategoryModel> getAllCategories(bool isCategory) {
-    List<CategoryModel> allCategories = [];
-    String key =
-        isCategory ? AppConstants.categoryList : AppConstants.sourceList;
+  void addSource(String category, String source, int color) {
+    bool exist = false;
+    List<String> sources = [];
+    if (sharedPreferences.containsKey(category)) {
+      sources = sharedPreferences.getStringList(category)!;
+      sharedPreferences.remove(category);
+    }
+    for (int i = 0; i < sources.length; i++) {
+      CategoryModel categoryModel =
+          CategoryModel.fromJson(jsonDecode(sources[i]));
+      if (categoryModel.title == source) {
+        exist = true;
+        categoryModel.numberOfNotes++;
+        sources[i] = jsonEncode(categoryModel.toJson());
+      }
+    }
+    if (!exist) {
+      CategoryModel categoryModel = CategoryModel(
+          title: source,
+          color: color,
+          numberOfNotes: 1,
+          isSource: true,
+          isCategory: false);
+      sources.add(jsonEncode(categoryModel.toJson()));
+    }
+    sharedPreferences.setStringList(category, sources);
+  }
+
+  void deleteFromCategory(String category) {
+    List<String> allCategories = [];
+    String key = AppConstants.categoryList;
+
     if (sharedPreferences.containsKey(key)) {
-      sharedPreferences.getStringList(key)?.forEach((element) {
+      allCategories = sharedPreferences.getStringList(key)!;
+      sharedPreferences.remove(key);
+    }
+    for (int i = 0; i < allCategories.length; i++) {
+      CategoryModel currentCategory =
+          CategoryModel.fromJson(jsonDecode(allCategories[i]));
+      if (currentCategory.title == category) {
+        currentCategory.numberOfNotes--;
+        allCategories[i] = jsonEncode(currentCategory.toJson());
+
+        if (currentCategory.numberOfNotes == 0) {
+          allCategories.removeAt(i);
+        }
+        break;
+      }
+    }
+
+    sharedPreferences.setStringList(key, allCategories);
+  }
+
+  void deleteFromSource(String category, String source) {
+    List<String> allSources = [];
+
+    if (sharedPreferences.containsKey(category)) {
+      allSources = sharedPreferences.getStringList(category)!;
+      sharedPreferences.remove(category);
+    }
+    for (int i = 0; i < allSources.length; i++) {
+      CategoryModel currentSource =
+          CategoryModel.fromJson(jsonDecode(allSources[i]));
+      if (currentSource.title == category) {
+        currentSource.numberOfNotes--;
+        allSources[i] = jsonEncode(currentSource.toJson());
+        if (currentSource.numberOfNotes == 0) {
+          allSources.removeAt(i);
+        }
+        break;
+      }
+    }
+
+    sharedPreferences.setStringList(category, allSources);
+  }
+
+  List<CategoryModel> getAllCategories() {
+    List<CategoryModel> allCategories = [];
+    if (sharedPreferences.containsKey(AppConstants.categoryList)) {
+      sharedPreferences
+          .getStringList(AppConstants.categoryList)
+          ?.forEach((element) {
         allCategories.add(CategoryModel.fromJson(jsonDecode(element)));
       });
     }
     return allCategories;
+  }
+
+  List<CategoryModel> getAllSources(String category) {
+    List<CategoryModel> allSources = [];
+    if (sharedPreferences.containsKey(category)) {
+      sharedPreferences.getStringList(category)?.forEach((element) {
+        allSources.add(CategoryModel.fromJson(jsonDecode(element)));
+      });
+    }
+
+    return allSources;
   }
 }

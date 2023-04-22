@@ -1,4 +1,5 @@
 import 'package:app/data/local_data_source/local_data_source.dart';
+import 'package:app/data/models/category_model.dart';
 import 'package:app/data/models/note_model.dart';
 import 'package:app/domain/entities/category.dart';
 
@@ -14,6 +15,8 @@ class NoteRepository extends BaseNoteRepository {
     note.id=localDataSource.generateId();
     print("note id is "+ note.id.toString());
     localDataSource.addNote(_convertFromNoteToNoteModel(note));
+    localDataSource.addToCategory(note.category, note.color);
+    localDataSource.addSource(note.category, note.source, note.color);
 
   }
 
@@ -28,8 +31,8 @@ class NoteRepository extends BaseNoteRepository {
   }
 
   @override
-  void deleteNote(int noteId) {
-    localDataSource.deleteNote(noteId);
+  void deleteNote(Note note) {
+    localDataSource.deleteNote(_convertFromNoteToNoteModel(note));
   }
 
   @override
@@ -48,22 +51,23 @@ class NoteRepository extends BaseNoteRepository {
 
   @override
   List<Category> showAllCategories() {
-    List<Category> allCategories = [];
-    localDataSource.getAllCategories(true).forEach((element) {
-      allCategories.add(element);
-    });
-    return allCategories;
+   List<Category> allCategories=[];
+   localDataSource.getAllCategories().forEach((element) {
+     allCategories.add(_convertFromCategoryModelToCategory(element));
+
+   });
+   return allCategories;
   }
 
   @override
-  List<Category> showAllSources() {
-    // TODO: implementation wrong
-
-    List<Category> allSources = [];
-    localDataSource.getAllCategories(false).forEach((element) {
-      allSources.add(element);
+  List<Category> showAllSources(String category) {
+    List<Category>allSources=[];
+    localDataSource.getAllSources(category).forEach((element) {
+      allSources.add(_convertFromCategoryModelToCategory(element));
     });
     return allSources;
+
+
   }
 
   @override
@@ -107,5 +111,9 @@ class NoteRepository extends BaseNoteRepository {
         color: noteModel.color,
         date: noteModel.date);
     return note;
+  }
+  Category _convertFromCategoryModelToCategory(CategoryModel categoryModel)
+  {
+    return Category(title: categoryModel.title, color: categoryModel.color, numberOfNotes: categoryModel.numberOfNotes, isSource: categoryModel.isSource, isCategory: categoryModel.isCategory);
   }
 }

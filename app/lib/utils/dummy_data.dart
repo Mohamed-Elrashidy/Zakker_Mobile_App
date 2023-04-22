@@ -84,28 +84,24 @@ Power is in many ways a game of appearances, and when you say less than necessar
     Category(
         title: "Design",
         color: 1,
-        id: 1,
         numberOfNotes: 17,
         isSource: false,
         isCategory: true),
     Category(
         title: "Success",
         color: 4,
-        id: 1,
         numberOfNotes: 17,
         isSource: false,
         isCategory: true),
     Category(
         title: "Scientific",
         color: 2,
-        id: 1,
         numberOfNotes: 17,
         isSource: false,
         isCategory: true),
     Category(
         title: "Freelancer",
         color: 0,
-        id: 0,
         numberOfNotes: 17,
         isSource: false,
         isCategory: true),

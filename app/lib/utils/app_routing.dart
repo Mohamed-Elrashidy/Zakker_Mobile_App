@@ -1,4 +1,5 @@
 import 'package:app/presentation/pages/add_note_page.dart';
+import 'package:app/presentation/pages/category_sources_page.dart';
 import 'package:app/presentation/pages/edit_note_page.dart';
 import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -14,15 +15,23 @@ class AppRouting {
         final note = settings.arguments as Note;
 
         return MaterialPageRoute(
-            builder: (_) => NotePage(note: note,), settings: settings);
+            builder: (_) => NotePage(
+                  note: note,
+                ),
+            settings: settings);
       case Routes.bottomNavBarPage:
         return MaterialPageRoute(builder: (_) => BottomNavBarPage());
       case Routes.editNotePage:
         final note = settings.arguments as Note;
-        return MaterialPageRoute(builder: (_)=>EditNotePage(note: note),settings:settings)  ;
+        return MaterialPageRoute(
+            builder: (_) => EditNotePage(note: note), settings: settings);
       case Routes.addNotePage:
-        return MaterialPageRoute(builder:(_)=>AddNotePage());
-
+        return MaterialPageRoute(builder: (_) => AddNotePage());
+      case Routes.categorySourcesList:
+        String category = settings.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => CategorySourcesPage(category: category),
+            settings: settings);
       default:
         return MaterialPageRoute(
             builder: (_) => BottomNavBarPage(), settings: settings);

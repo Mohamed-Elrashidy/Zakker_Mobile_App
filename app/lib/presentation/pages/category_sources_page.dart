@@ -2,21 +2,24 @@ import 'package:app/presentation/controllers/categories_controller/category_cubi
 import 'package:app/presentation/widgets/category_widget.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:app/presentation/widgets/small_button.dart';
+import 'package:app/utils/dummy_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+
 import '../../domain/entities/category.dart';
 import '../../utils/dimension_scale.dart';
-import '../../utils/routes.dart';
 import '../widgets/big_text.dart';
 
-class CategoryPage extends StatelessWidget {
+class CategorySourcesPage extends StatelessWidget {
   late Dimension scaleDimension = GetIt.instance.get<Dimension>();
-  late List<Category> categoryList;
+  late List<Category> categorySourcesList;
+  String category;
+  CategorySourcesPage({required this.category});
 
   @override
   Widget build(BuildContext context) {
-    categoryList = BlocProvider.of<CategoryCubit>(context).getAllCategories();
+    categorySourcesList = BlocProvider.of<CategoryCubit>(context).getCategorySources(category);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -48,11 +51,13 @@ class CategoryPage extends StatelessWidget {
     );
   }
 
+
   Widget _bodyBuilder() {
     return BlocBuilder<CategoryCubit, CategoryState>(
       builder: (context, state) {
-        if (state is GetAllCategories) {
-          categoryList = state.allCategories;
+        if(state is GetCategorySources)
+        {
+          categorySourcesList=state.allCategorySources;
         }
         return Column(
           children: [
@@ -64,21 +69,15 @@ class CategoryPage extends StatelessWidget {
                     mainAxisSpacing: scaleDimension.scaleHeight(30),
                     crossAxisCount: 2,
                   ),
-                  itemCount: categoryList.length,
+                  itemCount: categorySourcesList.length,
                   itemBuilder: (context, index) {
-                    return InkWell(
-                        onTap: () {
-                          Navigator.of(context, rootNavigator: true).pushNamed(
-                              Routes.categorySourcesList,
-                              arguments: categoryList[index].title);
-                        },
-                        child: CategoryWidget(category: categoryList[index]));
+                    return CategoryWidget(category: categorySourcesList[index]);
                   }),
             ),
             SizedBox(
               height: scaleDimension.scaleHeight(40),
             ),
-            NormalText(text: "You have ${categoryList.length} categories")
+            NormalText(text: "You have ${categorySourcesList.length} categories")
           ],
         );
       },

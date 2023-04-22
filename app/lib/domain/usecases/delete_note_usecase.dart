@@ -5,8 +5,8 @@ import '../entities/note.dart';
 class DeleteNoteUsCase {
   final BaseNoteRepository baseNoteRepository;
   DeleteNoteUsCase({required this.baseNoteRepository});
-  void execute(int noteId)
+  void execute(Note note)
   {
-    baseNoteRepository.deleteNote(noteId);
+    baseNoteRepository.deleteNote(note);
   }
 }

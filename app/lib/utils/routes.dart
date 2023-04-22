@@ -4,4 +4,5 @@ class Routes{
   static const String notePage="lib/presentation/pages/note_page.dart";
   static const String editNotePage="lib/presentation/pages/edit_note_page.dart";
   static const String addNotePage="lib/presentation/pages/add_note_page.dart";
+  static const String categorySourcesList="lib/utils/app_routing.dart";
 }

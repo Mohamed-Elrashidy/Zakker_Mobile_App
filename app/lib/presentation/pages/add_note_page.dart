@@ -1,3 +1,4 @@
+import 'package:app/presentation/controllers/categories_controller/category_cubit.dart';
 import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/main_button.dart';
@@ -18,8 +19,8 @@ class AddNotePage extends StatelessWidget {
   TextEditingController _sourceController = TextEditingController();
   TextEditingController _imagePath = TextEditingController();
 
-  Dimension scaleDimension=GetIt.instance.get<Dimension>();
-  int _noteColor=0;
+  Dimension scaleDimension = GetIt.instance.get<Dimension>();
+  int _noteColor = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -118,11 +119,14 @@ class AddNotePage extends StatelessWidget {
               ? -1
               : int.parse(_pageNumberController.text.trim()),
           source: _sourceController.text.trim(),
-          id: 0,// it is a default value will be modified at NoteRepository file
+          id: 0, // it is a default value will be modified at NoteRepository file
           color: _noteColor,
           date: DateTime.now().toString()));
 
       BlocProvider.of<NoteCubit>(context).getAllNotes();
+      BlocProvider.of<CategoryCubit>(context).getAllCategories();
+      BlocProvider.of<CategoryCubit>(context)
+          .getCategorySources(_categoryController.text.trim());
     }
   }
 
@@ -162,8 +166,6 @@ class AddNotePage extends StatelessWidget {
     );
   }
 
-
-
   Widget colorPicker() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -186,8 +188,8 @@ class AddNotePage extends StatelessWidget {
                       Row(
                         children: [
                           InkWell(
-                            onTap:(){
-                              _noteColor=index;
+                            onTap: () {
+                              _noteColor = index;
                             },
                             child: CircleAvatar(
                               backgroundColor: NoteColors.color[index],
