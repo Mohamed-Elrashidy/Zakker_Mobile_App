@@ -15,14 +15,16 @@
 * [x] CRC Diagram
 * [x] Class Diagram
 * [ ] Sequential Diagram
-* [ ] Add notes
+* [x] Add notes
 * [ ] Edit notes
 * [ ] Delete notes
-* [ ] Save notes on Local machine
+* [x] Save notes on Local machine
 * [ ] Open Pdf
-* [ ] Get all notes
-* [ ] Get favourite notes
+* [x] Get all notes
+* [x] Get favourite notes
 * [ ] Get Today's session
+* [ ] Classify notes to their sources
+* [ ] Classify sources to their categories
 * [ ] Get Notifications
 * [ ] Tracking system
 * [ ] Save data on server
@@ -47,4 +49,5 @@
 * Flutter
 ## Architecture 
 * Clean Architecture 
+## libraries
 
