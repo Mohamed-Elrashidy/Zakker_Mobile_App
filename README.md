@@ -23,8 +23,8 @@
 * [x] Get all notes
 * [x] Get favourite notes
 * [ ] Get Today's session
-* [ ] Classify notes to their sources
-* [ ] Classify sources to their categories
+* [x] Classify notes to their sources
+* [x] Classify sources to their categories
 * [ ] Get Notifications
 * [ ] Tracking system
 * [ ] Save data on server
