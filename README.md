@@ -16,8 +16,8 @@
 * [x] Class Diagram
 * [ ] Sequential Diagram
 * [x] Add notes
-* [ ] Edit notes
-* [ ] Delete notes
+* [x] Edit notes
+* [x] Delete notes
 * [x] Save notes on Local machine
 * [ ] Open Pdf
 * [x] Get all notes
