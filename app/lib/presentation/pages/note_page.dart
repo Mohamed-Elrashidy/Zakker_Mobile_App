@@ -1,3 +1,5 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../utils/routes.dart';
 
 import 'package:app/presentation/widgets/big_text.dart';
@@ -9,6 +11,7 @@ import 'package:get_it/get_it.dart';
 
 import '../../domain/entities/note.dart';
 import '../../utils/dimension_scale.dart';
+import '../controllers/note_controller/note_cubit.dart';
 
 class NotePage extends StatelessWidget {
   final Note note;
@@ -58,7 +61,13 @@ class NotePage extends StatelessWidget {
                   Navigator.of(context, rootNavigator: true)
                       .pushNamed(Routes.editNotePage, arguments: note);
                 }),
-            MainButton(title: "Delete", onTap: () {}),
+            MainButton(
+                title: "Delete",
+                onTap: () {
+                  BlocProvider.of<NoteCubit>(context).deleteNote(note);
+                  Navigator.of(context).pushNamedAndRemoveUntil(
+                      Routes.bottomNavBarPage, (route) => false);
+                }),
           ],
         ),
       ],

@@ -1,9 +1,12 @@
+
+import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/main_button.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:app/presentation/widgets/small_button.dart';
 import 'package:app/presentation/widgets/small_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../domain/entities/note.dart';
@@ -12,7 +15,7 @@ import '../../utils/dimension_scale.dart';
 class EditNotePage extends StatelessWidget {
   final Note note;
   EditNotePage({required this.note});
-  late Dimension scaleDimension;
+   Dimension scaleDimension=GetIt.instance.get<Dimension>();
 
 
   TextEditingController _bodyController = TextEditingController();
@@ -23,7 +26,6 @@ class EditNotePage extends StatelessWidget {
   TextEditingController _imagePath = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    dimensionInit(context);
     return SafeArea(
       child: GestureDetector(
         onTap: (){
@@ -36,7 +38,7 @@ class EditNotePage extends StatelessWidget {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      _appBarBuilder(),
+                      _appBarBuilder(context),
                       SizedBox(
                         height: scaleDimension.scaleHeight(10),
                       ),
@@ -56,15 +58,28 @@ class EditNotePage extends StatelessWidget {
     );
   }
 
-  Widget _appBarBuilder() {
+  Widget _appBarBuilder(BuildContext context) {
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-          SmallButton(icon: Icons.highlight_remove_outlined, onTap: (){}),
+          SmallButton(icon: Icons.highlight_remove_outlined, onTap: (){
+
+            Navigator.of(context).pop();
+          }),
           BigText(text: "Edit Note"),
-          SmallButton(icon: Icons.check_circle_outline, onTap: (){})
+          SmallButton(icon: Icons.check_circle_outline, onTap: (){
+            note.title=_titleController.text.trim();
+            note.body=_bodyController.text.trim();
+            note.category=_categoryController.text.trim();
+            note.source=_sourceController.text.trim();
+            
+            BlocProvider.of<NoteCubit>(context).editNote(note);
+            BlocProvider.of<NoteCubit>(context).getAllNotes();
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          })
           ],
         ),
       ],
@@ -176,19 +191,5 @@ _textFieldBuilder( note.body, _bodyController, true)      ],
       ),
     );
   }
-  dimensionInit(BuildContext context) {
-    try {
-      // Get the intialized instance of Dimension class to make ui scalable
 
-      Dimension scaleDimension = GetIt.instance.get<Dimension>();
-      this.scaleDimension = scaleDimension;
-    } catch (e) {
-      GetIt locator = GetIt.instance;
-      locator.registerSingleton<Dimension>(Dimension(context: context));
-
-      // Get the initialized instance of Dimension class to make ui scalable
-      Dimension scaleDimension = GetIt.instance.get<Dimension>();
-      this.scaleDimension = scaleDimension;
-    }
-  }
 }
