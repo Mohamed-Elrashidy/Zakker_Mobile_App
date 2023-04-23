@@ -1,6 +1,7 @@
 import 'package:app/presentation/pages/add_note_page.dart';
 import 'package:app/presentation/pages/category_sources_page.dart';
 import 'package:app/presentation/pages/edit_note_page.dart';
+import 'package:app/presentation/pages/source_notes_page.dart';
 import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
 
@@ -31,6 +32,13 @@ class AppRouting {
         String category = settings.arguments as String;
         return MaterialPageRoute(
             builder: (_) => CategorySourcesPage(category: category),
+            settings: settings);
+      case Routes.sourceNotesPage:
+        String category = settings.arguments as String;
+        String source = category.split(' ')[1];
+        category = category.split(' ')[0];
+        return MaterialPageRoute(
+            builder: (_) => SourceNotesPage(category: category, source: source),
             settings: settings);
       default:
         return MaterialPageRoute(

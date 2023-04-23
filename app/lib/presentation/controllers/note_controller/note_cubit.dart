@@ -13,35 +13,39 @@ part 'note_state.dart';
 
 class NoteCubit extends Cubit<NoteState> {
   NoteCubit() : super(NoteInitial());
-  BaseNoteRepository baseNoteRepository=GetIt.instance.get<NoteRepository>();
-
-  List<Note> getAllNotes()
-  {
-     List<Note> allNotes=   GetAllNotesUseCase(baseNoteRepository: baseNoteRepository).execute();
+  BaseNoteRepository baseNoteRepository = GetIt.instance.get<NoteRepository>();
+  Map<String, List<Note>> sourcesNotes = {};
+  List<Note> getAllNotes() {
+    List<Note> allNotes =
+        GetAllNotesUseCase(baseNoteRepository: baseNoteRepository).execute();
     emit(AllNotesLoaded(allNotes: allNotes));
     print("we are notes");
+
+    for (int i = 0; i < allNotes.length; i++) {
+      if (sourcesNotes.containsKey(allNotes[i].category + allNotes[i].source))
+        sourcesNotes[allNotes[i].category + allNotes[i].source]
+            ?.add(allNotes[i]);
+      else
+        sourcesNotes.putIfAbsent(
+            allNotes[i].category + allNotes[i].source, () => [allNotes[i]]);
+    }
+
     return allNotes;
   }
-  List<Note> getFavouriteNotes()
+  List<Note>getSourceNotes(String key)
   {
-    List<Note> favouriteNotes=GetFavouriteNotesUseCase(baseNoteRepository: baseNoteRepository).execute();
+    return sourcesNotes[key]??[];
+  }
+
+  List<Note> getFavouriteNotes() {
+    List<Note> favouriteNotes =
+        GetFavouriteNotesUseCase(baseNoteRepository: baseNoteRepository)
+            .execute();
     emit(FavouriteNotesLoaded(favouriteNotes: favouriteNotes));
     return favouriteNotes;
   }
 
-  void addNote(Note note)
-  {
-    AddNoteUseCase(baseNoteRepository:baseNoteRepository ).execute(note);
+  void addNote(Note note) {
+    AddNoteUseCase(baseNoteRepository: baseNoteRepository).execute(note);
   }
-
-
-
-
-
-
-
-
-
-
-
 }

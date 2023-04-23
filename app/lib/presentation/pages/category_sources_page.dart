@@ -3,6 +3,7 @@ import 'package:app/presentation/widgets/category_widget.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:app/presentation/widgets/small_button.dart';
 import 'package:app/utils/dummy_data.dart';
+import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -19,7 +20,8 @@ class CategorySourcesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    categorySourcesList = BlocProvider.of<CategoryCubit>(context).getCategorySources(category);
+    categorySourcesList =
+        BlocProvider.of<CategoryCubit>(context).getCategorySources(category);
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -45,19 +47,17 @@ class CategorySourcesPage extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(width: scaleDimension.scaleWidth(35)),
-        BigText(text: "Categories"),
+        BigText(text: category),
         SmallButton(icon: Icons.add_circle_outline_outlined, onTap: () {})
       ],
     );
   }
 
-
   Widget _bodyBuilder() {
     return BlocBuilder<CategoryCubit, CategoryState>(
       builder: (context, state) {
-        if(state is GetCategorySources)
-        {
-          categorySourcesList=state.allCategorySources;
+        if (state is GetCategorySources) {
+          categorySourcesList = state.allCategorySources;
         }
         return Column(
           children: [
@@ -71,13 +71,21 @@ class CategorySourcesPage extends StatelessWidget {
                   ),
                   itemCount: categorySourcesList.length,
                   itemBuilder: (context, index) {
-                    return CategoryWidget(category: categorySourcesList[index]);
+                    return InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(
+                              Routes.sourceNotesPage,
+                              arguments:
+                                  category +' '+ categorySourcesList[index].title);
+                        },
+                        child: CategoryWidget(
+                            category: categorySourcesList[index]));
                   }),
             ),
             SizedBox(
               height: scaleDimension.scaleHeight(40),
             ),
-            NormalText(text: "You have ${categorySourcesList.length} categories")
+            NormalText(text: "You have ${categorySourcesList.length} sources")
           ],
         );
       },

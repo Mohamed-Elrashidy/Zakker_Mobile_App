@@ -20,6 +20,7 @@ class SmallText extends StatelessWidget {
       fontSize: scaleDimension.scaleWidth(14)
     ),
 
+
     );
   }
 }

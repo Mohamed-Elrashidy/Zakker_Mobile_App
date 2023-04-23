@@ -2,6 +2,7 @@ import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/main_button.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
+import 'package:app/presentation/widgets/notes_list_builder.dart';
 import 'package:app/utils/dummy_data.dart';
 import 'package:app/utils/note_colors.dart';
 import 'package:flutter/material.dart';
@@ -106,20 +107,7 @@ class _NotesPageState extends State<NotesPage> {
             } else if (state is FavouriteNotesLoaded) {
               notes = (state.favouriteNotes);
             }
-            return ListView.builder(
-              itemCount: notes.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _noteWidgetBuilder(notes[index]),
-                    SizedBox(
-                      height: scaleDimension.scaleHeight(20),
-                    )
-                  ],
-                );
-              },
-            );
+            return NotesListBuilder(notes: notes);
           },
         ));
   }
@@ -167,7 +155,7 @@ class _NotesPageState extends State<NotesPage> {
                   BlocProvider.of<NoteCubit>(context).getFavouriteNotes();
 
                 },
-                buttonColor:(x==2)?Colors.black: Colors.grey[200]!,
+                buttonColor:(x==2)?Colors.black:  Colors.grey[200]!,
                 textColor: (x==2)?Colors.white:Colors.grey,
               ),
             ],
@@ -177,50 +165,4 @@ class _NotesPageState extends State<NotesPage> {
     );
   }
 
-  Widget _noteWidgetBuilder(Note note) {
-    return GestureDetector(
-      onDoubleTap: () {
-        Navigator.of(context, rootNavigator: true)
-            .pushNamed(Routes.notePage, arguments: note);
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: scaleDimension.scaleWidth(20),
-            vertical: scaleDimension.scaleHeight(10)),
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(scaleDimension.scaleWidth(16)),
-            color: NoteColors.color[note.color]!.withOpacity(0.3)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            BigText(text: note.title),
-            SizedBox(
-              height: scaleDimension.scaleHeight(5),
-            ),
-            NormalText(
-              text: note.body,
-              maxline: 2,
-              color: Colors.grey,
-            ),
-            SizedBox(
-              height: scaleDimension.scaleHeight(5),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SmallText(
-                  text: '${note.category} | ${note.source}',
-                  isBold: true,
-                ),
-                SmallText(
-                  text: note.date,
-                  isBold: true,
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
 }
