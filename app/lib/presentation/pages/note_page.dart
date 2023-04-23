@@ -15,11 +15,18 @@ import '../controllers/note_controller/note_cubit.dart';
 
 class NotePage extends StatelessWidget {
   final Note note;
+  bool isFavourite = false;
+
+
   NotePage({required this.note});
+
   Dimension scaleDimension = GetIt.instance.get<Dimension>();
 
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<NoteCubit>(context).getFavouriteNotes().forEach((element) { if(element.id==note.id)
+      isFavourite=true;
+    });
     return SafeArea(
       child: Scaffold(
           body: Padding(
@@ -94,12 +101,37 @@ class NotePage extends StatelessWidget {
                         scaleDimension.scaleWidth(85),
                     child: BigText(text: note.title)),
               ),
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.star_border,
-                    size: scaleDimension.scaleWidth(30),
-                  ))
+              BlocBuilder<NoteCubit, NoteState>(
+                builder: (context, state) {
+                  if (state is FavouriteNotesLoaded) {
+                    print("reached again");
+                    print(state.favouriteNotes.length);
+                  state.favouriteNotes.forEach((element) { if(element.id==note.id)
+                      isFavourite=true;
+                    });
+                  }
+                  return IconButton(
+                      onPressed: () {
+                        if (isFavourite) {
+                          BlocProvider.of<NoteCubit>(context)
+                              .deleteFromFavourites(note.id);
+                          isFavourite=false;
+                        } else {
+                          BlocProvider.of<NoteCubit>(context)
+                              .addToFavourites(note.id);
+                          isFavourite=true;
+                        }
+
+                        BlocProvider.of<NoteCubit>(context).getFavouriteNotes();
+                      },
+                      icon: isFavourite
+                          ? Icon(Icons.star,
+                              color: Colors.yellow,
+                              size: scaleDimension.scaleWidth(30))
+                          : Icon(Icons.star_border,
+                              size: scaleDimension.scaleWidth(30)));
+                },
+              )
             ],
           ),
           SizedBox(

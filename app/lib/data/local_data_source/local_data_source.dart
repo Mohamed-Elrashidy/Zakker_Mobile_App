@@ -140,7 +140,11 @@ class LocalDataSource {
       sharedPreferences.remove(AppConstants.favoriteList);
     }
 
+    print("favourite notes is "+favouriteNotesIds.length.toString());
+
     favouriteNotesIds.remove(noteId.toString());
+    print("favourite notes is "+favouriteNotesIds.length.toString());
+
     sharedPreferences.setStringList(
         AppConstants.favoriteList, favouriteNotesIds);
   }

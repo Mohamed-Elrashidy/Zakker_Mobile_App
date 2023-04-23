@@ -1,6 +1,8 @@
 import 'package:app/data/repositories/note_repository.dart';
 import 'package:app/domain/base_repositories/base_note_repository.dart';
 import 'package:app/domain/usecases/add_note_usecase.dart';
+import 'package:app/domain/usecases/add_to_favourites_usecase.dart';
+import 'package:app/domain/usecases/delete_from_favourites_usecase.dart';
 import 'package:app/domain/usecases/edit_note_usecase.dart';
 import 'package:app/domain/usecases/get_all_note_usecase.dart';
 import 'package:app/domain/usecases/get_favourite_notes_usecase.dart';
@@ -44,6 +46,7 @@ class NoteCubit extends Cubit<NoteState> {
         GetFavouriteNotesUseCase(baseNoteRepository: baseNoteRepository)
             .execute();
     emit(FavouriteNotesLoaded(favouriteNotes: favouriteNotes));
+    print("reached to favourites");
     return favouriteNotes;
   }
 
@@ -58,5 +61,13 @@ class NoteCubit extends Cubit<NoteState> {
   void editNote(Note note)
   {
     EditNoteUseCase(baseNoteRepository: baseNoteRepository).execute(note);
+  }
+  void addToFavourites(int noteId)
+  {
+    AddToFavouritesUseCase(baseNoteRepository: baseNoteRepository).execute(noteId);
+  }
+  void deleteFromFavourites(int noteId)
+  {
+    DeleteFromFavouritesUseCase(baseNoteRepository: baseNoteRepository).execute(noteId);
   }
 }
