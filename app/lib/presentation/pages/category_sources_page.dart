@@ -22,6 +22,8 @@ class CategorySourcesPage extends StatelessWidget {
   Widget build(BuildContext context) {
     categorySourcesList =
         BlocProvider.of<CategoryCubit>(context).getCategorySources(category);
+    BlocProvider.of<CategoryCubit>(context).getAllCategories();
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -75,8 +77,9 @@ class CategorySourcesPage extends StatelessWidget {
                         onTap: () {
                           Navigator.of(context).pushNamed(
                               Routes.sourceNotesPage,
-                              arguments:
-                                  category +' '+ categorySourcesList[index].title);
+                              arguments: category +
+                                  ' ' +
+                                  categorySourcesList[index].title);
                         },
                         child: CategoryWidget(
                             category: categorySourcesList[index]));

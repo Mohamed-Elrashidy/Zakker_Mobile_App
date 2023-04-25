@@ -261,9 +261,12 @@ class LocalDataSource {
       sharedPreferences
           .getStringList(AppConstants.categoryList)
           ?.forEach((element) {
+
         allCategories.add(CategoryModel.fromJson(jsonDecode(element)));
+        print(allCategories.length);
       });
     }
+
     return allCategories;
   }
 
@@ -272,6 +275,7 @@ class LocalDataSource {
     if (sharedPreferences.containsKey(category)) {
       sharedPreferences.getStringList(category)?.forEach((element) {
         allSources.add(CategoryModel.fromJson(jsonDecode(element)));
+
       });
     }
 

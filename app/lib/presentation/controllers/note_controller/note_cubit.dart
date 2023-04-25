@@ -20,6 +20,7 @@ class NoteCubit extends Cubit<NoteState> {
   BaseNoteRepository baseNoteRepository = GetIt.instance.get<NoteRepository>();
   Map<String, List<Note>> sourcesNotes = {};
   List<Note> getAllNotes() {
+    sourcesNotes={};
     List<Note> allNotes =
         GetAllNotesUseCase(baseNoteRepository: baseNoteRepository).execute();
     emit(AllNotesLoaded(allNotes: allNotes));

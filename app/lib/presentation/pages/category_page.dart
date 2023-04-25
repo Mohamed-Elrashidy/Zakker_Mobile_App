@@ -56,24 +56,32 @@ class CategoryPage extends StatelessWidget {
         }
         return Column(
           children: [
-            Container(
-              height: scaleDimension.scaleHeight(400),
-              child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing: scaleDimension.scaleWidth(30),
-                    mainAxisSpacing: scaleDimension.scaleHeight(30),
-                    crossAxisCount: 2,
-                  ),
-                  itemCount: categoryList.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                        onTap: () {
-                          Navigator.of(context, rootNavigator: true).pushNamed(
-                              Routes.categorySourcesList,
-                              arguments: categoryList[index].title);
-                        },
-                        child: CategoryWidget(category: categoryList[index]));
-                  }),
+            BlocBuilder<CategoryCubit, CategoryState>(
+              builder: (context, state) {
+                if(state is GetAllCategories)
+                  categoryList=state.allCategories;
+                return Container(
+                  height: scaleDimension.scaleHeight(400),
+                  child: GridView.builder(
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisSpacing: scaleDimension.scaleWidth(30),
+                        mainAxisSpacing: scaleDimension.scaleHeight(30),
+                        crossAxisCount: 2,
+                      ),
+                      itemCount: categoryList.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                            onTap: () {
+                              Navigator.of(context, rootNavigator: true)
+                                  .pushNamed(
+                                  Routes.categorySourcesList,
+                                  arguments: categoryList[index].title);
+                            },
+                            child: CategoryWidget(
+                                category: categoryList[index]));
+                      }),
+                );
+              },
             ),
             SizedBox(
               height: scaleDimension.scaleHeight(40),

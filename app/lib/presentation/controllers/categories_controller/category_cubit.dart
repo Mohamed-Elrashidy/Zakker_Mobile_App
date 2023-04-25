@@ -25,6 +25,7 @@ class CategoryCubit extends Cubit<CategoryState> {
   {
     List<Category> allCategories= GetAllCategorySourcesUseCase( baseNoteRepository:baseNoteRepository,category: category).execute();
     emit(GetAllCategories(allCategories: allCategories));
+
     return allCategories;
   }
 
