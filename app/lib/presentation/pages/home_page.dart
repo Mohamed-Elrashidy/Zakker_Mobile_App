@@ -1,3 +1,4 @@
+
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../utils/dimension_scale.dart';
+import '../../utils/routes.dart';
 
 class HomePage extends StatelessWidget {
   late Dimension scaleDimension;
@@ -18,7 +20,7 @@ class HomePage extends StatelessWidget {
         children: [
           _appBarBuilder(),
           SizedBox(height: scaleDimension.scaleHeight(100),),
-          pdfReaderWidget(),
+          pdfReaderWidget(context),
           SizedBox(height: scaleDimension.scaleHeight(30),),
 
           TodaysSession()
@@ -46,8 +48,11 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget pdfReaderWidget() {
+  Widget pdfReaderWidget(BuildContext context) {
     return GestureDetector(
+      onTap: (){
+        Navigator.of(context,rootNavigator: true).pushNamed(Routes.pdfReaderPage);
+      },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(scaleDimension.scaleWidth(16)),

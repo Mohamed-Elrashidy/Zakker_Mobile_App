@@ -1,6 +1,10 @@
+
+import 'dart:io';
+
 import 'package:app/presentation/pages/add_note_page.dart';
 import 'package:app/presentation/pages/category_sources_page.dart';
 import 'package:app/presentation/pages/edit_note_page.dart';
+import 'package:app/presentation/pages/pdf_reader_page.dart';
 import 'package:app/presentation/pages/source_notes_page.dart';
 import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +12,7 @@ import 'package:flutter/material.dart';
 import '../domain/entities/note.dart';
 import '../presentation/pages/bottom_nav_bar_page.dart';
 import '../presentation/pages/note_page.dart';
+import '../presentation/pages/select_pdf_page.dart';
 
 class AppRouting {
   static Route<dynamic> generateRoutes(RouteSettings settings) {
@@ -40,6 +45,11 @@ class AppRouting {
         return MaterialPageRoute(
             builder: (_) => SourceNotesPage(category: category, source: source),
             settings: settings);
+      case Routes.pdfReaderPage:
+        return MaterialPageRoute(builder: (_)=>PDFScreen(path: "/Report.pdf"),settings: settings);
+      case Routes.pdfViewerPage:
+        final file =settings.arguments as File;
+        return MaterialPageRoute(builder: (_)=>PdfViewrPage(file: file));
       default:
         return MaterialPageRoute(
             builder: (_) => BottomNavBarPage(), settings: settings);
