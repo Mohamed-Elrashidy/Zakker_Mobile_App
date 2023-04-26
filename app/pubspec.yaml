@@ -41,6 +41,7 @@ dependencies:
   persistent_bottom_nav_bar: ^5.0.2
   shared_preferences: ^2.1.0
   flutter_bloc: ^8.1.2
+  flutter_local_notifications: ^8.2.0
 
 dev_dependencies:
   flutter_test:
