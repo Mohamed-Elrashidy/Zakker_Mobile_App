@@ -12,12 +12,11 @@ class NoteRepository extends BaseNoteRepository {
   NoteRepository({required this.localDataSource});
   @override
   void addNote(Note note) {
-    note.id=localDataSource.generateId();
-    print("note id is "+ note.id.toString());
+    note.id = localDataSource.generateId();
+    print("note id is " + note.id.toString());
     localDataSource.addNote(_convertFromNoteToNoteModel(note));
     localDataSource.addToCategory(note.category, note.color);
     localDataSource.addSource(note.category, note.source, note.color);
-
   }
 
   @override
@@ -51,23 +50,20 @@ class NoteRepository extends BaseNoteRepository {
 
   @override
   List<Category> showAllCategories() {
-   List<Category> allCategories=[];
-   localDataSource.getAllCategories().forEach((element) {
-     allCategories.add(_convertFromCategoryModelToCategory(element));
-
-   });
-   return allCategories;
+    List<Category> allCategories = [];
+    localDataSource.getAllCategories().forEach((element) {
+      allCategories.add(_convertFromCategoryModelToCategory(element));
+    });
+    return allCategories;
   }
 
   @override
   List<Category> showAllSources(String category) {
-    List<Category>allSources=[];
+    List<Category> allSources = [];
     localDataSource.getAllSources(category).forEach((element) {
       allSources.add(_convertFromCategoryModelToCategory(element));
     });
     return allSources;
-
-
   }
 
   @override
@@ -112,8 +108,13 @@ class NoteRepository extends BaseNoteRepository {
         date: noteModel.date);
     return note;
   }
-  Category _convertFromCategoryModelToCategory(CategoryModel categoryModel)
-  {
-    return Category(title: categoryModel.title, color: categoryModel.color, numberOfNotes: categoryModel.numberOfNotes, isSource: categoryModel.isSource, isCategory: categoryModel.isCategory);
+
+  Category _convertFromCategoryModelToCategory(CategoryModel categoryModel) {
+    return Category(
+        title: categoryModel.title,
+        color: categoryModel.color,
+        numberOfNotes: categoryModel.numberOfNotes,
+        isSource: categoryModel.isSource,
+        isCategory: categoryModel.isCategory);
   }
 }

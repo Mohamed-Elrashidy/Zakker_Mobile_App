@@ -82,10 +82,7 @@ class HomePage extends StatelessWidget {
   Widget TodaysSession() {
     return GestureDetector(
       onTap: () {
-        NotificationServices.showTodaysSessionNotification(
-            title: "title",
-            body: "body",
-            fln: GetIt.instance.get<FlutterLocalNotificationsPlugin>());
+
       },
       child: Container(
         decoration: BoxDecoration(
