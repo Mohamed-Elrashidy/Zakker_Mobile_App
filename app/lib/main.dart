@@ -1,25 +1,19 @@
 import 'package:app/presentation/controllers/categories_controller/category_cubit.dart';
 import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
-import 'package:app/presentation/pages/add_note_page.dart';
 import 'package:app/presentation/pages/bottom_nav_bar_page.dart';
-import 'package:app/presentation/pages/category_page.dart';
-import 'package:app/presentation/pages/edit_note_page.dart';
-import 'package:app/presentation/pages/home_page.dart';
-import 'package:app/presentation/pages/note_page.dart';
-import 'package:app/presentation/pages/notes_page.dart';
 import 'package:app/utils/app_routing.dart';
 import 'package:app/utils/dependency.dart';
-import 'package:app/utils/dimension_scale.dart';
-import 'package:app/utils/dummy_data.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+
   const MyApp({super.key});
 
   // This widget is the root of your application.

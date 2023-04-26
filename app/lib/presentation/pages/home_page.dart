@@ -1,6 +1,8 @@
+import 'package:app/data/services/notification_services.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 
@@ -14,13 +16,15 @@ class HomePage extends StatelessWidget {
     return Scaffold(
         body: SafeArea(
       child: Column(
-
         children: [
           _appBarBuilder(),
-          SizedBox(height: scaleDimension.scaleHeight(100),),
+          SizedBox(
+            height: scaleDimension.scaleHeight(100),
+          ),
           pdfReaderWidget(),
-          SizedBox(height: scaleDimension.scaleHeight(30),),
-
+          SizedBox(
+            height: scaleDimension.scaleHeight(30),
+          ),
           TodaysSession()
         ],
       ),
@@ -56,7 +60,6 @@ class HomePage extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(scaleDimension.scaleWidth(10)),
           child: Column(
-
             children: [
               SvgPicture.asset(
                 "assets/images/pdf_icon.svg",
@@ -78,6 +81,12 @@ class HomePage extends StatelessWidget {
 
   Widget TodaysSession() {
     return GestureDetector(
+      onTap: () {
+        NotificationServices.showTodaysSessionNotification(
+            title: "title",
+            body: "body",
+            fln: GetIt.instance.get<FlutterLocalNotificationsPlugin>());
+      },
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(scaleDimension.scaleWidth(16)),
