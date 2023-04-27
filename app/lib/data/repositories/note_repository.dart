@@ -1,4 +1,5 @@
 import 'package:app/data/local_data_source/local_data_source.dart';
+import 'package:app/data/local_data_source/local_data_source_sqlflite.dart';
 import 'package:app/data/models/category_model.dart';
 import 'package:app/data/models/note_model.dart';
 import 'package:app/domain/entities/category.dart';
@@ -11,32 +12,37 @@ class NoteRepository extends BaseNoteRepository {
   final LocalDataSource localDataSource;
   NoteRepository({required this.localDataSource});
   @override
-  void addNote(Note note) {
-    note.id=localDataSource.generateId();
-    print("note id is "+ note.id.toString());
+  Future<void> addNote(Note note,{bool flag=true}) async {
+    if(flag) {
+      note.id=await DBHelper.insert(_convertFromNoteToNoteModel(note));
+    }
+    print("note id is ${note.id}");
     localDataSource.addNote(_convertFromNoteToNoteModel(note));
     localDataSource.addToCategory(note.category, note.color);
     localDataSource.addSource(note.category, note.source, note.color);
-
   }
 
   @override
   void addToFavourites(int noteId) {
+    DBHelper.insertToFavourites(noteId);
     localDataSource.addToFavourites(noteId);
   }
 
   @override
   void deleteFromFavourites(int noteId) {
+    DBHelper.deleteFromFavourites(noteId);
     localDataSource.deleteFromFavourites(noteId);
   }
 
   @override
   void deleteNote(Note note) {
+    DBHelper.delete(_convertFromNoteToNoteModel(note));
     localDataSource.deleteNote(_convertFromNoteToNoteModel(note));
   }
 
   @override
   void editNote(Note note) {
+    DBHelper.update(_convertFromNoteToNoteModel(note));
     localDataSource.editNote(_convertFromNoteToNoteModel(note));
   }
 
