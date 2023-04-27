@@ -1,5 +1,4 @@
 import 'package:app/data/local_data_source/local_data_source.dart';
-import 'package:app/data/local_data_source/local_data_source_sqlflite.dart';
 import 'package:app/data/models/category_model.dart';
 import 'package:app/data/models/note_model.dart';
 import 'package:app/domain/entities/category.dart';
@@ -7,6 +6,7 @@ import 'package:app/domain/entities/category.dart';
 import 'package:app/domain/entities/note.dart';
 
 import '../../domain/base_repositories/base_note_repository.dart';
+import '../local_data_source/local_data_source_sqlflite.dart';
 
 class NoteRepository extends BaseNoteRepository {
   final LocalDataSource localDataSource;
@@ -20,6 +20,7 @@ class NoteRepository extends BaseNoteRepository {
     localDataSource.addNote(_convertFromNoteToNoteModel(note));
     localDataSource.addToCategory(note.category, note.color);
     localDataSource.addSource(note.category, note.source, note.color);
+
   }
 
   @override
@@ -118,8 +119,13 @@ class NoteRepository extends BaseNoteRepository {
         date: noteModel.date);
     return note;
   }
-  Category _convertFromCategoryModelToCategory(CategoryModel categoryModel)
-  {
-    return Category(title: categoryModel.title, color: categoryModel.color, numberOfNotes: categoryModel.numberOfNotes, isSource: categoryModel.isSource, isCategory: categoryModel.isCategory);
+
+  Category _convertFromCategoryModelToCategory(CategoryModel categoryModel) {
+    return Category(
+        title: categoryModel.title,
+        color: categoryModel.color,
+        numberOfNotes: categoryModel.numberOfNotes,
+        isSource: categoryModel.isSource,
+        isCategory: categoryModel.isCategory);
   }
 }
