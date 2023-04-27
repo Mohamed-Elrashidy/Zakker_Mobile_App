@@ -12,50 +12,45 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../data/models/note_model.dart';
 
 class Dependancy {
-
   void initDimensionScale(BuildContext context) {
     try {
       GetIt.instance.get<Dimension>();
     } catch (e) {
       GetIt.instance.registerSingleton(Dimension(context: context));
-
     }
   }
+
   Future<void> initControllers() async {
     final sharedPreferences = await SharedPreferences.getInstance();
+    await DBHelper.initDb();
+
     GetIt locator = GetIt.instance;
     try {
       GetIt.instance.get<LocalDataSource>();
-    }
-    catch(e)
-    {
+    } catch (e) {
       locator.registerSingleton(
           LocalDataSource(sharedPreferences: sharedPreferences));
     }
     try {
-     GetIt.instance.get<NoteRepository>();
+      GetIt.instance.get<NoteRepository>();
+    } catch (e) {
+      locator.registerSingleton(NoteRepository(
+          localDataSource: GetIt.instance.get<LocalDataSource>()));
     }
-    catch(e)
-    {
-      locator.registerSingleton(
-          NoteRepository(
-              localDataSource: GetIt.instance.get<LocalDataSource>()));
-    }
-    DBHelper.query().then((note)  {
+   await DBHelper.query().then((note) {
       note.map((data) {
-        GetIt.instance.get<NoteRepository>().
-        addNote(NoteModel.fromJson(data),flag: false);
-      }
-      );
-
+        GetIt.instance
+            .get<NoteRepository>()
+            .addNote(NoteModel.fromJson(data), flag: false);
+      });
     });
 
     try {
-      NotificationServices.initialize(
+      await NotificationServices.initialize(
           GetIt.instance.get<FlutterLocalNotificationsPlugin>());
     } catch (e) {
       GetIt.instance.registerSingleton(FlutterLocalNotificationsPlugin());
-      NotificationServices.initialize(
+      await NotificationServices.initialize(
           GetIt.instance.get<FlutterLocalNotificationsPlugin>());
     }
   }
