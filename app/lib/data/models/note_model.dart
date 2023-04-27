@@ -9,7 +9,8 @@ class NoteModel extends Note {
       required super.page,
       required super.source,
       required super.id,
-      required super.color, required super.date});
+      required super.color,
+      required super.date});
 
   factory NoteModel.fromJson(Map<String, dynamic> json) {
     return NoteModel(
@@ -17,12 +18,12 @@ class NoteModel extends Note {
         body: json['body'],
         image: json['image'],
         category: json['category'],
-        page: int.parse(json['page']),
+        page: json['page'] is String ? int.parse(json['page']) : json['page'],
         source: json['source'],
-        id: int.parse(json['id']),
-        color: int.parse(
-          json['color'],
-        ), date: json['date']);
+        id: json['id'] is String ? int.parse(json['id']) : json['id'],
+        color:
+            json['color'] is String ? int.parse(json['color']) : json['color'],
+        date: json['date']);
   }
 
   Map<String, dynamic> toJson() {
@@ -30,13 +31,12 @@ class NoteModel extends Note {
     json['title'] = title;
     json['body'] = body;
     json['image'] = image;
-    json['category']=category;
-    json['page']=page.toString();
-    json['color']=color.toString();
-    json['source']=source;
-    json['id']=id.toString();
-    json['date']=date;
-
+    json['category'] = category;
+    json['page'] = page.toString();
+    json['color'] = color.toString();
+    json['source'] = source;
+    json['id'] = id.toString();
+    json['date'] = date;
 
     return json;
   }
