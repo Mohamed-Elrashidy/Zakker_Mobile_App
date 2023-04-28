@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import '../../domain/entities/note.dart';
 import '../../utils/dimension_scale.dart';
 
+
 class SourceNotesPage extends StatelessWidget {
   String source;
   String category;
@@ -22,18 +23,38 @@ class SourceNotesPage extends StatelessWidget {
         child: Scaffold(
             body: Column(
               children: [
-                BigText(text: source),
+                SizedBox(height: GetIt.instance.get<Dimension>().scaleHeight(10),),
+
+                _appBarBuilder(context),
+                SizedBox(height: GetIt.instance.get<Dimension>().scaleHeight(20),),
                 Container(height: GetIt.instance.get<Dimension>().scaleHeight(400),
                   child: BlocBuilder<NoteCubit,NoteState>(
                       builder: (context,state){
-                        notes=BlocProvider.of<NoteCubit>(context).getSourceNotes(category+source);
-
-                        return NotesListBuilder(notes: notes);
+                      if(state is SourceNotesLoaded)
+                        notes =state.sourceNotesList;
+                        return Padding(
+                          padding: EdgeInsets.all(GetIt.instance.get<Dimension>().scaleWidth(10)),
+                          child: NotesListBuilder(notes: notes),
+                        );
                       }),
                 )
               ],
             )
         )
+    );
+  }
+ Widget _appBarBuilder(BuildContext context)
+  {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(onPressed: (){
+          Navigator.of(context).pop();
+        }, icon: Icon(Icons.arrow_back_ios_new)),
+        BigText(text: source),
+        Container(width: GetIt.instance.get<Dimension>().scaleWidth(40),)
+
+      ],
     );
   }
 }

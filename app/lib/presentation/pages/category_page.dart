@@ -1,5 +1,6 @@
 import 'package:app/presentation/controllers/categories_controller/category_cubit.dart';
 import 'package:app/presentation/widgets/category_widget.dart';
+import 'package:app/presentation/widgets/dvider.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:app/presentation/widgets/small_button.dart';
 import 'package:flutter/material.dart';
@@ -38,12 +39,16 @@ class CategoryPage extends StatelessWidget {
   }
 
   Widget _appBarBuilder() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+    return Column(
       children: [
-        Container(width: scaleDimension.scaleWidth(35)),
-        BigText(text: "Categories"),
-        SmallButton(icon: Icons.add_circle_outline_outlined, onTap: () {})
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            BigText(text: "Categories"),
+          ],
+        ),
+
       ],
     );
   }

@@ -38,7 +38,12 @@ class NoteCubit extends Cubit<NoteState> {
     return allNotes;
   }
   List<Note>getSourceNotes(String key)
-  {
+
+  {print(sourcesNotes.length);
+    print(sourcesNotes);
+    print(key);
+    print("answer "+ sourcesNotes[key].toString());
+    emit(SourceNotesLoaded(sourceNotesList: sourcesNotes[key]??[]));
     return sourcesNotes[key]??[];
   }
 

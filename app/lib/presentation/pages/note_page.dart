@@ -1,7 +1,6 @@
+import 'package:app/presentation/controllers/categories_controller/category_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../utils/routes.dart';
-
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/main_button.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
@@ -70,6 +69,10 @@ class NotePage extends StatelessWidget {
                 title: "Delete",
                 onTap: () {
                   BlocProvider.of<NoteCubit>(context).deleteNote(note);
+                  BlocProvider.of<NoteCubit>(context).getFavouriteNotes();
+                  BlocProvider.of<NoteCubit>(context).getAllNotes();
+                  BlocProvider.of<CategoryCubit>(context).getAllCategories();
+
                   Navigator.of(context).pushNamedAndRemoveUntil(
                       Routes.bottomNavBarPage, (route) => false);
                 }),

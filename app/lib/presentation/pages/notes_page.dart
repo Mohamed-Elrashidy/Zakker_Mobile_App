@@ -1,10 +1,7 @@
 import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/main_button.dart';
-import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:app/presentation/widgets/notes_list_builder.dart';
-import 'package:app/utils/dummy_data.dart';
-import 'package:app/utils/note_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,9 +31,11 @@ class _NotesPageState extends State<NotesPage> {
     notes = [];
     BlocProvider.of<NoteCubit>(context).getAllNotes();
   }
+  int x=0;
 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -115,7 +114,6 @@ class _NotesPageState extends State<NotesPage> {
   Widget _tabBarBuilder() {
     return BlocBuilder<NoteCubit, NoteState>(
       builder: (context, state) {
-        int x=0;
         if(state is AllNotesLoaded)
           {
             x=0;

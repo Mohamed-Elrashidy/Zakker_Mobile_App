@@ -17,4 +17,8 @@ class CheckIsFavourite extends NoteState{
   bool isFavourite;
   CheckIsFavourite({required this.isFavourite});
 }
+class SourceNotesLoaded extends NoteState{
+  List<Note> sourceNotesList;
+  SourceNotesLoaded({required this.sourceNotesList});
+}
 

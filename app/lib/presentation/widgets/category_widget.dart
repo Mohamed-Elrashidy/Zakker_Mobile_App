@@ -13,20 +13,20 @@ class CategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-padding:EdgeInsets.symmetric(vertical: scaleDimension.scaleHeight(10)),
+      padding: EdgeInsets.symmetric(vertical: scaleDimension.scaleHeight(10)),
       decoration: BoxDecoration(
-        color:NoteColors.color[category.color]!.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(scaleDimension.scaleWidth(16))
-      ),
+          color: NoteColors.color[category.color]!.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(scaleDimension.scaleWidth(16))),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Icon(Icons.folder,color: NoteColors.color[category.color],size:scaleDimension.scaleWidth(100)),
+          Icon(Icons.folder,
+              color: NoteColors.color[category.color],
+              size: scaleDimension.scaleWidth(100)),
           NormalText(text: category.title),
-          SmallText(text:category.numberOfNotes.toString()+" Notes")
+          SmallText(text: category.numberOfNotes.toString() + " Notes")
         ],
       ),
-
     );
   }
 }

@@ -31,7 +31,7 @@ class CategorySourcesPage extends StatelessWidget {
             padding: EdgeInsets.all(scaleDimension.scaleWidth(10)),
             child: Column(
               children: [
-                _appBarBuilder(),
+                _appBarBuilder(context),
                 SizedBox(
                   height: scaleDimension.scaleHeight(20),
                 ),
@@ -44,13 +44,17 @@ class CategorySourcesPage extends StatelessWidget {
     );
   }
 
-  Widget _appBarBuilder() {
+  Widget _appBarBuilder(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(width: scaleDimension.scaleWidth(35)),
+        IconButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            icon: Icon(Icons.arrow_back_ios)),
         BigText(text: category),
-        SmallButton(icon: Icons.add_circle_outline_outlined, onTap: () {})
+        Container(width:scaleDimension.scaleWidth(40),)
       ],
     );
   }
@@ -64,7 +68,7 @@ class CategorySourcesPage extends StatelessWidget {
         return Column(
           children: [
             Container(
-              height: scaleDimension.scaleHeight(400),
+              height: scaleDimension.scaleHeight(420),
               child: GridView.builder(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisSpacing: scaleDimension.scaleWidth(30),
@@ -86,7 +90,7 @@ class CategorySourcesPage extends StatelessWidget {
                   }),
             ),
             SizedBox(
-              height: scaleDimension.scaleHeight(40),
+              height: scaleDimension.scaleHeight(60),
             ),
             NormalText(text: "You have ${categorySourcesList.length} sources")
           ],
