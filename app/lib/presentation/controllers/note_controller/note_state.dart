@@ -13,5 +13,8 @@ class FavouriteNotesLoaded extends NoteState{
   List<Note> favouriteNotes;
   FavouriteNotesLoaded({required this.favouriteNotes});
 }
-
+class CheckIsFavourite extends NoteState{
+  bool isFavourite;
+  CheckIsFavourite({required this.isFavourite});
+}
 

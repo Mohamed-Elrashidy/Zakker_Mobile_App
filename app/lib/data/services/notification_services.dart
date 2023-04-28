@@ -38,43 +38,4 @@ class NotificationServices {
     }
   }
 
-  static void showNotesPeriodically()  {
-    Workmanager().executeTask((taskName, inputData) async {
-      await Dependancy().initControllers();
-
-      showNotification(
-          title: 'start',
-          body:'hi',
-          fln: FlutterLocalNotificationsPlugin());
-      print (' here at error');
-      try{
-
-      List<Note> notes =  GetIt.instance.get<NoteRepository>().getAllNotes();
-      if (notes.isNotEmpty) {
-        Random random = Random();
-        int randomNumber = random.nextInt(notes.length);
-        showNotification(
-            title: notes[randomNumber].title,
-            body: notes[randomNumber].body,
-            fln: GetIt.instance.get<FlutterLocalNotificationsPlugin>());
-      } else {
-        showNotification(
-            title: 'title',
-            body: 'body',
-            fln: GetIt.instance.get<FlutterLocalNotificationsPlugin>());
-      }
-      print('Valid');
-      }
-      catch(e)
-      {
-        showNotification(
-            title: 'error',
-            body: e.toString(),
-            fln: FlutterLocalNotificationsPlugin());
-        print (' here at error');
-      }
-
-      return Future.value(true);
-    });
-  }
 }

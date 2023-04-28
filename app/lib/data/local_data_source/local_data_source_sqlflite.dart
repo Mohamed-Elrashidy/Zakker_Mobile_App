@@ -37,10 +37,14 @@ class DBHelper {
     }
   }
 
-  static Future<int> insert(NoteModel? note) async {
+  static Future<int> insert(NoteModel note) async {
+
     print(';insert');
+
+    print("insert "+note.toJson(flag: false).toString());
+
     try {
-      return await _db!.insert(_tableName, note!.toJson().remove('id'));
+      return await _db!.insert(_tableName, note.toJson(flag:false));
     } catch (e) {
       print(e);
       print('we are here');

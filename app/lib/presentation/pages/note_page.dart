@@ -24,9 +24,7 @@ class NotePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    BlocProvider.of<NoteCubit>(context).getFavouriteNotes().forEach((element) { if(element.id==note.id)
-      isFavourite=true;
-    });
+    isFavourite=BlocProvider.of<NoteCubit>(context).checkIsFavourite(note.id);
     return SafeArea(
       child: Scaffold(
           body: Padding(
@@ -103,12 +101,9 @@ class NotePage extends StatelessWidget {
               ),
               BlocBuilder<NoteCubit, NoteState>(
                 builder: (context, state) {
-                  if (state is FavouriteNotesLoaded) {
+                  if (state is CheckIsFavourite) {
                     print("reached again");
-                    print(state.favouriteNotes.length);
-                  state.favouriteNotes.forEach((element) { if(element.id==note.id)
-                      isFavourite=true;
-                    });
+                    isFavourite=state.isFavourite;
                   }
                   return IconButton(
                       onPressed: () {
@@ -122,7 +117,7 @@ class NotePage extends StatelessWidget {
                           isFavourite=true;
                         }
 
-                        BlocProvider.of<NoteCubit>(context).getFavouriteNotes();
+                        BlocProvider.of<NoteCubit>(context).checkIsFavourite(note.id);
                       },
                       icon: isFavourite
                           ? Icon(Icons.star,

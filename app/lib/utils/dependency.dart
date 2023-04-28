@@ -2,7 +2,6 @@ import 'package:app/data/local_data_source/local_data_source.dart';
 import 'package:app/data/local_data_source/local_data_source_sqlflite.dart';
 import 'package:app/data/repositories/note_repository.dart';
 import 'package:app/data/services/notification_services.dart';
-import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/utils/dimension_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -37,7 +36,8 @@ class Dependancy {
       locator.registerSingleton(NoteRepository(
           localDataSource: GetIt.instance.get<LocalDataSource>()));
     }
-   await DBHelper.query().then((note) {
+
+    await DBHelper.query().then((note) {
       note.map((data) {
         GetIt.instance
             .get<NoteRepository>()

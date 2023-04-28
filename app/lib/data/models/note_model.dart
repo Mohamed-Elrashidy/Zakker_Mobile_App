@@ -26,7 +26,7 @@ class NoteModel extends Note {
         date: json['date']);
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toJson({bool flag=true}) {
     Map<String, dynamic> json = {};
     json['title'] = title;
     json['body'] = body;
@@ -35,9 +35,12 @@ class NoteModel extends Note {
     json['page'] = page.toString();
     json['color'] = color.toString();
     json['source'] = source;
-    json['id'] = id.toString();
+    if(flag) {
+      json['id'] = id.toString();
+    }
     json['date'] = date;
 
     return json;
   }
+
 }

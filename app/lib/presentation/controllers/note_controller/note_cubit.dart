@@ -50,7 +50,22 @@ class NoteCubit extends Cubit<NoteState> {
     print("reached to favourites");
     return favouriteNotes;
   }
+  bool checkIsFavourite(int noteId)
+  {
+    bool isFavourite=false;
+    List<Note> favouriteNotes =
+    GetFavouriteNotesUseCase(baseNoteRepository: baseNoteRepository)
+        .execute();
 
+    for (var element in favouriteNotes) {
+          if(element.id==noteId)
+            isFavourite=true;
+        }
+
+    emit(CheckIsFavourite(isFavourite: isFavourite));
+    return false;
+
+  }
   void addNote(Note note) {
     AddNoteUseCase(baseNoteRepository: baseNoteRepository).execute(note);
   }

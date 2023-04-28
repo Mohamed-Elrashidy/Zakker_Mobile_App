@@ -101,7 +101,7 @@ class AddNotePage extends StatelessWidget {
     );
   }
 
-  void _createNote(BuildContext context) {
+  Future<void> _createNote(BuildContext context) async {
     if (_titleController.text.trim().isEmpty) {
       print("title is empty");
     } else if (_sourceController.text.trim().isEmpty) {
@@ -109,7 +109,7 @@ class AddNotePage extends StatelessWidget {
     } else if (_categoryController.text.trim().isEmpty) {
       print("Category field is empty");
     } else {
-      BlocProvider.of<NoteCubit>(context).addNote(Note(
+       BlocProvider.of<NoteCubit>(context).addNote(Note(
           title: _titleController.text.trim(),
           body: _bodyController.text.trim(),
           image: _imagePath.text,
