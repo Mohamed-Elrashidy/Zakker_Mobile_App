@@ -24,7 +24,8 @@ class NoteRepository extends BaseNoteRepository {
   }
 
   @override
-  void addToFavourites(int noteId) {
+  void addToFavourites(int noteId,{bool flag=true}) {
+    if(flag)
     DBHelper.insertToFavourites(noteId);
     localDataSource.addToFavourites(noteId);
   }

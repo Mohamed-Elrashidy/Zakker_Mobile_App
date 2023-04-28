@@ -73,10 +73,14 @@ class DBHelper {
     print(_db.toString());
     return await _db!.query(_tableName);
   }
+  static Future<dynamic> queryFavourites() async {
+    print(_db.toString());
+    return await _db!.query(_favouritesTableName);
+  }
 
   static insertToFavourites(int id)
   async {
-    await _db?.insert(_favouritesTableName, {'id':id.toString()});
+    await _db?.insert(_favouritesTableName, {'id':id});
   }
   static deleteFromFavourites(int id)
   async {

@@ -44,6 +44,14 @@ class Dependancy {
             .addNote(NoteModel.fromJson(data), flag: false);
       });
     });
+     await DBHelper.queryFavourites().then((noteIds) {
+      noteIds.map((data) {
+        GetIt.instance
+            .get<NoteRepository>()
+            .addToFavourites(data,flag:false);
+      });
+    });
+
 
     try {
       await NotificationServices.initialize(
