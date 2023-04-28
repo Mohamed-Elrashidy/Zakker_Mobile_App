@@ -2,6 +2,7 @@ import 'package:app/presentation/controllers/categories_controller/category_cubi
 import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/main_button.dart';
+import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:app/utils/note_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -100,16 +101,47 @@ class AddNotePage extends StatelessWidget {
       ],
     );
   }
+  
+  // check if page number is valid number
+  bool checkNumber(String number)
+  {
+    try{
+      int.parse(number);
+      return true;
+    }
+    catch(e)
+    {
+      return false;
+    }
+  }
 
   Future<void> _createNote(BuildContext context) async {
     if (_titleController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Enter title field first"));
       print("title is empty");
-    } else if (_sourceController.text.trim().isEmpty) {
+    }
+    else if(_bodyController.text.trim().isEmpty)
+      {
+        ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Enter body field first"));
+      }
+    
+    else if (_sourceController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Enter source field first"));
+
       print("source is empty");
     } else if (_categoryController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Enter Category Field first"));
       print("Category field is empty");
-    } else {
-       BlocProvider.of<NoteCubit>(context).addNote(Note(
+    } 
+    else if(_pageNumberController.text.trim().isEmpty||!checkNumber(_pageNumberController.text.trim()))
+      {
+        ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Enter page number with format like this 45323 or 0 if no page number"));
+
+      }
+    
+    else {
+      
+      BlocProvider.of<NoteCubit>(context).addNote(Note(
           title: _titleController.text.trim(),
           body: _bodyController.text.trim(),
           image: _imagePath.text,
@@ -126,6 +158,8 @@ class AddNotePage extends StatelessWidget {
       BlocProvider.of<CategoryCubit>(context).getAllCategories();
       BlocProvider.of<CategoryCubit>(context)
           .getCategorySources(_categoryController.text.trim());
+      ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Note is added successfully!!",color: Colors.green));
+
     }
   }
 
@@ -231,6 +265,21 @@ class AddNotePage extends StatelessWidget {
           ],
         )
       ],
+    );
+  }
+
+  SnackBar showSnackBar(String content, {Color color = Colors.red}) {
+    return SnackBar(
+      content: NormalText(
+        text: content,
+      ),
+    //  width: scaleDimension.screenWidth-scaleDimension.scaleWidth(20),
+      backgroundColor: color,
+    
+      padding: EdgeInsets.symmetric(
+        horizontal: scaleDimension.scaleWidth(15),
+        vertical: scaleDimension.scaleHeight(10),
+      ),
     );
   }
 }

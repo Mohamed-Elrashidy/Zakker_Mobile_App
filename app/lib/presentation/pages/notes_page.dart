@@ -6,11 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
-
 import '../../domain/entities/note.dart';
 import '../../utils/dimension_scale.dart';
 import '../../utils/routes.dart';
-import '../widgets/small_text.dart';
 
 class NotesPage extends StatefulWidget {
   const NotesPage({Key? key}) : super(key: key);
