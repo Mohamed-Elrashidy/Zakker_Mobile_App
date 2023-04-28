@@ -19,10 +19,10 @@ class NoteCubit extends Cubit<NoteState> {
   NoteCubit() : super(NoteInitial());
   BaseNoteRepository baseNoteRepository = GetIt.instance.get<NoteRepository>();
   Map<String, List<Note>> sourcesNotes = {};
-  List<Note> getAllNotes() {
+  Future<List<Note>> getAllNotes() async {
     sourcesNotes={};
     List<Note> allNotes =
-        GetAllNotesUseCase(baseNoteRepository: baseNoteRepository).execute();
+        await GetAllNotesUseCase(baseNoteRepository: baseNoteRepository).execute();
     emit(AllNotesLoaded(allNotes: allNotes));
     print("we are notes");
 
@@ -47,18 +47,18 @@ class NoteCubit extends Cubit<NoteState> {
     return sourcesNotes[key]??[];
   }
 
-  List<Note> getFavouriteNotes() {
+  Future<List<Note>> getFavouriteNotes() async {
     List<Note> favouriteNotes =
-        GetFavouriteNotesUseCase(baseNoteRepository: baseNoteRepository)
+        await GetFavouriteNotesUseCase(baseNoteRepository: baseNoteRepository)
             .execute();
     emit(FavouriteNotesLoaded(favouriteNotes: favouriteNotes));
     print("reached to favourites");
     return favouriteNotes;
   }
-  bool checkIsFavourite(int noteId)
-  {
+  Future<bool> checkIsFavourite(int noteId)
+  async {
     bool isFavourite=false;
-    List<Note> favouriteNotes =
+    List<Note> favouriteNotes =await
     GetFavouriteNotesUseCase(baseNoteRepository: baseNoteRepository)
         .execute();
 

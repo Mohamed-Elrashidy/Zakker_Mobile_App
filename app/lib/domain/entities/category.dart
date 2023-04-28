@@ -2,12 +2,12 @@ class Category {
   String title;
   int color;
   int numberOfNotes;
-  bool isSource;
-  bool isCategory;
+  int id;
+
   Category(
       {required this.title,
       required this.color,
       required this.numberOfNotes,
-      required this.isSource,
-      required this.isCategory});
+        required this.id
+     });
 }

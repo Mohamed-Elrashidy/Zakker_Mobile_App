@@ -5,7 +5,7 @@ import '../entities/category.dart';
 class GetAllCategoriesUseCase{
   final BaseNoteRepository baseNoteRepository;
   GetAllCategoriesUseCase({required this.baseNoteRepository});
-  List<Category> execute()
+  Future<List<Category>> execute()
   {
     return baseNoteRepository.showAllCategories();
   }

@@ -10,6 +10,6 @@ class GetAllCategories extends CategoryState{
 
 }
 class GetCategorySources extends CategoryState{
-  List<Category> allCategorySources;
+  List<Source> allCategorySources;
   GetCategorySources({required this.allCategorySources});
 }

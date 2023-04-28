@@ -31,18 +31,20 @@ class AddNotePage extends StatelessWidget {
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
         },
-        child: Scaffold(
-            body: Padding(
-          padding: EdgeInsets.all(scaleDimension.scaleWidth(10)),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _appBarBuilder(),
-                _bodyBuilder(context),
-              ],
+        child: ScaffoldMessenger(
+          child: Scaffold(
+              body: Padding(
+            padding: EdgeInsets.all(scaleDimension.scaleWidth(10)),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _appBarBuilder(),
+                  _bodyBuilder(context),
+                ],
+              ),
             ),
-          ),
-        )),
+          )),
+        ),
       ),
     );
   }
@@ -156,8 +158,7 @@ class AddNotePage extends StatelessWidget {
 
       BlocProvider.of<NoteCubit>(context).getAllNotes();
       BlocProvider.of<CategoryCubit>(context).getAllCategories();
-      BlocProvider.of<CategoryCubit>(context)
-          .getCategorySources(_categoryController.text.trim());
+
       ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Note is added successfully!!",color: Colors.green));
 
     }

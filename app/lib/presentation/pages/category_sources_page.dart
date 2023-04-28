@@ -9,20 +9,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../domain/entities/category.dart';
+import '../../domain/entities/source.dart';
 import '../../utils/dimension_scale.dart';
 import '../widgets/big_text.dart';
 
 class CategorySourcesPage extends StatelessWidget {
   late Dimension scaleDimension = GetIt.instance.get<Dimension>();
-  late List<Category> categorySourcesList;
+   List<Source> categorySourcesList=[];
   String category;
-  CategorySourcesPage({required this.category});
+  int categoryId;
+  CategorySourcesPage({required this.category, required this.categoryId});
 
   @override
   Widget build(BuildContext context) {
-    categorySourcesList =
-        BlocProvider.of<CategoryCubit>(context).getCategorySources(category);
-    BlocProvider.of<CategoryCubit>(context).getAllCategories();
+        BlocProvider.of<CategoryCubit>(context).getCategorySources(categoryId);
 
     return SafeArea(
       child: Scaffold(
@@ -54,7 +54,9 @@ class CategorySourcesPage extends StatelessWidget {
             },
             icon: Icon(Icons.arrow_back_ios)),
         BigText(text: category),
-        Container(width:scaleDimension.scaleWidth(40),)
+        Container(
+          width: scaleDimension.scaleWidth(40),
+        )
       ],
     );
   }
@@ -64,6 +66,7 @@ class CategorySourcesPage extends StatelessWidget {
       builder: (context, state) {
         if (state is GetCategorySources) {
           categorySourcesList = state.allCategorySources;
+          print("we are at get cater");
         }
         return Column(
           children: [

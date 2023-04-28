@@ -1,19 +1,20 @@
-import '../../domain/entities/category.dart';
+import '../../domain/entities/source.dart';
 
-class CategoryModel extends Category {
-  CategoryModel(
+class SourceModel extends Source {
+  SourceModel(
       {required super.title,
       required super.color,
       required super.numberOfNotes,
-        required super.id
-     });
+      required super.id,
+      required super.categoryId});
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    return CategoryModel(
+  factory SourceModel.fromJson(Map<String, dynamic> json) {
+    return SourceModel(
       title: json['title'],
       id: json['id'] is String ? int.parse(json['id']) : json['id'],
       color:
       json['color'] is String ? int.parse(json['color']) : json['color'],
+      categoryId: json['categoryId'] is String ? int.parse(json['categoryId']) : json['categoryId'],
       numberOfNotes: json['numberOfNotes'],
 
     );
@@ -27,6 +28,7 @@ class CategoryModel extends Category {
     if(flag) {
       json['id'] = id.toString();
     }
+    json['categoryId']=categoryId;
     json['numberOfNotes']=numberOfNotes;
 
     return json;

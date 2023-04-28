@@ -26,7 +26,7 @@ void callbackDispatcher() {
     print (' here at error');
     try{
 
-      List<Note> notes =  GetIt.instance.get<NoteRepository>().getAllNotes();
+      List<Note> notes = await GetIt.instance.get<NoteRepository>().getAllNotes();
       if (notes.isNotEmpty) {
         Random random = Random();
         int randomNumber = random.nextInt(notes.length);

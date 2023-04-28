@@ -20,38 +20,15 @@ class Dependancy {
   }
 
   Future<void> initControllers() async {
-    final sharedPreferences = await SharedPreferences.getInstance();
     await DBHelper.initDb();
 
     GetIt locator = GetIt.instance;
-    try {
-      GetIt.instance.get<LocalDataSource>();
-    } catch (e) {
-      locator.registerSingleton(
-          LocalDataSource(sharedPreferences: sharedPreferences));
-    }
+
     try {
       GetIt.instance.get<NoteRepository>();
     } catch (e) {
-      locator.registerSingleton(NoteRepository(
-          localDataSource: GetIt.instance.get<LocalDataSource>()));
+      locator.registerSingleton(NoteRepository());
     }
-
-    await DBHelper.query().then((note) {
-      note.map((data) {
-        GetIt.instance
-            .get<NoteRepository>()
-            .addNote(NoteModel.fromJson(data), flag: false);
-      });
-    });
-     await DBHelper.queryFavourites().then((noteIds) {
-      noteIds.map((data) {
-        GetIt.instance
-            .get<NoteRepository>()
-            .addToFavourites(data,flag:false);
-      });
-    });
-
 
     try {
       await NotificationServices.initialize(

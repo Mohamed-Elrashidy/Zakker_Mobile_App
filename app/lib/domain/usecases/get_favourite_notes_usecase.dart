@@ -5,7 +5,7 @@ import '../entities/note.dart';
 class GetFavouriteNotesUseCase {
   final BaseNoteRepository baseNoteRepository;
   GetFavouriteNotesUseCase({required this.baseNoteRepository});
-  List<Note> execute() {
+  Future<List<Note>> execute() {
     return baseNoteRepository.showFavouriteNotes();
   }
 }

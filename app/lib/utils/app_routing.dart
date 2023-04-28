@@ -29,9 +29,13 @@ class AppRouting {
       case Routes.addNotePage:
         return MaterialPageRoute(builder: (_) => AddNotePage());
       case Routes.categorySourcesList:
-        String category = settings.arguments as String;
+        String category = settings.arguments as String  ;
+        int categoryId=int.parse(category.split('|')[1]);
+        category=category.split('|')[0];
+
+
         return MaterialPageRoute(
-            builder: (_) => CategorySourcesPage(category: category),
+            builder: (_) => CategorySourcesPage(category: category,categoryId :categoryId),
             settings: settings);
       case Routes.sourceNotesPage:
         String category = settings.arguments as String;

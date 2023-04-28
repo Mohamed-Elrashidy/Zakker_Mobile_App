@@ -7,6 +7,7 @@ import 'package:meta/meta.dart';
 
 import '../../../data/repositories/note_repository.dart';
 import '../../../domain/entities/category.dart';
+import '../../../domain/entities/source.dart';
 
 part 'category_state.dart';
 
@@ -14,22 +15,24 @@ class CategoryCubit extends Cubit<CategoryState> {
   CategoryCubit() : super(CategoryInitial());
   BaseNoteRepository baseNoteRepository=GetIt.instance.get<NoteRepository>();
 
-  List<Category> getAllCategories()
+  Future<List<Category>> getAllCategories()async
   {
-   List<Category> allCategories= GetAllCategoriesUseCase( baseNoteRepository:baseNoteRepository).execute();
+   List<Category> allCategories=await GetAllCategoriesUseCase( baseNoteRepository:baseNoteRepository).execute();
    emit(GetAllCategories(allCategories: allCategories));
    return allCategories;
   }
 
-  List<Category> getCategorySources(String category)
-  {
-    List<Category> allCategories= GetAllCategorySourcesUseCase( baseNoteRepository:baseNoteRepository,category: category).execute();
-    emit(GetAllCategories(allCategories: allCategories));
+  Future<List<Source>> getCategorySources(int category)
+  async {
+    List<Source> allSources= await GetAllCategorySourcesUseCase( baseNoteRepository:baseNoteRepository,category: category).execute();
+  print(" we are at emit "+ allSources.toString());
+    emit(GetCategorySources(allCategorySources: allSources));
 
-    return allCategories;
+    return allSources;
   }
 
 
 
 
 }
+

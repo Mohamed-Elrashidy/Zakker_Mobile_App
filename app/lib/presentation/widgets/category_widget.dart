@@ -8,7 +8,7 @@ import '../../utils/note_colors.dart';
 
 class CategoryWidget extends StatelessWidget {
   Dimension scaleDimension = GetIt.instance.get<Dimension>();
-  final Category category;
+  final  category;
   CategoryWidget({required this.category});
   @override
   Widget build(BuildContext context) {

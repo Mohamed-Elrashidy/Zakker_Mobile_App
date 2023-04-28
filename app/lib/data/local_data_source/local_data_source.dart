@@ -171,9 +171,9 @@ class LocalDataSource {
       allCategories.add(jsonEncode(CategoryModel(
           title: category,
           color: color,
-          numberOfNotes: 1,
-          isSource: false,
-          isCategory: true)));
+          numberOfNotes: 1, id: 1,
+
+       )));
     }
 
     sharedPreferences.setStringList(key, allCategories);
@@ -199,9 +199,8 @@ class LocalDataSource {
       CategoryModel categoryModel = CategoryModel(
           title: source,
           color: color,
-          numberOfNotes: 1,
-          isSource: true,
-          isCategory: false);
+          numberOfNotes: 1, id: 1,
+         );
       sources.add(jsonEncode(categoryModel.toJson()));
     }
     sharedPreferences.setStringList(category, sources);

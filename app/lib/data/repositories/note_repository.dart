@@ -2,88 +2,138 @@ import 'package:app/data/local_data_source/local_data_source.dart';
 import 'package:app/data/models/category_model.dart';
 import 'package:app/data/models/note_model.dart';
 import 'package:app/domain/entities/category.dart';
-
 import 'package:app/domain/entities/note.dart';
-
+import 'package:app/domain/entities/source.dart';
 import '../../domain/base_repositories/base_note_repository.dart';
 import '../local_data_source/local_data_source_sqlflite.dart';
+import '../models/source_model.dart';
 
 class NoteRepository extends BaseNoteRepository {
-  final LocalDataSource localDataSource;
-  NoteRepository({required this.localDataSource});
   @override
-  Future<void> addNote(Note note,{bool flag=true}) async {
-    if(flag) {
-      note.id=await DBHelper.insert(_convertFromNoteToNoteModel(note));
-    }
-    print("note id is ${note.id}");
-    localDataSource.addNote(_convertFromNoteToNoteModel(note));
-    localDataSource.addToCategory(note.category, note.color);
-    localDataSource.addSource(note.category, note.source, note.color);
+  Future<void> addNote(Note note, {bool flag = true}) async {
+    await DBHelper.insertData(DBHelper.tableName,
+        _convertFromNoteToNoteModel(note).toJson(flag: false)).then(
+        (value){
+          print("id is "+value.toString());
+        }
+    );
+    int? categoryId = null;
+    int? categoryNoOfNotes;
+   List<Map<String,dynamic>> temp= await  DBHelper.queryData(DBHelper.categoryTable, 'title', note.category);
 
+    if (temp.isEmpty) {
+      categoryId = await addCategory(CategoryModel(
+          title: note.category, color: note.color, numberOfNotes: 1, id:0));
+    } else {
+      categoryId=temp[0]['id'];
+      DBHelper.updateData(DBHelper.categoryTable, "SET numberOfNotes =?",
+          [temp[0]['numberOfNotes']! + 1, temp[0]['id']], 'id');
+    }
+
+ temp=  await DBHelper.queryData(DBHelper.sourceTable, 'title', note.source);
+
+    if (temp.isEmpty) {
+      await addSource(SourceModel(
+          title: note.source,
+          color: note.color,
+          numberOfNotes: 1,
+          id: 0,
+          categoryId: categoryId!));
+    } else {
+      DBHelper.updateData(DBHelper.sourceTable, "SET numberOfNotes =?",
+          [temp[0]['numberOfNotes'] + 1, temp[0]['id']], 'id');
+    }
+   getAllNotes();
+  }
+
+  Future<int> addCategory(CategoryModel category) async {
+    return await DBHelper.insertData(
+        DBHelper.categoryTable, category.toJson(flag: false));
+  }
+
+  Future<void> addSource(SourceModel sourceModel) async {
+    await DBHelper.insertData(
+        DBHelper.sourceTable, sourceModel.toJson(flag: false));
   }
 
   @override
-  void addToFavourites(int noteId,{bool flag=true}) {
-    if(flag)
-    DBHelper.insertToFavourites(noteId);
-    localDataSource.addToFavourites(noteId);
+  void addToFavourites(int noteId, {bool flag = true}) {
+    DBHelper.insertData(DBHelper.favouritesTableName, {'id':noteId});
   }
 
   @override
   void deleteFromFavourites(int noteId) {
-    DBHelper.deleteFromFavourites(noteId);
-    localDataSource.deleteFromFavourites(noteId);
+    DBHelper.deleteData(DBHelper.favouritesTableName, noteId);
   }
 
   @override
-  void deleteNote(Note note) {
-    DBHelper.delete(_convertFromNoteToNoteModel(note));
-    localDataSource.deleteNote(_convertFromNoteToNoteModel(note));
+  Future<void> deleteNote(Note note) async {
+
+    List<Map<String,dynamic>>  temp=  await DBHelper.queryData(DBHelper.sourceTable, 'title', note.source);
+    if(temp[0]['numberOfNotes']!>1)
+      DBHelper.updateData(DBHelper.sourceTable, "SET numberOfNotes =?",
+          [temp[0]['numberOfNotes']! - 1, temp[0]['id']], 'id');
+    else
+    {
+      DBHelper.deleteData(DBHelper.sourceTable, temp[0]['id']);
+    }
+    temp= await  DBHelper.queryData(DBHelper.categoryTable, 'title', note.category);
+    if(temp[0]['numberOfNotes']!>1)
+      DBHelper.updateData(DBHelper.categoryTable, "SET numberOfNotes =?",
+          [temp[0]['numberOfNotes']! - 1, temp[0]['id']], 'id');
+    else
+    {
+      DBHelper.deleteData(DBHelper.categoryTable, temp[0]['id']);
+    }
+
+    DBHelper.deleteData(DBHelper.favouritesTableName, note.id);
+    DBHelper.deleteData(DBHelper.todaysSessionNotesIds, note.id);
+    DBHelper.deleteData(DBHelper.tableName, note.id);
   }
 
   @override
   void editNote(Note note) {
-    DBHelper.update(_convertFromNoteToNoteModel(note));
-    localDataSource.editNote(_convertFromNoteToNoteModel(note));
+    DBHelper.updateData(DBHelper.tableName, "SET title =? , body =?", [note.title,note.body,note.id], 'id');
   }
 
   @override
-  List<Note> getAllNotes() {
+  Future<List<Note>> getAllNotes()  async {
     List<Note> allNotes = [];
-    localDataSource.getAllNotes().forEach((element) {
-      allNotes.add(_convertFromNoteModelToNote(element));
-    });
+    List<Map<String, dynamic>> temp=await DBHelper.getTable(DBHelper.tableName);
+    allNotes.addAll(temp.map(( value) => NoteModel.fromJson(value)).toList());
+
     return allNotes;
   }
 
   @override
-  List<Category> showAllCategories() {
-   List<Category> allCategories=[];
-   localDataSource.getAllCategories().forEach((element) {
-     allCategories.add(_convertFromCategoryModelToCategory(element));
+  Future<List<Category>> showAllCategories() async {
+    List<Category> allCategories = [];
+    List<Map<String, dynamic>> temp=await DBHelper.getTable(DBHelper.categoryTable)??[];
+    allCategories.addAll(temp.map(( value) => CategoryModel.fromJson(value)).toList());
 
-   });
-   return allCategories;
+
+    return allCategories;
   }
 
   @override
-  List<Category> showAllSources(String category) {
-    List<Category>allSources=[];
-    localDataSource.getAllSources(category).forEach((element) {
-      allSources.add(_convertFromCategoryModelToCategory(element));
-    });
+  Future<List<Source>> showAllSources(int categoryId) async {
+    List<Source> allSources = [];
+    List<Map<String, dynamic>> temp=await DBHelper.queryData(DBHelper.sourceTable, "categoryId", categoryId)??[];
+    allSources.addAll(temp.map(( value) => SourceModel.fromJson(value)).toList());
     return allSources;
-
-
   }
 
   @override
-  List<Note> showFavouriteNotes() {
+  Future<List<Note>> showFavouriteNotes() async {
     List<Note> favouriteNotes = [];
-    localDataSource.getFavouriteNotes().forEach((element) {
-      favouriteNotes.add(_convertFromNoteModelToNote(element));
-    });
+    List<Map<String , dynamic>> temp =await DBHelper.getTable(DBHelper.favouritesTableName);
+for (int i=0;i<temp.length;i++)
+  {
+    int currentId=temp[i]['id'];
+    List<Map<String,dynamic>> note=await DBHelper.queryData(DBHelper.tableName, 'id', currentId);
+    favouriteNotes.addAll(note.map(( value) => NoteModel.fromJson(value)).toList());
+  }
+
     return favouriteNotes;
   }
 
@@ -126,7 +176,15 @@ class NoteRepository extends BaseNoteRepository {
         title: categoryModel.title,
         color: categoryModel.color,
         numberOfNotes: categoryModel.numberOfNotes,
-        isSource: categoryModel.isSource,
-        isCategory: categoryModel.isCategory);
+        id: categoryModel.id);
+  }
+
+  Source _convertFromSourceModelToSource(SourceModel sourceModel) {
+    return Source(
+        title: sourceModel.title,
+        color: sourceModel.color,
+        numberOfNotes: sourceModel.numberOfNotes,
+        id: sourceModel.id,
+        categoryId: sourceModel.categoryId);
   }
 }

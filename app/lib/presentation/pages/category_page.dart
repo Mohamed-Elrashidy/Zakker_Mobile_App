@@ -13,11 +13,11 @@ import '../widgets/big_text.dart';
 
 class CategoryPage extends StatelessWidget {
   late Dimension scaleDimension = GetIt.instance.get<Dimension>();
-  late List<Category> categoryList;
+   List<Category> categoryList=[];
 
   @override
   Widget build(BuildContext context) {
-    categoryList = BlocProvider.of<CategoryCubit>(context).getAllCategories();
+     BlocProvider.of<CategoryCubit>(context).getAllCategories();
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -80,7 +80,7 @@ class CategoryPage extends StatelessWidget {
                               Navigator.of(context, rootNavigator: true)
                                   .pushNamed(
                                   Routes.categorySourcesList,
-                                  arguments: categoryList[index].title);
+                                  arguments: '${categoryList[index].title}|${categoryList[index].id}');
                             },
                             child: CategoryWidget(
                                 category: categoryList[index]));

@@ -5,8 +5,12 @@ import 'package:sqflite/sqflite.dart';
 class DBHelper {
   static Database? _db = null;
   static const int _version = 1;
-  static const String _tableName = 'notes';
-  static const String _favouritesTableName = 'favourites';
+  static const String tableName = 'notes';
+  static const String favouritesTableName = 'favourites';
+  static const String todaysSessionNotesIds = "todays";
+  static const String sesionDay = "day";
+  static const String categoryTable = "category";
+  static const String sourceTable = "source";
   static Future<void> initDb() async {
     print('/////////enter db');
     if (_db != null) {
@@ -20,10 +24,20 @@ class DBHelper {
             onCreate: (Database db, int version) async {
           // When creating the db, create the table
           await db.execute(
-            'CREATE TABLE $_tableName (  title STRING, body STRING ,image STRING, category STRING,page String,source String, id Integer Primary Key AUTOINCREMENT, color String,date STRING) ',
+            'CREATE TABLE $tableName (  title STRING, body STRING ,image STRING, category STRING,page String,source String, id Integer Primary Key AUTOINCREMENT, color String,date STRING) ',
           );
           await db.execute(
-              'CREATE TABLE $_favouritesTableName (  id Integer Primary Key)'
+              'CREATE TABLE $favouritesTableName (  id Integer ,FOREIGN KEY (id) REFERENCES Persons($tableName) )');
+          await db.execute(
+              'CREATE TABLE $todaysSessionNotesIds (  id Integer ,FOREIGN KEY (id) REFERENCES Persons($tableName) )');
+          await db
+              .execute('CREATE TABLE $sesionDay (  id Integer Primary Key)');
+
+          await db.execute(
+            'CREATE TABLE $categoryTable (  title STRING,  id Integer Primary Key AUTOINCREMENT, color String,numberOfNotes Integer) ',
+          );
+          await db.execute(
+            'CREATE TABLE $sourceTable (  title STRING,  id Integer Primary Key AUTOINCREMENT, color String, numberOfNotes Integer, categoryId Integer) ',
           );
           print(_db.toString());
 
@@ -37,14 +51,37 @@ class DBHelper {
     }
   }
 
-  static Future<int> insert(NoteModel note) async {
+  static insertData(String tableName, dynamic data) async {
+    return await _db?.insert(tableName, data);
+  }
 
+  static getTable(String tableName) async {
+    return await _db!.query(tableName);
+  }
+
+  static deleteData(String tableName, int id) async {
+    await _db?.delete(tableName, where: 'id = ?', whereArgs: [id]);
+  }
+
+  static queryData(String tableName, String key,var value) async {
+    return await _db?.query(tableName, where: '$key = ?', whereArgs: [value]);
+  }
+  static updateData(String tableName,String parameters,var newValues,String key)async
+  {
+    return await _db!.rawUpdate(
+        'UPDATE $tableName $parameters  Where $key = ? ', newValues);
+  }
+
+
+
+//////////////
+  static Future<int> insert(NoteModel note) async {
     print(';insert');
 
-    print("insert "+note.toJson(flag: false).toString());
+    print("insert " + note.toJson(flag: false).toString());
 
     try {
-      return await _db!.insert(_tableName, note.toJson(flag:false));
+      return await _db!.insert(tableName, note.toJson(flag: false));
     } catch (e) {
       print(e);
       print('we are here');
@@ -54,36 +91,36 @@ class DBHelper {
 
   static Future<int> delete(NoteModel? note) async {
     print(';delete');
-    return await _db!
-        .delete(_tableName, where: 'id = ?', whereArgs: [note?.id]);
+    return await _db!.delete(tableName, where: 'id = ?', whereArgs: [note?.id]);
   }
 
   static Future<int> deleteAll() async {
     print(';delete');
-    return await _db!.delete(_tableName);
+    return await _db!.delete(tableName);
   }
 
   static Future<int> update(NoteModel note) async {
     print(';update');
     return await _db!.rawUpdate(
-        'UPDATE $_tableName SET title =?, body=?,date=?, Where id = ?',[note.title,note.body,DateTime.now(),note.id]);
+        'UPDATE $tableName SET title =?, body=?,date=?, Where id = ?',
+        [note.title, note.body, DateTime.now(), note.id]);
   }
 
   static Future<dynamic> query() async {
     print(_db.toString());
-    return await _db!.query(_tableName);
-  }
-  static Future<dynamic> queryFavourites() async {
-    print(_db.toString());
-    return await _db!.query(_favouritesTableName);
+    return await _db!.query(tableName);
   }
 
-  static insertToFavourites(int id)
-  async {
-    await _db?.insert(_favouritesTableName, {'id':id});
+  static Future<dynamic> queryFavourites() async {
+    print(_db.toString());
+    return await _db!.query(favouritesTableName);
   }
-  static deleteFromFavourites(int id)
-  async {
-    await _db?.delete(_favouritesTableName,where: 'id = ?', whereArgs: [id]);
+
+  static insertToFavourites(int id) async {
+    await _db?.insert(favouritesTableName, {'id': id});
+  }
+
+  static deleteFromFavourites(int id) async {
+    await _db?.delete(favouritesTableName, where: 'id = ?', whereArgs: [id]);
   }
 }

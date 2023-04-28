@@ -23,7 +23,7 @@ class NotePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    isFavourite=BlocProvider.of<NoteCubit>(context).checkIsFavourite(note.id);
+    BlocProvider.of<NoteCubit>(context).checkIsFavourite(note.id);
     return SafeArea(
       child: Scaffold(
           body: Padding(
