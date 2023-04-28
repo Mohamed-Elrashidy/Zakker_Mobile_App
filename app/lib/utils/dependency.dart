@@ -1,4 +1,3 @@
-import 'package:app/data/local_data_source/local_data_source.dart';
 import 'package:app/data/local_data_source/local_data_source_sqlflite.dart';
 import 'package:app/data/repositories/note_repository.dart';
 import 'package:app/data/services/notification_services.dart';

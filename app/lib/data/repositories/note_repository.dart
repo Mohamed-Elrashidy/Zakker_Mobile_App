@@ -1,4 +1,3 @@
-import 'package:app/data/local_data_source/local_data_source.dart';
 import 'package:app/data/models/category_model.dart';
 import 'package:app/data/models/note_model.dart';
 import 'package:app/domain/entities/category.dart';
