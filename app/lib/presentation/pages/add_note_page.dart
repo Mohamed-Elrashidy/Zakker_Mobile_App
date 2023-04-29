@@ -31,31 +31,29 @@ class AddNotePage extends StatelessWidget {
         onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
         },
-        child: ScaffoldMessenger(
-          child: Scaffold(
-              body: Padding(
-            padding: EdgeInsets.all(scaleDimension.scaleWidth(10)),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _appBarBuilder(),
-                  _bodyBuilder(context),
-                ],
-              ),
+        child: Scaffold(
+            body: Padding(
+          padding: EdgeInsets.all(scaleDimension.scaleWidth(10)),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _appBarBuilder(context),
+                _bodyBuilder(context),
+              ],
             ),
-          )),
-        ),
+          ),
+        )),
       ),
     );
   }
 
-  Widget _appBarBuilder() {
+  Widget _appBarBuilder(BuildContext context) {
     return Column(
       children: [
         Row(
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {Navigator.of(context).pop();},
               icon: Icon(Icons.arrow_back_ios_new),
             )
           ],

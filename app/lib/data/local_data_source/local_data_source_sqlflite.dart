@@ -11,6 +11,7 @@ class DBHelper {
   static const String sesionDay = "day";
   static const String categoryTable = "category";
   static const String sourceTable = "source";
+
   static Future<void> initDb() async {
     print('/////////enter db');
     if (_db != null) {
@@ -70,5 +71,8 @@ class DBHelper {
     return await _db!.rawUpdate(
         'UPDATE $tableName $parameters  Where $key = ? ', newValues);
   }
-
+  static deleteTable(String tableName)
+  {
+    _db?.delete(tableName);
+  }
 }

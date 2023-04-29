@@ -21,4 +21,9 @@ class SourceNotesLoaded extends NoteState{
   List<Note> sourceNotesList;
   SourceNotesLoaded({required this.sourceNotesList});
 }
+class TodaysNotesLoaded extends NoteState{
+  List<Note> todaysNotes;
+  TodaysNotesLoaded({required this.todaysNotes});
+}
+
 

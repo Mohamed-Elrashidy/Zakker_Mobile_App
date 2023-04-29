@@ -29,11 +29,11 @@ class _NotesPageState extends State<NotesPage> {
     notes = [];
     BlocProvider.of<NoteCubit>(context).getAllNotes();
   }
-  int x=0;
+
+  int x = 0;
 
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -104,6 +104,8 @@ class _NotesPageState extends State<NotesPage> {
             } else if (state is FavouriteNotesLoaded) {
               notes = (state.favouriteNotes);
             }
+            else if(state is TodaysNotesLoaded)
+              notes=state.todaysNotes;
             return NotesListBuilder(notes: notes);
           },
         ));
@@ -112,22 +114,21 @@ class _NotesPageState extends State<NotesPage> {
   Widget _tabBarBuilder() {
     return BlocBuilder<NoteCubit, NoteState>(
       builder: (context, state) {
-        if(state is AllNotesLoaded)
-          {
-            x=0;
-          }
-        else if(state is FavouriteNotesLoaded)
-          {
-            x=2;
-          }
-        print("x is here"+x.toString());
+        if (state is AllNotesLoaded) {
+          x = 0;
+        } else if (state is TodaysNotesLoaded) {
+          x = 1;
+        } else if (state is FavouriteNotesLoaded) {
+          x = 2;
+        }
+        print("x is here" + x.toString());
         return Container(
           width: scaleDimension.screenWidth,
           height: scaleDimension.scaleHeight(50),
           decoration: BoxDecoration(
               color: Colors.grey[200],
-              borderRadius: BorderRadius.circular(
-                  scaleDimension.scaleWidth(16))),
+              borderRadius:
+                  BorderRadius.circular(scaleDimension.scaleWidth(16))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -136,23 +137,24 @@ class _NotesPageState extends State<NotesPage> {
                 onTap: () {
                   BlocProvider.of<NoteCubit>(context).getAllNotes();
                 },
-                buttonColor:(x==0)?Colors.black: Colors.grey[200]!,
-                textColor: (x==0)?Colors.white:Colors.grey,
+                buttonColor: (x == 0) ? Colors.black : Colors.grey[200]!,
+                textColor: (x == 0) ? Colors.white : Colors.grey,
               ),
               MainButton(
                 title: "Session",
-                onTap: () {},
-                buttonColor:(x==1)?Colors.black: Colors.grey[200]!,
-                textColor: (x==1)?Colors.white:Colors.grey,
+                onTap: () {
+                  BlocProvider.of<NoteCubit>(context).getTodaysNotes();
+                },
+                buttonColor: (x == 1) ? Colors.black : Colors.grey[200]!,
+                textColor: (x == 1) ? Colors.white : Colors.grey,
               ),
               MainButton(
                 title: "Favourites",
                 onTap: () {
                   BlocProvider.of<NoteCubit>(context).getFavouriteNotes();
-
                 },
-                buttonColor:(x==2)?Colors.black:  Colors.grey[200]!,
-                textColor: (x==2)?Colors.white:Colors.grey,
+                buttonColor: (x == 2) ? Colors.black : Colors.grey[200]!,
+                textColor: (x == 2) ? Colors.white : Colors.grey,
               ),
             ],
           ),
@@ -160,5 +162,4 @@ class _NotesPageState extends State<NotesPage> {
       },
     );
   }
-
 }

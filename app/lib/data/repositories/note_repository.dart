@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:app/data/models/category_model.dart';
 import 'package:app/data/models/note_model.dart';
 import 'package:app/domain/entities/category.dart';
@@ -63,29 +65,29 @@ class NoteRepository extends BaseNoteRepository {
   void deleteFromFavourites(int noteId) {
     DBHelper.deleteData(DBHelper.favouritesTableName, noteId);
   }
- Future<void> deleteSource(String noteSource)
- async {
-   List<Map<String, dynamic>> temp =
-       await DBHelper.queryData(DBHelper.sourceTable, 'title', noteSource);
-   if (temp[0]['numberOfNotes']! > 1) {
-     DBHelper.updateData(DBHelper.sourceTable, "SET numberOfNotes =?",
-         [temp[0]['numberOfNotes']! - 1, temp[0]['id']], 'id');
-   } else {
-     DBHelper.deleteData(DBHelper.sourceTable, temp[0]['id']);
-   }
- }
- Future<void> deleteCategory(String noteCategory)
- async {
 
-   List<Map<String, dynamic>>temp = await DBHelper.queryData(
-       DBHelper.categoryTable, 'title', noteCategory);
-   if (temp[0]['numberOfNotes']! > 1) {
-     DBHelper.updateData(DBHelper.categoryTable, "SET numberOfNotes =?",
-         [temp[0]['numberOfNotes']! - 1, temp[0]['id']], 'id');
-   } else {
-     DBHelper.deleteData(DBHelper.categoryTable, temp[0]['id']);
-   }
- }
+  Future<void> deleteSource(String noteSource) async {
+    List<Map<String, dynamic>> temp =
+        await DBHelper.queryData(DBHelper.sourceTable, 'title', noteSource);
+    if (temp[0]['numberOfNotes']! > 1) {
+      DBHelper.updateData(DBHelper.sourceTable, "SET numberOfNotes =?",
+          [temp[0]['numberOfNotes']! - 1, temp[0]['id']], 'id');
+    } else {
+      DBHelper.deleteData(DBHelper.sourceTable, temp[0]['id']);
+    }
+  }
+
+  Future<void> deleteCategory(String noteCategory) async {
+    List<Map<String, dynamic>> temp =
+        await DBHelper.queryData(DBHelper.categoryTable, 'title', noteCategory);
+    if (temp[0]['numberOfNotes']! > 1) {
+      DBHelper.updateData(DBHelper.categoryTable, "SET numberOfNotes =?",
+          [temp[0]['numberOfNotes']! - 1, temp[0]['id']], 'id');
+    } else {
+      DBHelper.deleteData(DBHelper.categoryTable, temp[0]['id']);
+    }
+  }
+
   @override
   Future<void> deleteNote(Note note) async {
     deleteSource(note.source);
@@ -150,9 +152,66 @@ class NoteRepository extends BaseNoteRepository {
   }
 
   @override
-  List<Note> showTodaysNotes() {
-    // TODO: implement showTodaysNotes
-    throw UnimplementedError();
+  Future<List<Note>> showTodaysNotes() async {
+    List<Note> todaysNotes = [];
+    bool check = await checkDay();
+    if (!check) {
+      await updateSession();
+    }
+
+    todaysNotes = await getSessionNotes();
+
+    return todaysNotes;
+  }
+
+  updateSession() async {
+    print('updated');
+    Set<int> notesIndex = {};
+    Random random = Random();
+    List<Note> notes = await getAllNotes();
+    await DBHelper.deleteTable(DBHelper.todaysSessionNotesIds);
+    print("notes index length "+notesIndex.length.toString());
+    while (notesIndex.length < 10 && notesIndex.length < notes.length) {
+      print("here");
+      notesIndex.add(random.nextInt(notes.length));
+    }
+    print("notes index length "+notesIndex.length.toString());
+
+    for (int x in notesIndex) {
+      await DBHelper.insertData(
+          DBHelper.todaysSessionNotesIds, {'id': notes[x].id});
+    }
+    await DBHelper.deleteTable(DBHelper.sesionDay);
+    await DBHelper.insertData(DBHelper.sesionDay,
+        {'id': int.parse(DateTime.now().toString().substring(0, 2))});
+    print("out");
+  }
+
+  Future<bool> checkDay() async {
+    var temp = await DBHelper.getTable(DBHelper.sesionDay);
+    try {
+      if (temp[0]['id'] ==
+          int.parse(DateTime.now().toString().substring(0, 2))) {
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  Future<List<Note>> getSessionNotes() async {
+    print("entered");
+    List<Note> todaysNotes = [];
+    var  temp = await DBHelper.getTable(DBHelper.todaysSessionNotesIds);
+    for (int i = 0; i < temp.length; i++) {
+      List<Map<String, dynamic>> result =
+          await DBHelper.queryData(DBHelper.tableName, 'id', temp[i]['id']);
+      if(result.length>=1)
+      todaysNotes.add(NoteModel.fromJson(result[0]));
+    }
+
+    return todaysNotes;
   }
 
   NoteModel _convertFromNoteToNoteModel(Note note) {

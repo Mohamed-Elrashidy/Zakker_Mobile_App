@@ -6,6 +6,7 @@ import 'package:app/domain/usecases/delete_from_favourites_usecase.dart';
 import 'package:app/domain/usecases/edit_note_usecase.dart';
 import 'package:app/domain/usecases/get_all_note_usecase.dart';
 import 'package:app/domain/usecases/get_favourite_notes_usecase.dart';
+import 'package:app/domain/usecases/get_todays_notes_usecase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
@@ -20,9 +21,10 @@ class NoteCubit extends Cubit<NoteState> {
   BaseNoteRepository baseNoteRepository = GetIt.instance.get<NoteRepository>();
   Map<String, List<Note>> sourcesNotes = {};
   Future<List<Note>> getAllNotes() async {
-    sourcesNotes={};
+    sourcesNotes = {};
     List<Note> allNotes =
-        await GetAllNotesUseCase(baseNoteRepository: baseNoteRepository).execute();
+        await GetAllNotesUseCase(baseNoteRepository: baseNoteRepository)
+            .execute();
     emit(AllNotesLoaded(allNotes: allNotes));
     print("we are notes");
 
@@ -37,14 +39,22 @@ class NoteCubit extends Cubit<NoteState> {
 
     return allNotes;
   }
-  List<Note>getSourceNotes(String key)
 
-  {print(sourcesNotes.length);
+  List<Note> getSourceNotes(String key) {
+    print(sourcesNotes.length);
     print(sourcesNotes);
     print(key);
-    print("answer "+ sourcesNotes[key].toString());
-    emit(SourceNotesLoaded(sourceNotesList: sourcesNotes[key]??[]));
-    return sourcesNotes[key]??[];
+    print("answer ${sourcesNotes[key]}");
+    emit(SourceNotesLoaded(sourceNotesList: sourcesNotes[key] ?? []));
+    return sourcesNotes[key] ?? [];
+  }
+
+  Future<List<Note>> getTodaysNotes() async {
+    List<Note> todaysNotes =
+        await GetTodaysNotesUseCase(baseNoteRepository: baseNoteRepository)
+            .execute();
+    emit(TodaysNotesLoaded(todaysNotes: todaysNotes));
+    return todaysNotes;
   }
 
   Future<List<Note>> getFavouriteNotes() async {
@@ -55,40 +65,40 @@ class NoteCubit extends Cubit<NoteState> {
     print("reached to favourites");
     return favouriteNotes;
   }
-  Future<bool> checkIsFavourite(int noteId)
-  async {
-    bool isFavourite=false;
-    List<Note> favouriteNotes =await
-    GetFavouriteNotesUseCase(baseNoteRepository: baseNoteRepository)
-        .execute();
+
+  Future<bool> checkIsFavourite(int noteId) async {
+    bool isFavourite = false;
+    List<Note> favouriteNotes =
+        await GetFavouriteNotesUseCase(baseNoteRepository: baseNoteRepository)
+            .execute();
 
     for (var element in favouriteNotes) {
-          if(element.id==noteId)
-            isFavourite=true;
-        }
+      if (element.id == noteId) isFavourite = true;
+    }
 
     emit(CheckIsFavourite(isFavourite: isFavourite));
     return false;
-
   }
+
   void addNote(Note note) {
     AddNoteUseCase(baseNoteRepository: baseNoteRepository).execute(note);
   }
-  void deleteNote(Note note)
-  {
 
-    DeleteNoteUsCase(baseNoteRepository:baseNoteRepository).execute(note);
+  void deleteNote(Note note) {
+    DeleteNoteUsCase(baseNoteRepository: baseNoteRepository).execute(note);
   }
-  void editNote(Note note)
-  {
+
+  void editNote(Note note) {
     EditNoteUseCase(baseNoteRepository: baseNoteRepository).execute(note);
   }
-  void addToFavourites(int noteId)
-  {
-    AddToFavouritesUseCase(baseNoteRepository: baseNoteRepository).execute(noteId);
+
+  void addToFavourites(int noteId) {
+    AddToFavouritesUseCase(baseNoteRepository: baseNoteRepository)
+        .execute(noteId);
   }
-  void deleteFromFavourites(int noteId)
-  {
-    DeleteFromFavouritesUseCase(baseNoteRepository: baseNoteRepository).execute(noteId);
+
+  void deleteFromFavourites(int noteId) {
+    DeleteFromFavouritesUseCase(baseNoteRepository: baseNoteRepository)
+        .execute(noteId);
   }
 }
