@@ -1,6 +1,6 @@
 import 'package:app/data/local_data_source/local_data_source_sqlflite.dart';
 import 'package:app/data/repositories/note_repository.dart';
-import 'package:app/data/services/notification_services.dart';
+import 'package:app/services/notification_services.dart';
 import 'package:app/utils/dimension_scale.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';

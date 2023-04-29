@@ -1,4 +1,3 @@
-import 'package:app/data/services/notification_services.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:flutter/material.dart';

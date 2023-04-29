@@ -1,6 +1,5 @@
 import 'dart:math';
-
-import 'package:app/data/services/notification_services.dart';
+import 'package:app/services/notification_services.dart';
 import 'package:app/presentation/controllers/categories_controller/category_cubit.dart';
 import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/pages/bottom_nav_bar_page.dart';
@@ -11,22 +10,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:workmanager/workmanager.dart';
-
 import 'data/repositories/note_repository.dart';
 import 'domain/entities/note.dart';
-@pragma(    'vm:entry-point')
+
+@pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
     await Dependancy().initControllers();
 
     NotificationServices.showNotification(
-        title: 'start',
-        body:'hi',
-        fln: FlutterLocalNotificationsPlugin());
-    print (' here at error');
-    try{
-
-      List<Note> notes = await GetIt.instance.get<NoteRepository>().getAllNotes();
+        title: 'start', body: 'hi', fln: FlutterLocalNotificationsPlugin());
+    print(' here at error');
+    try {
+      List<Note> notes =
+          await GetIt.instance.get<NoteRepository>().getAllNotes();
       if (notes.isNotEmpty) {
         Random random = Random();
         int randomNumber = random.nextInt(notes.length);
@@ -41,34 +38,31 @@ void callbackDispatcher() {
             fln: GetIt.instance.get<FlutterLocalNotificationsPlugin>());
       }
       print('Valid');
-    }
-    catch(e)
-    {
+    } catch (e) {
       NotificationServices.showNotification(
           title: 'error',
           body: e.toString(),
           fln: FlutterLocalNotificationsPlugin());
-      print (' here at error');
+      print(' here at error');
     }
 
     return Future.value(true);
-  });}
+  });
+}
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Dependancy().initControllers();
 
   await Workmanager().initialize(
-      callbackDispatcher,
+    callbackDispatcher,
   );
-
 
   await Workmanager().registerPeriodicTask(
     "1",
     "fixed",
     frequency: Duration(minutes: 15),
-
   );
-
 
   runApp(const MyApp());
 }

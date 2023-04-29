@@ -8,4 +8,5 @@ class AppConstants{
   static const categoryList="category_list";
   static const sourceList="source_list";
   static const newId="new_id";
+
 }
