@@ -44,7 +44,6 @@ class DBHelper {
           print('Createdddddddddddddddddddddddddddddddd');
         });
       } catch (e) {
-        print("this is the errr " + e.toString());
         print('Errrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
       }
       print('/////////////////////////////out dp');
@@ -72,55 +71,4 @@ class DBHelper {
         'UPDATE $tableName $parameters  Where $key = ? ', newValues);
   }
 
-
-
-//////////////
-  static Future<int> insert(NoteModel note) async {
-    print(';insert');
-
-    print("insert " + note.toJson(flag: false).toString());
-
-    try {
-      return await _db!.insert(tableName, note.toJson(flag: false));
-    } catch (e) {
-      print(e);
-      print('we are here');
-      return 9000000;
-    }
-  }
-
-  static Future<int> delete(NoteModel? note) async {
-    print(';delete');
-    return await _db!.delete(tableName, where: 'id = ?', whereArgs: [note?.id]);
-  }
-
-  static Future<int> deleteAll() async {
-    print(';delete');
-    return await _db!.delete(tableName);
-  }
-
-  static Future<int> update(NoteModel note) async {
-    print(';update');
-    return await _db!.rawUpdate(
-        'UPDATE $tableName SET title =?, body=?,date=?, Where id = ?',
-        [note.title, note.body, DateTime.now(), note.id]);
-  }
-
-  static Future<dynamic> query() async {
-    print(_db.toString());
-    return await _db!.query(tableName);
-  }
-
-  static Future<dynamic> queryFavourites() async {
-    print(_db.toString());
-    return await _db!.query(favouritesTableName);
-  }
-
-  static insertToFavourites(int id) async {
-    await _db?.insert(favouritesTableName, {'id': id});
-  }
-
-  static deleteFromFavourites(int id) async {
-    await _db?.delete(favouritesTableName, where: 'id = ?', whereArgs: [id]);
-  }
 }
