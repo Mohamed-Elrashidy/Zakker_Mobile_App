@@ -22,10 +22,10 @@
 * [ ] Open Pdf
 * [x] Get all notes
 * [x] Get favourite notes
-* [ ] Get Today's session
+* [x] Get Today's session
 * [x] Classify notes to their sources
 * [x] Classify sources to their categories
-* [ ] Get Notifications
+* [x] Get Notifications
 * [ ] Tracking system
 * [ ] Save data on server
 * [ ] multi languages
