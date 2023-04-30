@@ -1,3 +1,4 @@
+
 import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/main_button.dart';
@@ -100,12 +101,16 @@ class _NotesPageState extends State<NotesPage> {
         child: BlocBuilder<NoteCubit, NoteState>(
           builder: (context, state) {
             if (state is AllNotesLoaded) {
+
               notes = (state).allNotes;
             } else if (state is FavouriteNotesLoaded) {
+
               notes = (state.favouriteNotes);
             }
-            else if(state is TodaysNotesLoaded)
+            else if(state is TodaysNotesLoaded) {
+
               notes=state.todaysNotes;
+            }
             return NotesListBuilder(notes: notes);
           },
         ));
@@ -143,6 +148,7 @@ class _NotesPageState extends State<NotesPage> {
               MainButton(
                 title: "Session",
                 onTap: () {
+
                   BlocProvider.of<NoteCubit>(context).getTodaysNotes();
                 },
                 buttonColor: (x == 1) ? Colors.black : Colors.grey[200]!,

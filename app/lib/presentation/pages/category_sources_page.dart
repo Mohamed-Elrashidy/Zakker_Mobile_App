@@ -1,3 +1,4 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:app/presentation/controllers/categories_controller/category_cubit.dart';
 import 'package:app/presentation/widgets/category_widget.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
@@ -72,25 +73,28 @@ class CategorySourcesPage extends StatelessWidget {
           children: [
             Container(
               height: scaleDimension.scaleHeight(420),
-              child: GridView.builder(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing: scaleDimension.scaleWidth(30),
-                    mainAxisSpacing: scaleDimension.scaleHeight(30),
-                    crossAxisCount: 2,
-                  ),
-                  itemCount: categorySourcesList.length,
-                  itemBuilder: (context, index) {
-                    return InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(
-                              Routes.sourceNotesPage,
-                              arguments: category +
-                                  ' ' +
-                                  categorySourcesList[index].title);
-                        },
-                        child: CategoryWidget(
-                            category: categorySourcesList[index]));
-                  }),
+              child: SlideInLeft(
+                
+                child: GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: scaleDimension.scaleWidth(30),
+                      mainAxisSpacing: scaleDimension.scaleHeight(30),
+                      crossAxisCount: 2,
+                    ),
+                    itemCount: categorySourcesList.length,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(
+                                Routes.sourceNotesPage,
+                                arguments: category +
+                                    ' ' +
+                                    categorySourcesList[index].title);
+                          },
+                          child: CategoryWidget(
+                              category: categorySourcesList[index]));
+                    }),
+              ),
             ),
             SizedBox(
               height: scaleDimension.scaleHeight(60),
