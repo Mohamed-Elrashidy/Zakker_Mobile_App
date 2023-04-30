@@ -18,6 +18,7 @@ class NotesListBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AnimationController animateController ;
 
     print("rebuilded");
     return ListView.builder(
@@ -27,7 +28,13 @@ class NotesListBuilder extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            FadeInDown(child: SlideInLeft(child: _noteWidgetBuilder(notes[index], context))),
+            FadeInDown(
+                controller: ( controller ) => animateController = controller,
+
+                child: SlideInLeft(
+                    controller: ( controller ) => animateController = controller,
+
+                    child: _noteWidgetBuilder(notes[index], context))),
             SizedBox(
               height: scaleDimension.scaleHeight(20),
             )

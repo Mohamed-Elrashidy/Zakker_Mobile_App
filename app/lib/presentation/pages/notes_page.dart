@@ -111,6 +111,10 @@ class _NotesPageState extends State<NotesPage> {
 
               notes=state.todaysNotes;
             }
+            else if(state is ClearNotes)
+              {
+                notes=[];
+              }
             return NotesListBuilder(notes: notes);
           },
         ));
@@ -140,6 +144,7 @@ class _NotesPageState extends State<NotesPage> {
               MainButton(
                 title: "Notes",
                 onTap: () {
+                  BlocProvider.of<NoteCubit>(context).clearNotes();
                   BlocProvider.of<NoteCubit>(context).getAllNotes();
                 },
                 buttonColor: (x == 0) ? Colors.black : Colors.grey[200]!,
@@ -148,6 +153,7 @@ class _NotesPageState extends State<NotesPage> {
               MainButton(
                 title: "Session",
                 onTap: () {
+                  BlocProvider.of<NoteCubit>(context).clearNotes();
 
                   BlocProvider.of<NoteCubit>(context).getTodaysNotes();
                 },
@@ -157,6 +163,8 @@ class _NotesPageState extends State<NotesPage> {
               MainButton(
                 title: "Favourites",
                 onTap: () {
+                  BlocProvider.of<NoteCubit>(context).clearNotes();
+
                   BlocProvider.of<NoteCubit>(context).getFavouriteNotes();
                 },
                 buttonColor: (x == 2) ? Colors.black : Colors.grey[200]!,

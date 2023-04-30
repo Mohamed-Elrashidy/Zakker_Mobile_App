@@ -25,5 +25,8 @@ class TodaysNotesLoaded extends NoteState{
   List<Note> todaysNotes;
   TodaysNotesLoaded({required this.todaysNotes});
 }
+class ClearNotes extends NoteState{
+
+}
 
 

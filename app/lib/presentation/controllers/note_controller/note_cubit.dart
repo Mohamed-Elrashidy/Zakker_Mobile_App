@@ -10,16 +10,21 @@ import 'package:app/domain/usecases/get_todays_notes_usecase.dart';
 import 'package:bloc/bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:meta/meta.dart';
-
 import '../../../domain/entities/note.dart';
 import '../../../domain/usecases/delete_note_usecase.dart';
 
 part 'note_state.dart';
 
 class NoteCubit extends Cubit<NoteState> {
+
   NoteCubit() : super(NoteInitial());
   BaseNoteRepository baseNoteRepository = GetIt.instance.get<NoteRepository>();
   Map<String, List<Note>> sourcesNotes = {};
+  clearNotes()
+  {
+    emit(ClearNotes());
+  }
+
   Future<List<Note>> getAllNotes() async {
     sourcesNotes = {};
     List<Note> allNotes =
