@@ -45,6 +45,7 @@ dependencies:
   workmanager: ^0.5.1
   sqflite: ^2.2.7
   animate_do: ^3.0.2
+  flutter_staggered_animations: ^1.1.1
 
 dev_dependencies:
   flutter_test:

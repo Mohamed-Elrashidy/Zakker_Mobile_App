@@ -64,7 +64,7 @@ class DBHelper {
   }
 
   static queryData(String tableName, String key,var value) async {
-    return await _db?.query(tableName, where: '$key = ?', whereArgs: [value]);
+    return await _db?.query(tableName, where: key, whereArgs: value);
   }
   static updateData(String tableName,String parameters,var newValues,String key)async
   {

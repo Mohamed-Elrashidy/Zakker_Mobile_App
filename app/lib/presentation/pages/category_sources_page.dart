@@ -7,6 +7,7 @@ import 'package:app/utils/dummy_data.dart';
 import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get_it/get_it.dart';
 
 import '../../domain/entities/category.dart';
@@ -73,28 +74,36 @@ class CategorySourcesPage extends StatelessWidget {
           children: [
             Container(
               height: scaleDimension.scaleHeight(420),
-              child: SlideInLeft(
-                
-                child: GridView.builder(
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisSpacing: scaleDimension.scaleWidth(30),
-                      mainAxisSpacing: scaleDimension.scaleHeight(30),
-                      crossAxisCount: 2,
-                    ),
-                    itemCount: categorySourcesList.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(
-                                Routes.sourceNotesPage,
-                                arguments: category +
-                                    ' ' +
-                                    categorySourcesList[index].title);
-                          },
-                          child: CategoryWidget(
-                              category: categorySourcesList[index]));
-                    }),
-              ),
+              child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisSpacing: scaleDimension.scaleWidth(30),
+                    mainAxisSpacing: scaleDimension.scaleHeight(30),
+                    crossAxisCount: 2,
+                  ),
+                  itemCount: categorySourcesList.length,
+                  itemBuilder: (context, index) {
+                    return AnimationConfiguration.staggeredGrid(
+                      position: index,
+                      
+                      columnCount: 2,
+                      child: SlideAnimation
+                        (
+                        duration: Duration(milliseconds: 500),
+                        verticalOffset: 0,
+                        horizontalOffset: -300,
+                        child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(
+                                  Routes.sourceNotesPage,
+                                  arguments: category +
+                                      ' ' +
+                                      categorySourcesList[index].title);
+                            },
+                            child: CategoryWidget(
+                                category: categorySourcesList[index])),
+                      ),
+                    );
+                  }),
             ),
             SizedBox(
               height: scaleDimension.scaleHeight(60),

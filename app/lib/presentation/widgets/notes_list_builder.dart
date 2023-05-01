@@ -1,8 +1,8 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:app/presentation/widgets/small_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get_it/get_it.dart';
-
 import '../../domain/entities/note.dart';
 import '../../utils/dimension_scale.dart';
 import '../../utils/note_colors.dart';
@@ -14,31 +14,33 @@ class NotesListBuilder extends StatelessWidget {
   List<Note> notes;
   NotesListBuilder({required this.notes});
   Dimension scaleDimension = GetIt.instance.get<Dimension>();
-  List<Note>_notes=[];
+  List<Note> _notes = [];
 
   @override
   Widget build(BuildContext context) {
-    AnimationController animateController ;
+    AnimationController animateController;
 
     print("rebuilded");
     return ListView.builder(
       itemCount: notes.length,
       itemBuilder: (BuildContext context, int index) {
         print("$index");
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            FadeInDown(
-                controller: ( controller ) => animateController = controller,
-
-                child: SlideInLeft(
-                    controller: ( controller ) => animateController = controller,
-
-                    child: _noteWidgetBuilder(notes[index], context))),
-            SizedBox(
-              height: scaleDimension.scaleHeight(20),
-            )
-          ],
+        return AnimationConfiguration.staggeredList(
+          position: index,
+          duration: const Duration(milliseconds: 500),
+          child: SlideAnimation(
+            verticalOffset: 0,
+            horizontalOffset: -500,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _noteWidgetBuilder(notes[index], context),
+                SizedBox(
+                  height: scaleDimension.scaleHeight(20),
+                )
+              ],
+            ),
+          ),
         );
       },
     );

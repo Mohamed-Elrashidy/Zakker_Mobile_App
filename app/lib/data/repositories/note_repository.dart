@@ -19,7 +19,7 @@ class NoteRepository extends BaseNoteRepository {
     });
     int? categoryId;
     List<Map<String, dynamic>> temp = await DBHelper.queryData(
-        DBHelper.categoryTable, 'title', note.category);
+        DBHelper.categoryTable, 'title=?', [note.category]);
 
     if (temp.isEmpty) {
       categoryId = await addCategory(CategoryModel(
@@ -30,7 +30,7 @@ class NoteRepository extends BaseNoteRepository {
           [temp[0]['numberOfNotes']! + 1, temp[0]['id']], 'id');
     }
 
-    temp = await DBHelper.queryData(DBHelper.sourceTable, 'title', note.source);
+    temp = await DBHelper.queryData(DBHelper.sourceTable, 'title=? and categoryId = ?', [note.source,categoryId]);
 
     if (temp.isEmpty) {
       await addSource(SourceModel(
@@ -68,7 +68,7 @@ class NoteRepository extends BaseNoteRepository {
 
   Future<void> deleteSource(String noteSource) async {
     List<Map<String, dynamic>> temp =
-        await DBHelper.queryData(DBHelper.sourceTable, 'title', noteSource);
+        await DBHelper.queryData(DBHelper.sourceTable, 'title=?', [noteSource]);
     if (temp[0]['numberOfNotes']! > 1) {
       DBHelper.updateData(DBHelper.sourceTable, "SET numberOfNotes =?",
           [temp[0]['numberOfNotes']! - 1, temp[0]['id']], 'id');
@@ -79,7 +79,7 @@ class NoteRepository extends BaseNoteRepository {
 
   Future<void> deleteCategory(String noteCategory) async {
     List<Map<String, dynamic>> temp =
-        await DBHelper.queryData(DBHelper.categoryTable, 'title', noteCategory);
+        await DBHelper.queryData(DBHelper.categoryTable, 'title=?', [noteCategory]);
     if (temp[0]['numberOfNotes']! > 1) {
       DBHelper.updateData(DBHelper.categoryTable, "SET numberOfNotes =?",
           [temp[0]['numberOfNotes']! - 1, temp[0]['id']], 'id');
@@ -128,7 +128,7 @@ class NoteRepository extends BaseNoteRepository {
   Future<List<Source>> showAllSources(int categoryId) async {
     List<Source> allSources = [];
     List<Map<String, dynamic>> temp = await DBHelper.queryData(
-            DBHelper.sourceTable, "categoryId", categoryId) ??
+            DBHelper.sourceTable, "categoryId=?", [categoryId]) ??
         [];
     allSources
         .addAll(temp.map((value) => SourceModel.fromJson(value)).toList());
@@ -143,7 +143,7 @@ class NoteRepository extends BaseNoteRepository {
     for (int i = 0; i < temp.length; i++) {
       int currentId = temp[i]['id'];
       List<Map<String, dynamic>> note =
-          await DBHelper.queryData(DBHelper.tableName, 'id', currentId);
+          await DBHelper.queryData(DBHelper.tableName, 'id=?', [currentId]);
       favouriteNotes
           .addAll(note.map((value) => NoteModel.fromJson(value)).toList());
     }
@@ -206,7 +206,7 @@ class NoteRepository extends BaseNoteRepository {
     var  temp = await DBHelper.getTable(DBHelper.todaysSessionNotesIds);
     for (int i = 0; i < temp.length; i++) {
       List<Map<String, dynamic>> result =
-          await DBHelper.queryData(DBHelper.tableName, 'id', temp[i]['id']);
+          await DBHelper.queryData(DBHelper.tableName, 'id=?', [temp[i]['id']]);
       if(result.length>=1)
       todaysNotes.add(NoteModel.fromJson(result[0]));
     }

@@ -78,12 +78,12 @@ class MyApp extends StatelessWidget {
       child: BlocProvider<NoteCubit>(
         create: (BuildContext context) => NoteCubit(),
         child: MaterialApp(
+          //  theme: ThemeData.light(useMaterial3: true),
+
             onGenerateRoute: AppRouting.generateRoutes,
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
+
             home: BottomNavBarPage()),
       ),
     );
