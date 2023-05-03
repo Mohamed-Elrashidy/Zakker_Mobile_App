@@ -1,3 +1,4 @@
+import 'dart:async';
 
 import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
@@ -96,25 +97,19 @@ class _NotesPageState extends State<NotesPage> {
   }
 
   Widget _bodyBuilder() {
-    return Container(
+    return SizedBox(
         height: scaleDimension.scaleHeight(400),
         child: BlocBuilder<NoteCubit, NoteState>(
           builder: (context, state) {
             if (state is AllNotesLoaded) {
-
               notes = (state).allNotes;
             } else if (state is FavouriteNotesLoaded) {
-
               notes = (state.favouriteNotes);
+            } else if (state is TodaysNotesLoaded) {
+              notes = state.todaysNotes;
+            } else if (state is ClearNotes) {
+              notes = [];
             }
-            else if(state is TodaysNotesLoaded) {
-
-              notes=state.todaysNotes;
-            }
-            else if(state is ClearNotes)
-              {
-                notes=[];
-              }
             return NotesListBuilder(notes: notes);
           },
         ));
@@ -142,9 +137,11 @@ class _NotesPageState extends State<NotesPage> {
             children: [
               MainButton(
                 title: "Notes",
-                onTap: (){
+                onTap: () {
                   BlocProvider.of<NoteCubit>(context).clearNotes();
-                  BlocProvider.of<NoteCubit>(context).getAllNotes();
+                  Timer(const Duration(milliseconds: 150), () {
+                    BlocProvider.of<NoteCubit>(context).getAllNotes();
+                  });
                 },
                 buttonColor: (x == 0) ? Colors.black : Colors.grey[200]!,
                 textColor: (x == 0) ? Colors.white : Colors.grey,
@@ -153,7 +150,9 @@ class _NotesPageState extends State<NotesPage> {
                 title: "Session",
                 onTap: () {
                   BlocProvider.of<NoteCubit>(context).clearNotes();
-                  BlocProvider.of<NoteCubit>(context).getTodaysNotes();
+                  Timer(const Duration(milliseconds: 150), () {
+                    BlocProvider.of<NoteCubit>(context).getTodaysNotes();
+                  });
                 },
                 buttonColor: (x == 1) ? Colors.black : Colors.grey[200]!,
                 textColor: (x == 1) ? Colors.white : Colors.grey,
@@ -162,7 +161,9 @@ class _NotesPageState extends State<NotesPage> {
                 title: "Favourites",
                 onTap: () {
                   BlocProvider.of<NoteCubit>(context).clearNotes();
-                  BlocProvider.of<NoteCubit>(context).getFavouriteNotes();
+                  Timer(const Duration(milliseconds: 150), () {
+                    BlocProvider.of<NoteCubit>(context).getFavouriteNotes();
+                  });
                 },
                 buttonColor: (x == 2) ? Colors.black : Colors.grey[200]!,
                 textColor: (x == 2) ? Colors.white : Colors.grey,

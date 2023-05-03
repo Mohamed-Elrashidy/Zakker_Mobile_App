@@ -7,7 +7,6 @@ import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:app/presentation/widgets/small_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-
 import '../../domain/entities/note.dart';
 import '../../utils/dimension_scale.dart';
 import '../controllers/note_controller/note_cubit.dart';
