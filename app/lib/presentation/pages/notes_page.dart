@@ -130,7 +130,6 @@ class _NotesPageState extends State<NotesPage> {
         } else if (state is FavouriteNotesLoaded) {
           x = 2;
         }
-        print("x is here" + x.toString());
         return Container(
           width: scaleDimension.screenWidth,
           height: scaleDimension.scaleHeight(50),
@@ -143,7 +142,7 @@ class _NotesPageState extends State<NotesPage> {
             children: [
               MainButton(
                 title: "Notes",
-                onTap: () {
+                onTap: (){
                   BlocProvider.of<NoteCubit>(context).clearNotes();
                   BlocProvider.of<NoteCubit>(context).getAllNotes();
                 },
@@ -154,7 +153,6 @@ class _NotesPageState extends State<NotesPage> {
                 title: "Session",
                 onTap: () {
                   BlocProvider.of<NoteCubit>(context).clearNotes();
-
                   BlocProvider.of<NoteCubit>(context).getTodaysNotes();
                 },
                 buttonColor: (x == 1) ? Colors.black : Colors.grey[200]!,
@@ -164,7 +162,6 @@ class _NotesPageState extends State<NotesPage> {
                 title: "Favourites",
                 onTap: () {
                   BlocProvider.of<NoteCubit>(context).clearNotes();
-
                   BlocProvider.of<NoteCubit>(context).getFavouriteNotes();
                 },
                 buttonColor: (x == 2) ? Colors.black : Colors.grey[200]!,

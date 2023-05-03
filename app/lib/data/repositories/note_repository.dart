@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:app/data/models/category_model.dart';
 import 'package:app/data/models/note_model.dart';
 import 'package:app/domain/entities/category.dart';
@@ -14,9 +13,7 @@ class NoteRepository extends BaseNoteRepository {
   Future<void> addNote(Note note, {bool flag = true}) async {
     await DBHelper.insertData(DBHelper.tableName,
             _convertFromNoteToNoteModel(note).toJson(flag: false))
-        .then((value) {
-      print("id is $value");
-    });
+        .then((value) {});
     int? categoryId;
     List<Map<String, dynamic>> temp = await DBHelper.queryData(
         DBHelper.categoryTable, 'title=?', [note.category]);
@@ -30,7 +27,8 @@ class NoteRepository extends BaseNoteRepository {
           [temp[0]['numberOfNotes']! + 1, temp[0]['id']], 'id');
     }
 
-    temp = await DBHelper.queryData(DBHelper.sourceTable, 'title=? and categoryId = ?', [note.source,categoryId]);
+    temp = await DBHelper.queryData(DBHelper.sourceTable,
+        'title=? and categoryId = ?', [note.source, categoryId]);
 
     if (temp.isEmpty) {
       await addSource(SourceModel(
@@ -78,8 +76,8 @@ class NoteRepository extends BaseNoteRepository {
   }
 
   Future<void> deleteCategory(String noteCategory) async {
-    List<Map<String, dynamic>> temp =
-        await DBHelper.queryData(DBHelper.categoryTable, 'title=?', [noteCategory]);
+    List<Map<String, dynamic>> temp = await DBHelper.queryData(
+        DBHelper.categoryTable, 'title=?', [noteCategory]);
     if (temp[0]['numberOfNotes']! > 1) {
       DBHelper.updateData(DBHelper.categoryTable, "SET numberOfNotes =?",
           [temp[0]['numberOfNotes']! - 1, temp[0]['id']], 'id');
@@ -165,17 +163,13 @@ class NoteRepository extends BaseNoteRepository {
   }
 
   updateSession() async {
-    print('updated');
     Set<int> notesIndex = {};
     Random random = Random();
     List<Note> notes = await getAllNotes();
     await DBHelper.deleteTable(DBHelper.todaysSessionNotesIds);
-    print("notes index length "+notesIndex.length.toString());
     while (notesIndex.length < 10 && notesIndex.length < notes.length) {
-      print("here");
       notesIndex.add(random.nextInt(notes.length));
     }
-    print("notes index length "+notesIndex.length.toString());
 
     for (int x in notesIndex) {
       await DBHelper.insertData(
@@ -184,14 +178,12 @@ class NoteRepository extends BaseNoteRepository {
     await DBHelper.deleteTable(DBHelper.sesionDay);
     await DBHelper.insertData(DBHelper.sesionDay,
         {'id': int.parse(DateTime.now().toString().substring(0, 2))});
-    print("out");
   }
 
   Future<bool> checkDay() async {
     var temp = await DBHelper.getTable(DBHelper.sesionDay);
     try {
-      if (temp[0]['id'] ==
-          int.parse(DateTime.now().toString().substring(0, 2))) {
+      if (temp[0]['id'] == int.parse(DateTime.now().day.toString())) {
         return true;
       }
       return false;
@@ -201,14 +193,12 @@ class NoteRepository extends BaseNoteRepository {
   }
 
   Future<List<Note>> getSessionNotes() async {
-    print("entered");
     List<Note> todaysNotes = [];
-    var  temp = await DBHelper.getTable(DBHelper.todaysSessionNotesIds);
+    var temp = await DBHelper.getTable(DBHelper.todaysSessionNotesIds);
     for (int i = 0; i < temp.length; i++) {
       List<Map<String, dynamic>> result =
           await DBHelper.queryData(DBHelper.tableName, 'id=?', [temp[i]['id']]);
-      if(result.length>=1)
-      todaysNotes.add(NoteModel.fromJson(result[0]));
+      if (result.isNotEmpty) todaysNotes.add(NoteModel.fromJson(result[0]));
     }
 
     return todaysNotes;
