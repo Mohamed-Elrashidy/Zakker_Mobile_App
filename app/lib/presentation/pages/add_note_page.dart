@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:app/presentation/controllers/categories_controller/category_cubit.dart';
 import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
@@ -5,19 +6,28 @@ import 'package:app/presentation/widgets/main_button.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:app/utils/note_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../domain/entities/note.dart';
 import '../../utils/dimension_scale.dart';
 
-class AddNotePage extends StatelessWidget {
+class AddNotePage extends StatefulWidget {
+  const AddNotePage({Key? key}) : super(key: key);
+
+  @override
+  State<AddNotePage> createState() => _AddNotePageState();
+}
+
+class _AddNotePageState extends State<AddNotePage> {
 // text fields controllers
   TextEditingController _bodyController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _pageNumberController = TextEditingController();
   TextEditingController _categoryController = TextEditingController();
   TextEditingController _sourceController = TextEditingController();
-  TextEditingController _imagePath = TextEditingController();
+  String _imagePath = "";
 
   Dimension scaleDimension = GetIt.instance.get<Dimension>();
   int _noteColor = 0;
@@ -53,7 +63,9 @@ class AddNotePage extends StatelessWidget {
         Row(
           children: [
             IconButton(
-              onPressed: () {Navigator.of(context).pop();},
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               icon: Icon(Icons.arrow_back_ios_new),
             )
           ],
@@ -101,50 +113,43 @@ class AddNotePage extends StatelessWidget {
       ],
     );
   }
-  
+
   // check if page number is valid number
-  bool checkNumber(String number)
-  {
-    try{
+  bool checkNumber(String number) {
+    try {
       int.parse(number);
       return true;
-    }
-    catch(e)
-    {
+    } catch (e) {
       return false;
     }
   }
 
   Future<void> _createNote(BuildContext context) async {
     if (_titleController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Enter title field first"));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(showSnackBar("Enter title field first"));
       print("title is empty");
-    }
-    else if(_bodyController.text.trim().isEmpty)
-      {
-        ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Enter body field first"));
-      }
-    
-    else if (_sourceController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Enter source field first"));
+    } else if (_bodyController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(showSnackBar("Enter body field first"));
+    } else if (_sourceController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(showSnackBar("Enter source field first"));
 
       print("source is empty");
     } else if (_categoryController.text.trim().isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Enter Category Field first"));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(showSnackBar("Enter Category Field first"));
       print("Category field is empty");
-    } 
-    else if(_pageNumberController.text.trim().isEmpty||!checkNumber(_pageNumberController.text.trim()))
-      {
-        ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Enter page number with format like this 45323 or 0 if no page number"));
-
-      }
-    
-    else {
-      
+    } else if (_pageNumberController.text.trim().isEmpty ||
+        !checkNumber(_pageNumberController.text.trim())) {
+      ScaffoldMessenger.of(context).showSnackBar(showSnackBar(
+          "Enter page number with format like this 45323 or 0 if no page number"));
+    } else {
       BlocProvider.of<NoteCubit>(context).addNote(Note(
           title: _titleController.text.trim(),
           body: _bodyController.text.trim(),
-          image: _imagePath.text,
+          image: _imagePath,
           category: _categoryController.text.trim(),
           page: _pageNumberController.text.trim().isEmpty
               ? -1
@@ -157,8 +162,8 @@ class AddNotePage extends StatelessWidget {
       BlocProvider.of<NoteCubit>(context).getAllNotes();
       BlocProvider.of<CategoryCubit>(context).getAllCategories();
 
-      ScaffoldMessenger.of(context).showSnackBar(showSnackBar("Note is added successfully!!",color: Colors.green));
-
+      ScaffoldMessenger.of(context).showSnackBar(
+          showSnackBar("Note is added successfully!!", color: Colors.green));
     }
   }
 
@@ -256,9 +261,25 @@ class AddNotePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
-              child: CircleAvatar(
-                radius: scaleDimension.scaleHeight(80),
-                backgroundColor: Colors.grey,
+              onTap: () {
+                pickImage();
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(200),
+                  color: Colors.grey,
+                ),
+                width: scaleDimension.scaleWidth(250),
+                height: scaleDimension.scaleWidth(250),
+                child: _imagePath != ""
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(200),
+                        child: Image.file(
+                          File(_imagePath),
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Container(),
               ),
             ),
           ],
@@ -267,14 +288,26 @@ class AddNotePage extends StatelessWidget {
     );
   }
 
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      setState(() {
+        _imagePath = image.path;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image: $e');
+    }
+  }
+
   SnackBar showSnackBar(String content, {Color color = Colors.red}) {
     return SnackBar(
       content: NormalText(
         text: content,
       ),
-    //  width: scaleDimension.screenWidth-scaleDimension.scaleWidth(20),
+      //  width: scaleDimension.screenWidth-scaleDimension.scaleWidth(20),
       backgroundColor: color,
-    
+
       padding: EdgeInsets.symmetric(
         horizontal: scaleDimension.scaleWidth(15),
         vertical: scaleDimension.scaleHeight(10),

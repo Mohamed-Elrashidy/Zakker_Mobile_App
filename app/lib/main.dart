@@ -61,7 +61,7 @@ Future<void> main() async {
   await Workmanager().registerPeriodicTask(
     "1",
     "fixed",
-    frequency: Duration(minutes: 15),
+    frequency: Duration(minutes: 30),
   );
 
   runApp(const MyApp());
