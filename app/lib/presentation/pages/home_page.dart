@@ -1,5 +1,6 @@
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
+import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
@@ -24,7 +25,7 @@ class HomePage extends StatelessWidget {
           SizedBox(
             height: scaleDimension.scaleHeight(30),
           ),
-          TodaysSession()
+          TodaysSession(context)
         ],
       ),
     ));
@@ -78,10 +79,10 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget TodaysSession() {
+  Widget TodaysSession(BuildContext context) {
     return GestureDetector(
       onTap: () {
-
+        Navigator.of(context,rootNavigator: true).pushNamed(Routes.todaysNotesPage);
       },
       child: Container(
         decoration: BoxDecoration(
