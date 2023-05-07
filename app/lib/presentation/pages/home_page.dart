@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
@@ -93,7 +95,9 @@ class HomePage extends StatelessWidget {
   Widget TodaysSession(BuildContext context) {
     return GestureDetector(
       onTap: () {
+
         Navigator.of(context,rootNavigator: true).pushNamed(Routes.todaysNotesPage);
+        BlocProvider.of<NoteCubit>(context).getTodaysNotes();
       },
       child: Container(
         decoration: BoxDecoration(

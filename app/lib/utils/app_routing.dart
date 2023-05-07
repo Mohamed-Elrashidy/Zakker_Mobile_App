@@ -31,6 +31,8 @@ class AppRouting {
         return MaterialPageRoute(
             builder: (_) => EditNotePage(note: note), settings: settings);
       case Routes.addNotePage:
+        if(settings.arguments!=null)
+          return MaterialPageRoute(builder: (_)=>AddNotePage(header:settings.arguments as String));
         return MaterialPageRoute(builder: (_) => AddNotePage());
       case Routes.categorySourcesList:
         String category = settings.arguments as String  ;

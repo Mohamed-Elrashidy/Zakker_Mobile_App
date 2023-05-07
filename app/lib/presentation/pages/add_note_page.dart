@@ -14,7 +14,8 @@ import '../../domain/entities/note.dart';
 import '../../utils/dimension_scale.dart';
 
 class AddNotePage extends StatefulWidget {
-  const AddNotePage({Key? key}) : super(key: key);
+  String? header;
+   AddNotePage({this.header});
 
   @override
   State<AddNotePage> createState() => _AddNotePageState();
@@ -35,7 +36,12 @@ class _AddNotePageState extends State<AddNotePage> {
   @override
   Widget build(BuildContext context) {
     // tempfunction
-
+    if(widget.header!=null)
+    {
+      _titleController.text=widget.header!.split('|')[1];
+      _bodyController.text=widget.header!.split('|')[0];
+      _pageNumberController.text=widget.header!.split('|')[2];
+    }
     return SafeArea(
       child: GestureDetector(
         onTap: () {
