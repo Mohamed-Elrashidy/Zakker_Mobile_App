@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:app/presentation/pages/add_note_page.dart';
 import 'package:app/presentation/pages/category_sources_page.dart';
 import 'package:app/presentation/pages/edit_note_page.dart';
+import 'package:app/presentation/pages/pdf_reader_page.dart';
 import 'package:app/presentation/pages/source_notes_page.dart';
 import 'package:app/presentation/pages/todays_notes_page.dart';
 import 'package:app/utils/routes.dart';
@@ -28,6 +31,8 @@ class AppRouting {
         return MaterialPageRoute(
             builder: (_) => EditNotePage(note: note), settings: settings);
       case Routes.addNotePage:
+        if(settings.arguments!=null)
+          return MaterialPageRoute(builder: (_)=>AddNotePage(header:settings.arguments as String));
         return MaterialPageRoute(builder: (_) => AddNotePage());
       case Routes.categorySourcesList:
         String category = settings.arguments as String  ;
@@ -48,6 +53,9 @@ class AppRouting {
         return MaterialPageRoute(
             builder: (_) => SourceNotesPage(category: category, source: source),
             settings: settings);
+      case Routes.pdfReaderPage:
+        File file =settings.arguments as File;
+        return MaterialPageRoute(builder: (_)=>PdfReaderPage(file: file));
       default:
         return MaterialPageRoute(
             builder: (_) => BottomNavBarPage(), settings: settings);

@@ -1,10 +1,16 @@
+import 'dart:io';
+
+import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
 import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
+import 'package:file_picker/file_picker.dart';
+
 
 import '../../utils/dimension_scale.dart';
 
@@ -21,7 +27,7 @@ class HomePage extends StatelessWidget {
           SizedBox(
             height: scaleDimension.scaleHeight(100),
           ),
-          pdfReaderWidget(),
+          pdfReaderWidget(context),
           SizedBox(
             height: scaleDimension.scaleHeight(30),
           ),
@@ -50,8 +56,15 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget pdfReaderWidget() {
+  Widget pdfReaderWidget(BuildContext context) {
     return GestureDetector(
+      onTap: ()async{
+        final file =await pickFile();
+        if(file==null)
+          return;
+        Navigator.of(context,rootNavigator: true).pushNamed(Routes.pdfReaderPage,arguments: file);
+      },
+
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(scaleDimension.scaleWidth(16)),
@@ -82,7 +95,9 @@ class HomePage extends StatelessWidget {
   Widget TodaysSession(BuildContext context) {
     return GestureDetector(
       onTap: () {
+
         Navigator.of(context,rootNavigator: true).pushNamed(Routes.todaysNotesPage);
+        BlocProvider.of<NoteCubit>(context).getTodaysNotes();
       },
       child: Container(
         decoration: BoxDecoration(
@@ -126,4 +141,12 @@ class HomePage extends StatelessWidget {
       this.scaleDimension = scaleDimension;
     }
   }
+}
+Future<File?> pickFile()async{
+  final result =await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowedExtensions: ['pdf'],
+  );
+  if(result == null)return null;
+  return File(result.paths.first!);
 }
