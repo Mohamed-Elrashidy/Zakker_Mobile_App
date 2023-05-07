@@ -176,13 +176,15 @@ class NoteRepository extends BaseNoteRepository {
           DBHelper.todaysSessionNotesIds, {'id': notes[x].id});
     }
     await DBHelper.deleteTable(DBHelper.sesionDay);
-    await DBHelper.insertData(DBHelper.sesionDay,
-        {'id': int.parse(DateTime.now().toString().substring(0, 2))});
+    await DBHelper.insertData(
+        DBHelper.sesionDay, {'id': int.parse(DateTime.now().day.toString())});
   }
 
   Future<bool> checkDay() async {
     var temp = await DBHelper.getTable(DBHelper.sesionDay);
     try {
+      print(int.parse(DateTime.now().day.toString()));
+      print(temp[0]['id']);
       if (temp[0]['id'] == int.parse(DateTime.now().day.toString())) {
         return true;
       }

@@ -146,7 +146,7 @@ class _AddNotePageState extends State<AddNotePage> {
       ScaffoldMessenger.of(context).showSnackBar(showSnackBar(
           "Enter page number with format like this 45323 or 0 if no page number"));
     } else {
-      BlocProvider.of<NoteCubit>(context).addNote(Note(
+       BlocProvider.of<NoteCubit>(context).addNote(Note(
           title: _titleController.text.trim(),
           body: _bodyController.text.trim(),
           image: _imagePath,
@@ -159,8 +159,8 @@ class _AddNotePageState extends State<AddNotePage> {
           color: _noteColor,
           date: DateTime.now().toString()));
 
-      BlocProvider.of<NoteCubit>(context).getAllNotes();
-      BlocProvider.of<CategoryCubit>(context).getAllCategories();
+    await  BlocProvider.of<NoteCubit>(context).getAllNotes();
+    await  BlocProvider.of<CategoryCubit>(context).getAllCategories();
 
       ScaffoldMessenger.of(context).showSnackBar(
           showSnackBar("Note is added successfully!!", color: Colors.green));

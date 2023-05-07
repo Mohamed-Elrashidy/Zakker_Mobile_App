@@ -1,21 +1,34 @@
-import 'dart:math';
-
-import 'package:app/data/repositories/note_repository.dart';
-import 'package:app/utils/dependency.dart';
+import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get_it/get_it.dart';
-import 'package:workmanager/workmanager.dart';
-
-import '../../domain/entities/note.dart';
+import '../data/models/note_model.dart';
+import '../main.dart';
+import '../utils/routes.dart';
 
 class NotificationServices {
-
   static Future initialize(
       FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
-    var androidInitialize = const AndroidInitializationSettings('mipmap/ic_launcher');
+    var androidInitialize =
+        const AndroidInitializationSettings('mipmap/ic_launcher');
     var intitializationSettings =
         InitializationSettings(android: androidInitialize);
-    await flutterLocalNotificationsPlugin.initialize(intitializationSettings );
+    await flutterLocalNotificationsPlugin.initialize(intitializationSettings,
+        onDidReceiveBackgroundNotificationResponse: notificationNavigation,
+        onDidReceiveNotificationResponse: notificationNavigation);
+  }
+
+  static notificationNavigation(NotificationResponse notificationResponse) {
+    print(notificationResponse.payload);
+    try {
+      print("reached");
+      NoteModel note =
+          NoteModel.fromJson(jsonDecode(notificationResponse.payload!));
+
+      Navigator.of(MyApp.navigatorKey.currentState!.context)
+          .pushNamed(Routes.notePage, arguments: note);
+    } catch (e) {
+      print(e);
+    }
   }
 
   static Future showNotification(
@@ -38,5 +51,4 @@ class NotificationServices {
       print("reached");
     }
   }
-
 }
