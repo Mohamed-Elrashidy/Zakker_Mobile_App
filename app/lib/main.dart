@@ -49,19 +49,10 @@ void callbackDispatcher() {
             payload:jsonEncode( noteModel.toJson())
 
     );
-      } else {
-        NotificationServices.showNotification(
-            title: 'title',
-            body: 'body',
-            fln: GetIt.instance.get<FlutterLocalNotificationsPlugin>(),
-        );
       }
       print('Valid');
     } catch (e) {
-      NotificationServices.showNotification(
-          title: 'error',
-          body: e.toString(),
-          fln: FlutterLocalNotificationsPlugin());
+
       print(' here at error');
     }
 
