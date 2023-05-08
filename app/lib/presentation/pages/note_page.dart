@@ -205,6 +205,11 @@ class NotePage extends StatelessWidget {
   }
 
   Widget itemBuilder(String title, String info) {
-    return SmallText(text: title + ' : ' + info);
+    return Row(
+      children: [
+        SmallText(text: title + ' : ' ),
+        SmallText(text: info)
+      ],
+    );
   }
 }

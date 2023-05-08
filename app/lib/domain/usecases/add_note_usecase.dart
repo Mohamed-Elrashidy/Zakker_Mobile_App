@@ -4,7 +4,7 @@ import '../entities/note.dart';
 class AddNoteUseCase {
   final BaseNoteRepository baseNoteRepository;
   AddNoteUseCase({required this.baseNoteRepository});
-  void execute(Note note) {
-    baseNoteRepository.addNote(note);
+  Future<void> execute(Note note) async {
+   await baseNoteRepository.addNote(note);
   }
 }

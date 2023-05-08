@@ -152,7 +152,7 @@ class _AddNotePageState extends State<AddNotePage> {
       ScaffoldMessenger.of(context).showSnackBar(showSnackBar(
           "Enter page number with format like this 45323 or 0 if no page number"));
     } else {
-       BlocProvider.of<NoteCubit>(context).addNote(Note(
+      await BlocProvider.of<NoteCubit>(context).addNote(Note(
           title: _titleController.text.trim(),
           body: _bodyController.text.trim(),
           image: _imagePath,

@@ -48,8 +48,8 @@ class AppRouting {
 
       case Routes.sourceNotesPage:
         String category = settings.arguments as String;
-        String source = category.split(' ')[1];
-        category = category.split(' ')[0];
+        String source = category.split('|')[1];
+        category = category.split('|')[0];
         return MaterialPageRoute(
             builder: (_) => SourceNotesPage(category: category, source: source),
             settings: settings);

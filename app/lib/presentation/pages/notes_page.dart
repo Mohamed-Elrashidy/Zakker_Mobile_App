@@ -125,6 +125,9 @@ class _NotesPageState extends State<NotesPage> {
         } else if (state is FavouriteNotesLoaded) {
           x = 2;
         }
+        else if(state is ClearNotes) {
+          x=3;
+        }
         return Container(
           width: scaleDimension.screenWidth,
           height: scaleDimension.scaleHeight(50),

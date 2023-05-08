@@ -1,16 +1,11 @@
-import 'package:animate_do/animate_do.dart';
 import 'package:app/presentation/controllers/categories_controller/category_cubit.dart';
 import 'package:app/presentation/widgets/category_widget.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
-import 'package:app/presentation/widgets/small_button.dart';
-import 'package:app/utils/dummy_data.dart';
 import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get_it/get_it.dart';
-
-import '../../domain/entities/category.dart';
 import '../../domain/entities/source.dart';
 import '../../utils/dimension_scale.dart';
 import '../widgets/big_text.dart';
@@ -55,7 +50,9 @@ class CategorySourcesPage extends StatelessWidget {
               Navigator.of(context).pop();
             },
             icon: Icon(Icons.arrow_back_ios)),
-        BigText(text: category),
+        Container(
+            width: scaleDimension.scaleWidth(300),
+            child: Center(child: BigText(text: category))),
         Container(
           width: scaleDimension.scaleWidth(40),
         )
@@ -79,6 +76,8 @@ class CategorySourcesPage extends StatelessWidget {
                     crossAxisSpacing: scaleDimension.scaleWidth(30),
                     mainAxisSpacing: scaleDimension.scaleHeight(30),
                     crossAxisCount: 2,
+                    childAspectRatio: 0.85
+
                   ),
                   itemCount: categorySourcesList.length,
                   itemBuilder: (context, index) {
@@ -96,7 +95,7 @@ class CategorySourcesPage extends StatelessWidget {
                               Navigator.of(context).pushNamed(
                                   Routes.sourceNotesPage,
                                   arguments: category +
-                                      ' ' +
+                                      '|' +
                                       categorySourcesList[index].title);
                             },
                             child: CategoryWidget(

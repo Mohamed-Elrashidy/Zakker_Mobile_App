@@ -45,7 +45,9 @@ class CategoryPage extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            BigText(text: "Categories"),
+
+
+                 BigText(text: "Categories"),
           ],
         ),
 

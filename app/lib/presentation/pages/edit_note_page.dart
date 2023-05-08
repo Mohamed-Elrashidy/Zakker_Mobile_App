@@ -50,7 +50,7 @@ class EditNotePage extends StatelessWidget {
                       SizedBox(
                         height: scaleDimension.scaleHeight(10),
                       ),
-                      _noteData(),
+              //        _noteData(),
                     ],
                   ),
                 ))),

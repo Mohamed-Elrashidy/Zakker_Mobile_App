@@ -25,31 +25,40 @@ class NoteCubit extends Cubit<NoteState> {
     emit(ClearNotes());
   }
 
-  Future<List<Note>> getAllNotes() async {
+  Future<List<Note>>_getAllNotes()
+  async {
     sourcesNotes = {};
     List<Note> allNotes =
         await GetAllNotesUseCase(baseNoteRepository: baseNoteRepository)
-            .execute();
-    emit(AllNotesLoaded(allNotes: allNotes));
+        .execute();
+
     print("we are notes");
 
     for (int i = 0; i < allNotes.length; i++) {
       if (sourcesNotes.containsKey(allNotes[i].category + allNotes[i].source))
         sourcesNotes[allNotes[i].category + allNotes[i].source]
             ?.add(allNotes[i]);
-      else
+      else {
+        print("one of keys is => "+ allNotes[i].category + allNotes[i].source);
         sourcesNotes.putIfAbsent(
             allNotes[i].category + allNotes[i].source, () => [allNotes[i]]);
+      }
     }
 
     return allNotes;
+
+  }
+  Future<List<Note>> getAllNotes() async {
+    List<Note>allNotes= await  _getAllNotes();
+    emit(AllNotesLoaded(allNotes: allNotes));
+    return allNotes;
   }
 
-  List<Note> getSourceNotes(String key) {
-    print(sourcesNotes.length);
-    print(sourcesNotes);
-    print(key);
-    print("answer ${sourcesNotes[key]}");
+  Future<List<Note>> getSourceNotes(String key) async {
+
+    await _getAllNotes();
+    print(sourcesNotes[key].toString());
+    print("keyis => $key");
     emit(SourceNotesLoaded(sourceNotesList: sourcesNotes[key] ?? []));
     return sourcesNotes[key] ?? [];
   }
@@ -85,8 +94,8 @@ class NoteCubit extends Cubit<NoteState> {
     return false;
   }
 
-  void addNote(Note note) {
-    AddNoteUseCase(baseNoteRepository: baseNoteRepository).execute(note);
+  Future<void> addNote(Note note) async {
+   await AddNoteUseCase(baseNoteRepository: baseNoteRepository).execute(note);
   }
 
   void deleteNote(Note note) {

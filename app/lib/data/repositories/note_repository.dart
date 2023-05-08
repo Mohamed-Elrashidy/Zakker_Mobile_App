@@ -97,8 +97,8 @@ class NoteRepository extends BaseNoteRepository {
 
   @override
   void editNote(Note note) {
-    DBHelper.updateData(DBHelper.tableName, "SET title =? , body =?",
-        [note.title, note.body, note.id], 'id');
+    DBHelper.updateData(DBHelper.tableName, "SET title =? , body =? , date=?",
+        [note.title, note.body,DateTime.now().toString(), note.id], 'id');
   }
 
   @override

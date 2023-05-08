@@ -25,6 +25,7 @@ class PdfReaderPage extends StatelessWidget {
       child:       Directionality(
         textDirection: TextDirection.rtl,
         child: SfPdfViewer.file(file, enableTextSelection: true,
+          controller:_pdfViewerController ,
           onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
             if (details.selectedText != null) {
               data=details.selectedText!;

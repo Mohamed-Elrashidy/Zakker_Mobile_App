@@ -14,11 +14,14 @@ class SourceNotesPage extends StatelessWidget {
   String category;
 
   SourceNotesPage({required this.category,required this.source});
-  late List<Note> notes;
+   List<Note> notes=[];
 
   @override
   Widget build(BuildContext context) {
-    notes= BlocProvider.of<NoteCubit>(context).getSourceNotes(category+source);
+    print("category is => $category");
+    print("source is => $source");
+
+    BlocProvider.of<NoteCubit>(context).getSourceNotes(category+source);
     return SafeArea(
         child: Scaffold(
             body: Column(
@@ -51,7 +54,9 @@ class SourceNotesPage extends StatelessWidget {
         IconButton(onPressed: (){
           Navigator.of(context).pop();
         }, icon: Icon(Icons.arrow_back_ios_new)),
-        BigText(text: source),
+        Container(
+            width: GetIt.instance.get<Dimension>().scaleWidth(300),
+            child: Center(child: BigText(text: source),)),
         Container(width: GetIt.instance.get<Dimension>().scaleWidth(40),)
 
       ],

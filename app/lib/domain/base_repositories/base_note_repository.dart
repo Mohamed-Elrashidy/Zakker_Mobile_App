@@ -4,7 +4,7 @@ import '../entities/category.dart';
 import '../entities/source.dart';
 
 abstract class BaseNoteRepository{
-  void addNote(Note note);
+  Future<void> addNote(Note note);
   void editNote(Note note);
   void deleteNote(Note note);
   Future<List<Note>> getAllNotes();

@@ -21,7 +21,8 @@ class MainButton extends StatelessWidget {
     Dimension scaleDimension = GetIt.instance.get<Dimension>();
     return  InkWell(
       onTap:onTap,
-      child: Container(
+      child: AnimatedContainer(
+        
 
           height: scaleDimension.scaleHeight(40),
           //width: scaleDimension.scaleWidth(170),
@@ -32,6 +33,7 @@ class MainButton extends StatelessWidget {
           padding: EdgeInsets.symmetric(
               horizontal: scaleDimension.scaleWidth(20),
               vertical: scaleDimension.scaleHeight(7)),
+          duration: Duration(milliseconds: 200),
           child: Center(
             child: Text(title,
                 style: TextStyle(
