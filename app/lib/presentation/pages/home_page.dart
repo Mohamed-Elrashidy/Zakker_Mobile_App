@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
+import 'package:app/services/notification_services.dart';
 import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,6 +18,7 @@ class HomePage extends StatelessWidget {
   late Dimension scaleDimension;
   @override
   Widget build(BuildContext context) {
+   // NotificationServices.checkNotificationLaunch();
     dimensionInit(context);
     return Scaffold(
         body: SafeArea(

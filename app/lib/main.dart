@@ -7,7 +7,6 @@ import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/pages/bottom_nav_bar_page.dart';
 import 'package:app/utils/app_routing.dart';
 import 'package:app/utils/dependency.dart';
-import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -25,7 +24,7 @@ void callbackDispatcher() {
     await Dependancy().initControllers();
 
     NotificationServices.showNotification(
-        title: 'start', body: 'hi', fln: FlutterLocalNotificationsPlugin());
+        title: 'start', body: 'hi', fln: GetIt.instance.get<FlutterLocalNotificationsPlugin>());
     print(' here at error');
     try {
       List<Note> notes =
@@ -87,22 +86,33 @@ Future<void> main() async {
 
   runApp(const MyApp());
 }
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
   static final navigatorKey = new GlobalKey<NavigatorState>();
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  // This widget is the root of your application.
+   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    NotificationServices.checkNotificationLaunch();
+  }
+  @override
   Widget build(BuildContext context) {
+
     return BlocProvider<CategoryCubit>(
       create: (context) => CategoryCubit(),
       child: BlocProvider<NoteCubit>(
         create: (BuildContext context) => NoteCubit(),
         child: MaterialApp(
-            //  theme: ThemeData.light(useMaterial3: true),
-            navigatorKey: navigatorKey,
+          //  theme: ThemeData.light(useMaterial3: true),
+            navigatorKey: MyApp.navigatorKey,
             onGenerateRoute: AppRouting.generateRoutes,
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
@@ -111,3 +121,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
