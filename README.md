@@ -19,7 +19,8 @@
 * [x] Edit notes
 * [x] Delete notes
 * [x] Save notes on Local machine
-* [ ] Open Pdf
+* [x] Open Pdf
+* [x] Take note from the pdf
 * [x] Get all notes
 * [x] Get favourite notes
 * [x] Get Today's session
@@ -50,4 +51,22 @@
 ## Architecture 
 * Clean Architecture 
 ## libraries
+* Dependancy injection
+    * [get_it](https://pub.dev/packages/get_it) 
+* Bottom Navigation Bar 
+    * [persistent_bottom_nav_bar](https://pub.dev/packages/persistent_bottom_nav_bar)
+* Local Data Storage
+    * [sqflite](https://pub.dev/packages/sqflite)
+* State Management 
+    * [flutter_bloc](https://pub.dev/packages/flutter_bloc)
+* Notifications
+   * [workmanager](https://pub.dev/packages/workmanager)
+   * [flutter_local_notifications](https://pub.dev/packages/flutter_local_notifications)
+* Pdf Reader
+   * [file_picker](https://pub.dev/packages/file_picker)
+   * [syncfusion_flutter_pdf](https://pub.dev/packages/syncfusion_flutter_pdf)
+* note Image 
+   *  [image_picker](https://pub.dev/packages/image_picker)
+* Animation 
+  * [flutter_staggered_animations](https://pub.dev/packages/flutter_staggered_animations) 
 
