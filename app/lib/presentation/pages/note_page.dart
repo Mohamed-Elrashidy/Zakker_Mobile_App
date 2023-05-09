@@ -193,9 +193,9 @@ class NotePage extends StatelessWidget {
                 SizedBox(
                   height: scaleDimension.scaleHeight(20),
                 ),
-                itemBuilder("category", note.category),
-                itemBuilder("source", note.source),
-                itemBuilder("page", note.page.toString()),
+                _itemBuilder("category", note.category),
+                _itemBuilder("source", note.source),
+                _itemBuilder("page", note.page.toString()),
               ],
             ),
           ],
@@ -204,7 +204,7 @@ class NotePage extends StatelessWidget {
     );
   }
 
-  Widget itemBuilder(String title, String info) {
+  Widget _itemBuilder(String title, String info) {
     return Row(
       children: [
         SmallText(text: title + ' : ' ),

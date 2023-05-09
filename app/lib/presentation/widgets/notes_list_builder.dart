@@ -15,11 +15,9 @@ class NotesListBuilder extends StatelessWidget {
   List<Note> notes;
   NotesListBuilder({required this.notes});
   Dimension scaleDimension = GetIt.instance.get<Dimension>();
-  List<Note> _notes = [];
 
   @override
   Widget build(BuildContext context) {
-    AnimationController animateController;
 
     print("rebuilded");
     return ListView.builder(
@@ -78,15 +76,15 @@ class NotesListBuilder extends StatelessWidget {
               height: scaleDimension.scaleHeight(5),
             ),
             arabic
-                ? arabicRow('${note.category} | ${note.source}', note.date)
-                : englishRow('${note.category} | ${note.source}', note.date)
+                ? _arabicRow('${note.category} | ${note.source}', note.date)
+                : _englishRow('${note.category} | ${note.source}', note.date)
           ],
         ),
       ),
     );
   }
 
-  Widget arabicRow(String data, String date) {
+  Widget _arabicRow(String data, String date) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -106,7 +104,7 @@ class NotesListBuilder extends StatelessWidget {
     );
   }
 
-  Widget englishRow(String data, String date) {
+  Widget _englishRow(String data, String date) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [

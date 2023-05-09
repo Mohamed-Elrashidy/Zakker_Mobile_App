@@ -21,8 +21,7 @@ class PdfReaderPage extends StatelessWidget {
           _appBarBuilder(context),
     Container(
       height: GetIt.instance.get<Dimension>().screenHeight-GetIt.instance.get<Dimension>().scaleHeight(100),
-      child:       Directionality(
-        textDirection: TextDirection.rtl,
+
         child: SfPdfViewer.file(file, enableTextSelection: true,
           controller:_pdfViewerController ,
           onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
@@ -31,7 +30,7 @@ class PdfReaderPage extends StatelessWidget {
               print(details.selectedText);
             }
           }),
-      ),),
+      ),
         ],
       )),
     );

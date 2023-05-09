@@ -15,11 +15,10 @@ import 'package:file_picker/file_picker.dart';
 import '../../utils/dimension_scale.dart';
 
 class HomePage extends StatelessWidget {
-  late Dimension scaleDimension;
+   Dimension scaleDimension=GetIt.instance.get<Dimension>();
   @override
   Widget build(BuildContext context) {
    // NotificationServices.checkNotificationLaunch();
-    dimensionInit(context);
     return Scaffold(
         body: SafeArea(
       child: Column(
@@ -28,11 +27,11 @@ class HomePage extends StatelessWidget {
           SizedBox(
             height: scaleDimension.scaleHeight(100),
           ),
-          pdfReaderWidget(context),
+          _pdfReaderWidget(context),
           SizedBox(
             height: scaleDimension.scaleHeight(30),
           ),
-          TodaysSession(context)
+          _TodaysSession(context)
         ],
       ),
     ));
@@ -57,10 +56,10 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget pdfReaderWidget(BuildContext context) {
+  Widget _pdfReaderWidget(BuildContext context) {
     return GestureDetector(
       onTap: ()async{
-        final file =await pickFile();
+        final file =await _pickFile();
         if(file==null)
           return;
         Navigator.of(context,rootNavigator: true).pushNamed(Routes.pdfReaderPage,arguments: file);
@@ -93,7 +92,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget TodaysSession(BuildContext context) {
+  Widget _TodaysSession(BuildContext context) {
     return GestureDetector(
       onTap: () {
 
@@ -127,27 +126,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  dimensionInit(BuildContext context) {
-    try {
-      // Get the intialized instance of Dimension class to make ui scalable
-
-      Dimension scaleDimension = GetIt.instance.get<Dimension>();
-      this.scaleDimension = scaleDimension;
-    } catch (e) {
-      GetIt locator = GetIt.instance;
-      locator.registerSingleton<Dimension>(Dimension(context: context));
-
-      // Get the initialized instance of Dimension class to make ui scalable
-      Dimension scaleDimension = GetIt.instance.get<Dimension>();
-      this.scaleDimension = scaleDimension;
-    }
-  }
+   Future<File?> _pickFile()async{
+     final result =await FilePicker.platform.pickFiles(
+       type: FileType.custom,
+       allowedExtensions: ['pdf'],
+     );
+     if(result == null)return null;
+     return File(result.paths.first!);
+   }
 }
-Future<File?> pickFile()async{
-  final result =await FilePicker.platform.pickFiles(
-    type: FileType.custom,
-    allowedExtensions: ['pdf'],
-  );
-  if(result == null)return null;
-  return File(result.paths.first!);
-}
+

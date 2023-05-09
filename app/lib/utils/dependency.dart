@@ -19,14 +19,22 @@ class Dependancy {
   }
 
   Future<void> initControllers() async {
-    await DBHelper.initDb();
-
     GetIt locator = GetIt.instance;
+
+    try{
+      GetIt.instance.get<LocalDataSource>();
+
+    }
+    catch(e){
+      locator.registerSingleton(LocalDataSource());
+
+    }
+    await locator.get<LocalDataSource>().initDb();
 
     try {
       GetIt.instance.get<NoteRepository>();
     } catch (e) {
-      locator.registerSingleton(NoteRepository());
+      locator.registerSingleton(NoteRepository(localDataSource:GetIt.instance.get<LocalDataSource>()));
     }
 
     try {

@@ -8,13 +8,14 @@ import 'package:app/presentation/pages/bottom_nav_bar_page.dart';
 import 'package:app/utils/app_routing.dart';
 import 'package:app/utils/dependency.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get_it/get_it.dart';
 import 'package:workmanager/workmanager.dart';
 import 'data/repositories/note_repository.dart';
 import 'domain/entities/note.dart';
-
+import 'package:flutter/services.dart';
 
 
 
@@ -74,7 +75,9 @@ Future<void> main() async {
     "fixed",
     frequency: const Duration(minutes: 30),
   );
-
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+  ]);
   runApp(const MyApp());
 }
 class MyApp extends StatefulWidget {
@@ -103,6 +106,7 @@ class _MyAppState extends State<MyApp> {
         create: (BuildContext context) => NoteCubit(),
         child: MaterialApp(
           //  theme: ThemeData.light(useMaterial3: true),
+
             navigatorKey: MyApp.navigatorKey,
             onGenerateRoute: AppRouting.generateRoutes,
             debugShowCheckedModeBanner: false,

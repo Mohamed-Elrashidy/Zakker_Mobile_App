@@ -107,8 +107,8 @@ class _AddNotePageState extends State<AddNotePage> {
           ],
         ),
         SizedBox(height: scaleDimension.scaleHeight(10)),
-        imagePicker(),
-        colorPicker(),
+        _imagePicker(),
+        _colorPicker(),
         SizedBox(height: scaleDimension.scaleHeight(20)),
         MainButton(
             title: "Create Note",
@@ -121,7 +121,7 @@ class _AddNotePageState extends State<AddNotePage> {
   }
 
   // check if page number is valid number
-  bool checkNumber(String number) {
+  bool _checkNumber(String number) {
     try {
       int.parse(number);
       return true;
@@ -133,23 +133,23 @@ class _AddNotePageState extends State<AddNotePage> {
   Future<void> _createNote(BuildContext context) async {
     if (_titleController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(showSnackBar("Enter title field first"));
+          .showSnackBar(_showSnackBar("Enter title field first"));
       print("title is empty");
     } else if (_bodyController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(showSnackBar("Enter body field first"));
+          .showSnackBar(_showSnackBar("Enter body field first"));
     } else if (_sourceController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(showSnackBar("Enter source field first"));
+          .showSnackBar(_showSnackBar("Enter source field first"));
 
       print("source is empty");
     } else if (_categoryController.text.trim().isEmpty) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(showSnackBar("Enter Category Field first"));
+          .showSnackBar(_showSnackBar("Enter Category Field first"));
       print("Category field is empty");
     } else if (_pageNumberController.text.trim().isEmpty ||
-        !checkNumber(_pageNumberController.text.trim())) {
-      ScaffoldMessenger.of(context).showSnackBar(showSnackBar(
+        !_checkNumber(_pageNumberController.text.trim())) {
+      ScaffoldMessenger.of(context).showSnackBar(_showSnackBar(
           "Enter page number with format like this 45323 or 0 if no page number"));
     } else {
       await BlocProvider.of<NoteCubit>(context).addNote(Note(
@@ -169,7 +169,7 @@ class _AddNotePageState extends State<AddNotePage> {
     await  BlocProvider.of<CategoryCubit>(context).getAllCategories();
 
       ScaffoldMessenger.of(context).showSnackBar(
-          showSnackBar("Note is added successfully!!", color: Colors.green));
+          _showSnackBar("Note is added successfully!!", color: Colors.green));
     }
   }
 
@@ -209,7 +209,7 @@ class _AddNotePageState extends State<AddNotePage> {
     );
   }
 
-  Widget colorPicker() {
+  Widget _colorPicker() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -255,7 +255,7 @@ class _AddNotePageState extends State<AddNotePage> {
     );
   }
 
-  Widget imagePicker() {
+  Widget _imagePicker() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -268,7 +268,7 @@ class _AddNotePageState extends State<AddNotePage> {
           children: [
             GestureDetector(
               onTap: () {
-                pickImage();
+                _pickImage();
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -294,7 +294,7 @@ class _AddNotePageState extends State<AddNotePage> {
     );
   }
 
-  Future pickImage() async {
+  Future _pickImage() async {
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
@@ -306,7 +306,7 @@ class _AddNotePageState extends State<AddNotePage> {
     }
   }
 
-  SnackBar showSnackBar(String content, {Color color = Colors.red}) {
+  SnackBar _showSnackBar(String content, {Color color = Colors.red}) {
     return SnackBar(
       content: NormalText(
         text: content,
