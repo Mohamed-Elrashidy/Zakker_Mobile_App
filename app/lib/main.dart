@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:app/data/models/note_model.dart';
+import 'package:app/presentation/controllers/user_controller/user_cubit.dart';
 import 'package:app/services/notification_services.dart';
 import 'package:app/presentation/controllers/categories_controller/category_cubit.dart';
 import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
@@ -15,8 +16,6 @@ import 'package:get_it/get_it.dart';
 import 'package:workmanager/workmanager.dart';
 import 'data/repositories/note_repository.dart';
 import 'domain/entities/note.dart';
-import 'package:flutter/services.dart';
-
 
 
 @pragma('vm:entry-point')
@@ -25,11 +24,13 @@ void callbackDispatcher() {
     await Dependancy().initControllers();
 
     NotificationServices.showNotification(
-        title: 'start', body: 'hi', fln: GetIt.instance.get<FlutterLocalNotificationsPlugin>());
+        title: 'start',
+        body: 'hi',
+        fln: GetIt.instance.get<FlutterLocalNotificationsPlugin>());
     print(' here at error');
     try {
       List<Note> notes =
-          await GetIt.instance.get<NoteRepository>().getAllNotes();
+      await GetIt.instance.get<NoteRepository>().getAllNotes();
       if (notes.isNotEmpty) {
         Random random = Random();
         int randomNumber = random.nextInt(notes.length);
@@ -47,13 +48,12 @@ void callbackDispatcher() {
             title: notes[randomNumber].title,
             body: notes[randomNumber].body,
             fln: GetIt.instance.get<FlutterLocalNotificationsPlugin>(),
-            payload:jsonEncode( noteModel.toJson())
+            payload: jsonEncode(noteModel.toJson())
 
-    );
+        );
       }
       print('Valid');
     } catch (e) {
-
       print(' here at error');
     }
 
@@ -62,7 +62,6 @@ void callbackDispatcher() {
 }
 
 Future<void> main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await Dependancy().initControllers();
 
@@ -80,6 +79,7 @@ Future<void> main() async {
   ]);
   runApp(const MyApp());
 }
+
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
   static final navigatorKey = new GlobalKey<NavigatorState>();
@@ -91,27 +91,30 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
 
   // This widget is the root of your application.
-   @override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
     NotificationServices.checkNotificationLaunch();
   }
+
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => UserCubit(),
+      child: BlocProvider<CategoryCubit>(
+        create: (context) => CategoryCubit(),
+        child: BlocProvider<NoteCubit>(
+          create: (BuildContext context) => NoteCubit(),
+          child: MaterialApp(
+            //  theme: ThemeData.light(useMaterial3: true),
 
-    return BlocProvider<CategoryCubit>(
-      create: (context) => CategoryCubit(),
-      child: BlocProvider<NoteCubit>(
-        create: (BuildContext context) => NoteCubit(),
-        child: MaterialApp(
-          //  theme: ThemeData.light(useMaterial3: true),
-
-            navigatorKey: MyApp.navigatorKey,
-            onGenerateRoute: AppRouting.generateRoutes,
-            debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
-            home: BottomNavBarPage()),
+              navigatorKey: MyApp.navigatorKey,
+              onGenerateRoute: AppRouting.generateRoutes,
+              debugShowCheckedModeBanner: false,
+              title: 'Flutter Demo',
+              home: BottomNavBarPage()),
+        ),
       ),
     );
   }

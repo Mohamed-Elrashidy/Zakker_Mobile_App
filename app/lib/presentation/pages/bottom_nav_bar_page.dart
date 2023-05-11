@@ -1,5 +1,6 @@
 import 'package:app/presentation/pages/category_page.dart';
 import 'package:app/presentation/pages/home_page.dart';
+import 'package:app/presentation/pages/profile_page.dart';
 import 'package:app/utils/dependency.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class BottomNavBarPage extends StatelessWidget {
   NotesPage(),
   CategoryPage(),
   Container(),
-  Container(),
+  ProfilePage(),
 
   ];
   }
