@@ -48,8 +48,8 @@ class PdfReaderPage extends StatelessWidget {
         MainButton(title: "Add Note", onTap: (){
           String source =file.path.split('/')[file.path.split('/').length-1];
           source=source.substring(0,source.length-4);
-          String header='$data | $source';
-         header+='|'+ (_pdfViewerController.pageNumber+1).toString();
+          String header='$data |* $source';
+         header+='|*'+ (_pdfViewerController.pageNumber+1).toString();
           Navigator.of(context).pushNamed(Routes.addNotePage,arguments: header);
 
         })
