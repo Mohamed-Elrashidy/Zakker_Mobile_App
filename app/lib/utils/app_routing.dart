@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:app/presentation/pages/add_note_page.dart';
 import 'package:app/presentation/pages/category_sources_page.dart';
 import 'package:app/presentation/pages/edit_note_page.dart';
+import 'package:app/presentation/pages/login_page.dart';
 import 'package:app/presentation/pages/pdf_reader_page.dart';
+import 'package:app/presentation/pages/sign_up_page.dart';
 import 'package:app/presentation/pages/source_notes_page.dart';
 import 'package:app/presentation/pages/todays_notes_page.dart';
 import 'package:app/utils/routes.dart';
@@ -56,6 +58,10 @@ class AppRouting {
       case Routes.pdfReaderPage:
         File file =settings.arguments as File;
         return MaterialPageRoute(builder: (_)=>PdfReaderPage(file: file));
+      case Routes.loginPage:
+        return MaterialPageRoute(builder: (_)=>LoginPage());
+      case Routes.singUpPage:
+        return MaterialPageRoute(builder: (_)=>SignUpPage());
       default:
         return MaterialPageRoute(
             builder: (_) => BottomNavBarPage(), settings: settings);

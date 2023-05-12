@@ -9,7 +9,8 @@ class SmallText extends StatelessWidget {
   final String text;
   late bool isBold;
   bool arabic=false;
-   SmallText({required this.text,this.isBold=false}){
+  Color color;
+   SmallText({required this.text,this.isBold=false,this.color=Colors.grey}){
      arabic=isArabic(text);
    }
 
@@ -23,7 +24,7 @@ class SmallText extends StatelessWidget {
 overflow: TextOverflow.ellipsis,
       style: TextStyle(
 
-      color:Colors.grey,
+      color:color,
       fontWeight: isBold?FontWeight.bold:FontWeight.normal,
       fontSize: scaleDimension.scaleWidth(14)
 

@@ -2,6 +2,7 @@ import 'package:app/presentation/controllers/user_controller/user_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/main_button.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
+import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -20,7 +21,7 @@ class ProfilePage extends StatelessWidget {
       child: Scaffold(
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [_appBarBuilder(), _bodyBuilder(),
+          children: [_appBarBuilder(), _bodyBuilder(context),
           ],
         ),
       ),
@@ -46,14 +47,14 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget _bodyBuilder() {
+  Widget _bodyBuilder(BuildContext context) {
     bool isLogin = false;
     return BlocBuilder<UserCubit, UserState>(builder: (context, state) {
       if (state is UserInfoLoaded) {
-        isLogin = true;
+      //  isLogin = true;
         user = state.user;
       }
-      return isLogin ? loggedPage() : unLoggedPage();
+      return isLogin ? loggedPage() : unLoggedPage(context);
     });
   }
 
@@ -79,19 +80,24 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  Widget unLoggedPage() {
+  Widget unLoggedPage(BuildContext context) {
     return SizedBox(
       height: scaleDimension.screenHeight - scaleDimension.scaleHeight(150),
       child: Center(
-        child: Container(
-          width: scaleDimension.screenWidth - scaleDimension.scaleWidth(30),
-          height: scaleDimension.scaleHeight(100),
-          decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius:
-                  BorderRadius.circular(scaleDimension.scaleWidth(20))),
-          child: Center(
-              child: BigText(text: "Sign In", size: 40, color: Colors.white)),
+        child: InkWell(
+          onTap: (){
+            Navigator.of(context,rootNavigator: true).pushNamed(Routes.loginPage);
+          },
+          child: Container(
+            width: scaleDimension.screenWidth - scaleDimension.scaleWidth(30),
+            height: scaleDimension.scaleHeight(100),
+            decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius:
+                    BorderRadius.circular(scaleDimension.scaleWidth(20))),
+            child: Center(
+                child: BigText(text: "Sign In", size: 40, color: Colors.white)),
+          ),
         ),
       ),
     );
