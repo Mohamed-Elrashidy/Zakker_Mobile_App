@@ -10,7 +10,8 @@ class BigText extends StatelessWidget {
   final String text;
   double? size;
   bool arabic=false;
-  BigText({required this.text, this.size}){
+  Color color;
+  BigText({required this.text, this.size,this.color=Colors.black}){
     arabic=isArabic(text);
   }
 
@@ -21,6 +22,7 @@ class BigText extends StatelessWidget {
       maxLines: 10000,
       textDirection: arabic?TextDirection.rtl:TextDirection.ltr,
       style: TextStyle(
+        color: color,
           fontSize: size ?? scaleDimension.scaleWidth(22),
           fontWeight: size==null?FontWeight.bold:FontWeight.normal),
     );
