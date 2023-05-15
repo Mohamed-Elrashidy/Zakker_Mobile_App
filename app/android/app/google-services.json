@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "699038433397",
+    "project_id": "zakker-a",
+    "storage_bucket": "zakker-a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699038433397:android:feffe35c8b0d3fa1cbb83c",
+        "android_client_info": {
+          "package_name": "com.example.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699038433397-fovej7km1vku8hl8bhsjndm62je4vdtl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBwYAeTT8sHuumCyq238T7GRwApRSTsyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699038433397-fovej7km1vku8hl8bhsjndm62je4vdtl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

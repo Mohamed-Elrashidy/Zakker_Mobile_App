@@ -2,6 +2,7 @@ import 'package:app/presentation/controllers/user_controller/user_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
 import 'package:app/presentation/widgets/main_button.dart';
 import 'package:app/presentation/widgets/normal_text.dart';
+import 'package:app/services/sync_service.dart';
 import 'package:app/utils/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,7 +52,7 @@ class ProfilePage extends StatelessWidget {
     bool isLogin = false;
     return BlocBuilder<UserCubit, UserState>(builder: (context, state) {
       if (state is UserInfoLoaded) {
-      //  isLogin = true;
+        isLogin = true;
         user = state.user;
       }
       return isLogin ? loggedPage() : unLoggedPage(context);
@@ -73,7 +74,9 @@ class ProfilePage extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              MainButton(title: "Sync data", onTap: (){})
+              MainButton(title: "Sync data", onTap: (){
+                GetIt.instance.get<SyncService>().syncData();
+              })
             ],)
         ],
       ),

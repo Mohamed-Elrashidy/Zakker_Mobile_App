@@ -17,7 +17,8 @@ import 'package:workmanager/workmanager.dart';
 import 'data/repositories/note_repository.dart';
 import 'domain/entities/note.dart';
 
-
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
@@ -65,6 +66,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Dependancy().initControllers();
 
+
+// ...
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await Workmanager().initialize(
     callbackDispatcher,
   );
