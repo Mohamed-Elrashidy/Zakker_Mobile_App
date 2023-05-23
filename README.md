@@ -12,7 +12,6 @@
  
 ## Features :dart:
 * [x] Figma Design
-* [x] CRC Diagram
 * [x] Class Diagram
 * [ ] Sequential Diagram
 * [x] Add notes
@@ -37,10 +36,6 @@
 ### [Full Figma Design](https://www.figma.com/file/oWC5KFAZZ938MTjwB5t9n8/SE-Project?node-id=0%3A1&t=3nMTrikw2HJYBodl-1): 
  
 ![image](https://user-images.githubusercontent.com/92789958/231640441-4496f60c-0d69-479d-b8be-9841bbaee2dc.png)
-
-### [Full CRC Diagram]( https://drive.google.com/file/d/1DQUIyVPYYGPFYEOg7iWw_Nsc5M7qEwZx/view?usp=sharing) : 
-
-![image](https://user-images.githubusercontent.com/92789958/231640466-949cba85-df58-413e-a689-d86c6f62c2dd.png)
 
 ### [Full Class Diagram](https://drive.google.com/file/d/1H3otivgBp6CHL2Hwvc6ZZ8rmHVe5EapN/view?usp=sharing) : 
  
