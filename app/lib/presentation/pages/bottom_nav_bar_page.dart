@@ -49,8 +49,8 @@ class BottomNavBarPage extends StatelessWidget {
   HomePage(),
   NotesPage(),
   CategoryPage(),
-  Container(),
-  Container(),
+  //Container(),
+  //Container(),
 
   ];
   }
@@ -71,18 +71,18 @@ class BottomNavBarPage extends StatelessWidget {
   //title: ("Category"),
   activeColorPrimary: CupertinoColors.white,
   inactiveColorPrimary: CupertinoColors.systemGrey,
-  ),PersistentBottomNavBarItem(
+  ),/*PersistentBottomNavBarItem(
   icon: Icon(Icons.settings),
   //title: ("settings"),
   activeColorPrimary: CupertinoColors.white,
   inactiveColorPrimary: CupertinoColors.systemGrey,
-  ),
-  PersistentBottomNavBarItem(
+  ),*/
+  /*PersistentBottomNavBarItem(
   icon: Icon(Icons.account_circle_outlined),
   //title: ("profile"),
   activeColorPrimary: CupertinoColors.white,
   inactiveColorPrimary: CupertinoColors.systemGrey,
-  ),
+  )*/
   ];
   }
 }

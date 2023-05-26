@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:app/base.dart';
 import 'package:app/presentation/controllers/categories_controller/category_cubit.dart';
 import 'package:app/presentation/controllers/note_controller/note_cubit.dart';
 import 'package:app/presentation/widgets/big_text.dart';
@@ -15,7 +16,7 @@ import '../../utils/dimension_scale.dart';
 
 class AddNotePage extends StatefulWidget {
   String? header;
-   AddNotePage({this.header});
+  AddNotePage({this.header});
 
   @override
   State<AddNotePage> createState() => _AddNotePageState();
@@ -32,16 +33,21 @@ class _AddNotePageState extends State<AddNotePage> {
 
   Dimension scaleDimension = GetIt.instance.get<Dimension>();
   int _noteColor = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.header != null) {
+      _sourceController.text = widget.header!.split('|*')[1];
+      _bodyController.text = widget.header!.split('|*')[0];
+      _pageNumberController.text = widget.header!.split('|*')[2];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     // tempfunction
-    if(widget.header!=null)
-    {
-      _sourceController.text=widget.header!.split('|')[1];
-      _bodyController.text=widget.header!.split('|')[0];
-      _pageNumberController.text=widget.header!.split('|')[2];
-    }
+
     return SafeArea(
       child: GestureDetector(
         onTap: () {
@@ -49,16 +55,16 @@ class _AddNotePageState extends State<AddNotePage> {
         },
         child: Scaffold(
             body: Padding(
-          padding: EdgeInsets.all(scaleDimension.scaleWidth(10)),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _appBarBuilder(context),
-                _bodyBuilder(context),
-              ],
-            ),
-          ),
-        )),
+              padding: EdgeInsets.all(scaleDimension.scaleWidth(10)),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _appBarBuilder(context),
+                    _bodyBuilder(context),
+                  ],
+                ),
+              ),
+            )),
       ),
     );
   }
@@ -101,6 +107,7 @@ class _AddNotePageState extends State<AddNotePage> {
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _textFieldBuilder("Category", "", _categoryController, false),
             _textFieldBuilder("Page", "", _pageNumberController, false),
@@ -113,7 +120,13 @@ class _AddNotePageState extends State<AddNotePage> {
         MainButton(
             title: "Create Note",
             onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+
               _createNote(context);
+
+              if (widget.header != null) {
+                Navigator.of(context).pop();
+              }
             }),
         SizedBox(height: scaleDimension.scaleHeight(30)),
       ],
@@ -165,8 +178,8 @@ class _AddNotePageState extends State<AddNotePage> {
           color: _noteColor,
           date: DateTime.now().toString()));
 
-    await  BlocProvider.of<NoteCubit>(context).getAllNotes();
-    await  BlocProvider.of<CategoryCubit>(context).getAllCategories();
+      await BlocProvider.of<NoteCubit>(context).getAllNotes();
+      await BlocProvider.of<CategoryCubit>(context).getAllCategories();
 
       ScaffoldMessenger.of(context).showSnackBar(
           _showSnackBar("Note is added successfully!!", color: Colors.green));
@@ -175,6 +188,7 @@ class _AddNotePageState extends State<AddNotePage> {
 
   Widget _textFieldBuilder(String title, String hint,
       TextEditingController controller, bool isFullWidth) {
+    print("is arabic=>"+isArabic(controller.text).toString());
     return Container(
       width: isFullWidth
           ? scaleDimension.screenWidth
@@ -188,12 +202,16 @@ class _AddNotePageState extends State<AddNotePage> {
           ),
           Container(
             padding:
-                EdgeInsets.symmetric(horizontal: scaleDimension.scaleWidth(10)),
+            EdgeInsets.symmetric(horizontal: scaleDimension.scaleWidth(10)),
             decoration: BoxDecoration(
                 borderRadius:
-                    BorderRadius.circular(scaleDimension.scaleWidth(16)),
+                BorderRadius.circular(scaleDimension.scaleWidth(16)),
                 border: Border.all(color: Colors.grey[400]!, width: 1.5)),
             child: TextField(
+              textAlign: isArabic(controller.text) ? TextAlign.end : TextAlign.start,
+              textDirection:
+              (isArabic(controller.text)) ? TextDirection.rtl : TextDirection.ltr,
+              maxLines: null,
               controller: controller,
               decoration: InputDecoration(
                 hintText: hint,
@@ -279,12 +297,12 @@ class _AddNotePageState extends State<AddNotePage> {
                 height: scaleDimension.scaleWidth(250),
                 child: _imagePath != ""
                     ? ClipRRect(
-                        borderRadius: BorderRadius.circular(200),
-                        child: Image.file(
-                          File(_imagePath),
-                          fit: BoxFit.cover,
-                        ),
-                      )
+                  borderRadius: BorderRadius.circular(200),
+                  child: Image.file(
+                    File(_imagePath),
+                    fit: BoxFit.cover,
+                  ),
+                )
                     : Container(),
               ),
             ),

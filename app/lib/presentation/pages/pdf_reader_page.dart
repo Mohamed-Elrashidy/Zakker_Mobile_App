@@ -17,22 +17,22 @@ class PdfReaderPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
           body: Column(
-        children: [
-          _appBarBuilder(context),
-    Container(
-      height: GetIt.instance.get<Dimension>().screenHeight-GetIt.instance.get<Dimension>().scaleHeight(100),
+            children: [
+              _appBarBuilder(context),
+              Container(
+                height: GetIt.instance.get<Dimension>().screenHeight-GetIt.instance.get<Dimension>().scaleHeight(100),
 
-        child: SfPdfViewer.file(file, enableTextSelection: true,
-          controller:_pdfViewerController ,
-          onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
-            if (details.selectedText != null) {
-              data=details.selectedText!;
-              print(details.selectedText);
-            }
-          }),
-      ),
-        ],
-      )),
+                child: SfPdfViewer.file(file, enableTextSelection: true,
+                    controller:_pdfViewerController ,
+                    onTextSelectionChanged: (PdfTextSelectionChangedDetails details) {
+                      if (details.selectedText != null) {
+                        data=details.selectedText!;
+                        print(details.selectedText);
+                      }
+                    }),
+              ),
+            ],
+          )),
     );
   }
 
@@ -48,8 +48,8 @@ class PdfReaderPage extends StatelessWidget {
         MainButton(title: "Add Note", onTap: (){
           String source =file.path.split('/')[file.path.split('/').length-1];
           source=source.substring(0,source.length-4);
-          String header='$data | $source';
-         header+='|'+ (_pdfViewerController.pageNumber+1).toString();
+          String header='$data |* $source';
+          header+='|*'+ (_pdfViewerController.pageNumber+1).toString();
           Navigator.of(context).pushNamed(Routes.addNotePage,arguments: header);
 
         })

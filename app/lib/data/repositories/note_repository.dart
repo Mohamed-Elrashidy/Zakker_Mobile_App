@@ -100,8 +100,8 @@ class NoteRepository extends BaseNoteRepository {
 
   @override
   void editNote(Note note) {
-    localDataSource.updateData(AppConstants.notesList, "SET title =? , body =? , date=?",
-        [note.title, note.body,DateTime.now().toString(), note.id], 'id');
+    localDataSource.updateData(AppConstants.notesList, "SET title =? , body =? ,image=?, date=?",
+        [note.title, note.body,note.image,DateTime.now().toString(), note.id], 'id');
   }
 
   @override
