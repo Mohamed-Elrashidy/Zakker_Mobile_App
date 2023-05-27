@@ -9,6 +9,7 @@ class SmallText extends StatelessWidget {
   final String text;
   late bool isBold;
   bool arabic=false;
+
    SmallText({required this.text,this.isBold=false}){
      arabic=isArabic(text);
    }
@@ -29,7 +30,7 @@ overflow: TextOverflow.ellipsis,
 
     ),
 textDirection: arabic?TextDirection.rtl:TextDirection.ltr,
-
+maxLines:isBold?1:3,
     );
   }
 }

@@ -49,7 +49,7 @@ class PdfReaderPage extends StatelessWidget {
           String source =file.path.split('/')[file.path.split('/').length-1];
           source=source.substring(0,source.length-4);
           String header='$data |* $source';
-          header+='|*'+ (_pdfViewerController.pageNumber+1).toString();
+          header+='|*'+ (_pdfViewerController.pageNumber).toString();
           Navigator.of(context).pushNamed(Routes.addNotePage,arguments: header);
 
         })

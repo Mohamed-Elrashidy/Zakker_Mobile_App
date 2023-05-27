@@ -55,16 +55,16 @@ class _AddNotePageState extends State<AddNotePage> {
         },
         child: Scaffold(
             body: Padding(
-              padding: EdgeInsets.all(scaleDimension.scaleWidth(10)),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _appBarBuilder(context),
-                    _bodyBuilder(context),
-                  ],
-                ),
-              ),
-            )),
+          padding: EdgeInsets.all(scaleDimension.scaleWidth(10)),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                _appBarBuilder(context),
+                _bodyBuilder(context),
+              ],
+            ),
+          ),
+        )),
       ),
     );
   }
@@ -117,17 +117,16 @@ class _AddNotePageState extends State<AddNotePage> {
         _imagePicker(),
         _colorPicker(),
         SizedBox(height: scaleDimension.scaleHeight(20)),
-        MainButton(
-            title: "Create Note",
-            onTap: () {
-              FocusManager.instance.primaryFocus?.unfocus();
+        Container(
+          width: scaleDimension.scaleWidth(180),
+          child: MainButton(
+              title: "Create Note",
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
 
-              _createNote(context);
-
-              if (widget.header != null) {
-                Navigator.of(context).pop();
-              }
-            }),
+                _createNote(context);
+              }),
+        ),
         SizedBox(height: scaleDimension.scaleHeight(30)),
       ],
     );
@@ -180,7 +179,9 @@ class _AddNotePageState extends State<AddNotePage> {
 
       await BlocProvider.of<NoteCubit>(context).getAllNotes();
       await BlocProvider.of<CategoryCubit>(context).getAllCategories();
-
+      if (widget.header != null) {
+        Navigator.of(context).pop();
+      }
       ScaffoldMessenger.of(context).showSnackBar(
           _showSnackBar("Note is added successfully!!", color: Colors.green));
     }
@@ -188,7 +189,7 @@ class _AddNotePageState extends State<AddNotePage> {
 
   Widget _textFieldBuilder(String title, String hint,
       TextEditingController controller, bool isFullWidth) {
-    print("is arabic=>"+isArabic(controller.text).toString());
+    print("is arabic=>" + isArabic(controller.text).toString());
     return Container(
       width: isFullWidth
           ? scaleDimension.screenWidth
@@ -202,15 +203,17 @@ class _AddNotePageState extends State<AddNotePage> {
           ),
           Container(
             padding:
-            EdgeInsets.symmetric(horizontal: scaleDimension.scaleWidth(10)),
+                EdgeInsets.symmetric(horizontal: scaleDimension.scaleWidth(10)),
             decoration: BoxDecoration(
                 borderRadius:
-                BorderRadius.circular(scaleDimension.scaleWidth(16)),
+                    BorderRadius.circular(scaleDimension.scaleWidth(16)),
                 border: Border.all(color: Colors.grey[400]!, width: 1.5)),
             child: TextField(
-              textAlign: isArabic(controller.text) ? TextAlign.end : TextAlign.start,
-              textDirection:
-              (isArabic(controller.text)) ? TextDirection.rtl : TextDirection.ltr,
+              textAlign:
+                  isArabic(controller.text) ? TextAlign.end : TextAlign.start,
+              textDirection: (isArabic(controller.text))
+                  ? TextDirection.rtl
+                  : TextDirection.ltr,
               maxLines: null,
               controller: controller,
               decoration: InputDecoration(
@@ -297,12 +300,12 @@ class _AddNotePageState extends State<AddNotePage> {
                 height: scaleDimension.scaleWidth(250),
                 child: _imagePath != ""
                     ? ClipRRect(
-                  borderRadius: BorderRadius.circular(200),
-                  child: Image.file(
-                    File(_imagePath),
-                    fit: BoxFit.cover,
-                  ),
-                )
+                        borderRadius: BorderRadius.circular(200),
+                        child: Image.file(
+                          File(_imagePath),
+                          fit: BoxFit.cover,
+                        ),
+                      )
                     : Container(),
               ),
             ),

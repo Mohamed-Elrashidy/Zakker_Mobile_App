@@ -206,9 +206,10 @@ class NotePage extends StatelessWidget {
 
   Widget _itemBuilder(String title, String info) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SmallText(text: title + ' : ' ),
-        SmallText(text: info)
+        Container(width:scaleDimension.scaleWidth(300),child: SmallText(text: info))
       ],
     );
   }

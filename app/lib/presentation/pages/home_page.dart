@@ -61,7 +61,11 @@ class HomePage extends StatelessWidget {
       onTap: ()async{
         final file =await _pickFile();
         if(file==null)
-          return;
+
+          {
+            print("file is null =>");
+            return;}
+        print("file is =>"+file.path.toString());
         Navigator.of(context,rootNavigator: true).pushNamed(Routes.pdfReaderPage,arguments: file);
       },
 

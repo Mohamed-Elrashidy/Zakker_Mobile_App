@@ -27,9 +27,6 @@ class _EditNotePageState extends State<EditNotePage> {
 
   TextEditingController _bodyController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
-  TextEditingController _pageNumberController = TextEditingController();
-  TextEditingController _categoryController = TextEditingController();
-  TextEditingController _sourceController = TextEditingController();
   String _imagePath = "";
   @override
   void initState() {
@@ -88,8 +85,6 @@ class _EditNotePageState extends State<EditNotePage> {
                 onTap: () {
                   widget.note.title = _titleController.text.trim();
                   widget.note.body = _bodyController.text.trim();
-                  widget.note.category = _categoryController.text.trim();
-                  widget.note.source = _sourceController.text.trim();
                   widget.note.image = _imagePath;
 
                   BlocProvider.of<NoteCubit>(context).editNote(widget.note);
