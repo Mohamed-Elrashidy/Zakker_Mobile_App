@@ -39,7 +39,7 @@
 
 ### [Full Class Diagram](https://drive.google.com/file/d/1H3otivgBp6CHL2Hwvc6ZZ8rmHVe5EapN/view?usp=drive_link) : 
 ![image](https://user-images.githubusercontent.com/92789958/231640524-b6360dc8-b829-44c3-9e8b-44a2c47c947d.png) 
-### [Full Sequence Diagram](https://drive.google.com/file/d/1H3otivgBp6CHL2Hwvc6ZZ8rmHVe5EapN/view?usp=sharing): 
+### [Full Sequence Diagram](https://drive.google.com/file/d/1ZTRzXaM3229XVqBa82mece9mCky_GWk9/view?usp=drive_link): 
 ![image](https://github.com/Mohamed-Elrashidy/Zakker_Mobile_App/assets/92789958/cd47ec1d-8936-4dd7-9d2f-25fad3d76372)
 
 ## Language & Framework
@@ -68,6 +68,7 @@
   * [flutter_staggered_animations](https://pub.dev/packages/flutter_staggered_animations) 
 
 ## Download
- [Beta version](https://drive.google.com/file/d/1Rqiq6S714HsuvLlOFiGIlspURfOClPnE/view?usp=sharing)
+* Android
+   * [Beta version](https://drive.google.com/file/d/1Rqiq6S714HsuvLlOFiGIlspURfOClPnE/view?usp=sharing)
  ### Notes
-  * If selected text is arabic this may result in badd formatting we will work on this in the next version 
+  *  If the selected text is Arabic this may result in bad formatting we will work on this in the next version.
