@@ -71,4 +71,5 @@
 * Android
    * [Beta version](https://drive.google.com/file/d/1Rqiq6S714HsuvLlOFiGIlspURfOClPnE/view?usp=sharing)
  ### Notes
-  *  If the selected text is Arabic this may result in bad formatting we will work on this in the next version.
+  * You need to give permission to the app to make the notifications service work correctly
+  * If the selected text is Arabic this may result in bad formatting we will work on this in the next version.
