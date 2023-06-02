@@ -13,7 +13,7 @@
 ## Features :dart:
 * [x] Figma Design
 * [x] Class Diagram
-* [ ] Sequential Diagram
+* [x] Sequential Diagram
 * [x] Add notes
 * [x] Edit notes
 * [x] Delete notes
@@ -37,9 +37,11 @@
  
 ![image](https://user-images.githubusercontent.com/92789958/231640441-4496f60c-0d69-479d-b8be-9841bbaee2dc.png)
 
-### [Full Class Diagram](https://drive.google.com/file/d/1H3otivgBp6CHL2Hwvc6ZZ8rmHVe5EapN/view?usp=sharing) : 
- 
+### [Full Class Diagram](https://drive.google.com/file/d/1H3otivgBp6CHL2Hwvc6ZZ8rmHVe5EapN/view?usp=drive_link) : 
 ![image](https://user-images.githubusercontent.com/92789958/231640524-b6360dc8-b829-44c3-9e8b-44a2c47c947d.png) 
+### [Full Sequence Diagram](https://drive.google.com/file/d/1H3otivgBp6CHL2Hwvc6ZZ8rmHVe5EapN/view?usp=sharing): 
+![image](https://github.com/Mohamed-Elrashidy/Zakker_Mobile_App/assets/92789958/cd47ec1d-8936-4dd7-9d2f-25fad3d76372)
+
 ## Language & Framework
 * Dart
 * Flutter
@@ -65,3 +67,7 @@
 * Animation 
   * [flutter_staggered_animations](https://pub.dev/packages/flutter_staggered_animations) 
 
+## Download
+ [Beta version](https://drive.google.com/file/d/1Rqiq6S714HsuvLlOFiGIlspURfOClPnE/view?usp=sharing)
+ ### Notes
+  * If selected text is arabic this may result in badd formatting we will work on this in the next version 
