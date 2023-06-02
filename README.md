@@ -5,8 +5,8 @@
 ## Target of the App
 *  Improve skills in flutter
 *  Improve skills in dart
-*  Apply on clean architecture course
-*  Apply on OOD course
+*  Apply to clean architecture course
+*  Apply to OOD course
 *  build medium project without instructor
 *  Get full marks in software engineering course practical exam 
  
